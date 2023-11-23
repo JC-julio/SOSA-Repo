@@ -1,0 +1,41 @@
+body .students-Main {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.students-Principal {
+  background-color: rgb(189, 189, 189);
+  height: 100vh;
+  width: 1024px;
+  padding: 32px;
+  border-radius: 50px;
+}
+
+.students-Principal .students-Header-Button {
+  display: flex;
+  width: 100%;
+  margin: 12px 0px;
+  justify-content: space-between;
+}
+.button-left {
+  display: flex;
+}
+
+.button-left button {
+  margin-left: 8px;
+}
+
+.students-Table {
+  display: flex;
+  justify-content: center;
+}
+
+th {
+  width: 341px;
+}
+
+td {
+  text-align: center;
+  padding: 8px 0px;
+}

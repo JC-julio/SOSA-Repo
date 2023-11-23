@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="PT-br">
+  <head>
+    <link rel="stylesheet" href="styles/Home.css" />
+    <link rel="stylesheet" href="styles/modals/ModalADDExit.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="assets/logo_SOSA.png" />
+    <title>Home</title>
+  </head>
+  <body class="layout-wrapper">
+    <%- include('./elements/aside.ejs') %>
+    <div class="layout-content">
+      <%- include('./elements/header.ejs')%>
+      <main class="layout-main">
+        <div class="painel">
+          <div class="div-button">
+            <button id="open-modal" class="button-select">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-plus-circle"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
+                />
+                <path
+                  d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"
+                />
+              </svg>
+              Nova Solicitação
+            </button>
+          </div>
+        </div>
+      </main>
+      <div id="fade" class="hide"></div>
+      <div id="modal" class="hide">
+        <div class="modal-header">
+          <h2>Nova solicitação</h2>
+          <button id="close-modal" class="button-select">Fechar</button>
+        </div>
+        <div class="modal-body">
+          <form action="">
+            <div class="modal-center">
+              <input type="text" placeholder="Nome Do Aluno" id="aluno" />
+              <input type="text" placeholder="Nome Do servidor" id="servidor" />
+            </div>
+            <div>
+              <div id="modal-time-input">
+                <div class="template-input">
+                  <label>Informe o tempo do aluno para sair do campus:</label>
+                  <div class="modal-inputs">
+                    <select
+                      name="InputTime"
+                      class="button-select"
+                      class="avulsa"
+                    >
+                      <option value="15min">15 minutos</option>
+                      <option value="30min">30 minutos</option>
+                      <option value="45min">45 minutos</option>
+                    </select>
+                    <input
+                      type="number"
+                      name="TempoLimite"
+                      placeholder="Tempo"
+                      class="inputTempo"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-observe">
+              <input
+                class="input-observe"
+                type="text"
+                name="obs-modal"
+                placeholder="Observações de saída"
+                maxlength="500"
+              />
+            </div>
+            <div class="labels">
+              <div>
+                <label>Turma:</label>
+                <label></label>
+              </div>
+              <div>
+                <label>Tipo de autorização do aluno:</label>
+                <label></label>
+              </div>
+            </div>
+            <div class="layout-bottom">
+              <button id="add-close-modal" class="button-select">
+                Adicionar saída
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="js/PageHome/OpenModalHome.js" defer></script>
+</html>

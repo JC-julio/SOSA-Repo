@@ -1,0 +1,140 @@
+#fade {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 5;
+}
+
+#modal {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  max-width: 90%;
+  background-color: #fff;
+  padding: 1.2rem;
+  border-radius: 0.5rem;
+  z-index: 10;
+}
+
+#fade,
+#modal {
+  transition: 0.5s;
+  opacity: 1;
+  pointer-events: all;
+}
+
+#modal.hide,
+#fade.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#modal.hide {
+  top: 0;
+}
+
+/*CONFIG MODAL ABAIXO, PÁGINA PRINCIPAL*/
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+}
+.modal-body .modal-center {
+  justify-content: space-between;
+  display: flex;
+  margin-bottom: 8px;
+}
+
+.modal-body .labels div {
+  flex-direction: column;
+  margin-right: auto;
+}
+
+.modal-body .labels {
+  padding: 8px;
+  margin: 12px 0px;
+  background-color: #ccc;
+  border: solid 1px #3b3b3b;
+}
+
+.modal-body #modal-time-input {
+  margin: 12px 0px;
+  padding: 8px;
+  background-color: #ccc;
+  border: #3b3b3b 1px solid;
+}
+
+#modal-time-input .modal-inputs {
+  display: flex;
+  gap: 12px;
+  margin: 12px 4px;
+}
+
+#modal-time-input .template-input {
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+}
+
+.modal-body #modal-time-input .inputTempo {
+  width: 118.28px;
+  height: 39.2px;
+  background-color: #fafafa;
+  color: #212121;
+  border: 1px solid #3b3b3b;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-size: 1rem;
+  outline-color: rgb(67, 160, 71);
+  text-align: center;
+}
+
+.modal-body #modal-button:hover {
+  transition: 0.5s;
+  color: rgb(67, 160, 71);
+}
+
+.modal-body .inputTempo:hover {
+  transition: 0.5s;
+  color: rgb(67, 160, 71);
+}
+
+.modal-body .modal-center input {
+  border: none;
+  border-bottom: #212121 solid 1px;
+  height: 32px;
+  outline-color: rgb(67, 160, 71);
+}
+.modal-body .layout-bottom {
+  display: flex;
+  justify-content: right;
+}
+.labels {
+  margin-bottom: 16px 0px;
+}
+.layout-bottom {
+  border-top: 1px solid #ccc;
+  padding: 16px 0px;
+}
+
+.modal-observe {
+  width: 100%;
+  background-color: #ccc;
+  color: #212121;
+  border: 1px solid #3b3b3b;
+}
+.modal-observe .input-observe {
+  font-size: 16px;
+  padding: 8px;
+  height: 64px;
+  width: 100%;
+  outline-color: rgb(67, 160, 71);
+}

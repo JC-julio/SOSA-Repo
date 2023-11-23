@@ -1,0 +1,90 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Nunito Sans', sans-serif;
+}
+
+a {
+  color: initial;
+  text-decoration: none;
+}
+main {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+.button-select {
+  padding: 0.6rem 1.2rem;
+  background-color: #fafafa;
+  color: #212121;
+  border: 1px solid #3b3b3b;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.button-select:hover {
+  transition: 0.5s;
+  color: rgb(67, 160, 71);
+}
+
+.button-select {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+}
+.admin-painel .button-painel {
+  display: flex;
+  width: 100%;
+  justify-content: right;
+  margin: 12px 0px;
+}
+
+.admin-painel {
+  background-color: rgb(189, 189, 189);
+  height: 100%;
+  width: 1024px;
+  padding: 32px;
+  border-radius: 50px;
+}
+
+th {
+  width: 341px;
+}
+
+th:not(.mid) {
+  border-right: 1px solid rgb(224, 224, 224);
+  border-left: 1px solid rgb(224, 224, 224);
+}
+td {
+  text-align: center;
+}
+td:not(.mid1) {
+  border-right: 1px solid rgb(224, 224, 224);
+  border-left: 1px solid rgb(224, 224, 224);
+}
+.table-options {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+.delete {
+  cursor: pointer;
+}
+
+.alterAutorization {
+  cursor: pointer;
+}
+
+.delete:hover {
+  transition: 0.5s;
+  color: rgb(67, 160, 71);
+}
+
+.alterAutorization:hover {
+  transition: 0.5s;
+  color: rgb(67, 160, 71);
+  cursor: pointer;
+}

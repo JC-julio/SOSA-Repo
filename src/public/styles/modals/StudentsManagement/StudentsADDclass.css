@@ -37,3 +37,29 @@
 #Modal-ADD-class.hider-me {
   top: 0;
 }
+
+/*Modal Abaixo*/
+
+.modalInput {
+  border: none;
+  border-bottom: #212121 solid 1px;
+  height: 32px;
+  outline-color: rgb(67, 160, 71);
+  margin: 16px 0px;
+}
+
+.layout-rooter-modal {
+  border-top: 1px solid #ccc;
+  padding: 16px 0px;
+}
+
+.layout-rooter-modal {
+  display: flex;
+  justify-content: right;
+}
+
+.Options {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}

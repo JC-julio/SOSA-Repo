@@ -5,15 +5,7 @@
   box-sizing: border-box;
 }
 
-body {
-  padding: 1rem;
-}
-
-h1 {
-  margin-bottom: 1rem;
-}
-
-#Student-fade {
+#Overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -23,7 +15,8 @@ h1 {
   z-index: 5;
 }
 
-#Student-Modal {
+#Modal-Alter-Class {
+  width: 524px;
   position: fixed;
   left: 50%;
   top: 50%;
@@ -34,8 +27,8 @@ h1 {
   z-index: 10;
 }
 
-#Student-fade,
-#Student-Modal {
+#Overlay,
+#Modal-Alter-Class {
   transition: 0.5s;
   opacity: 1;
   pointer-events: all;
@@ -50,38 +43,39 @@ h1 {
   padding-bottom: 1rem;
 }
 
-#Student-Modal.Student-hide,
-#Student-fade.Student-hide {
+#Modal-Alter-Class.blurem,
+#Overlay.blurem {
   opacity: 0;
   pointer-events: none;
 }
 
-#Student-Modal.Student-hide {
+#Modal-Alter-Class.blurem {
   top: 0;
 }
 
-/*Config de modal de gerencia e pesquisa de turmar e alunos*/
-.searching .title {
-  display: flex;
-  justify-content: center;
-  margin: 16px 0px;
-}
-
-.button-container {
-  display: flex;
-  flex-wrap: wrap;
-  width: 100%;
-}
-
+/*CONFIG DO MODAL ABAIXO, GERENCIAR TURMAS*/
 h4 {
-  text-align: center;
+  text-align: left;
   margin-bottom: 8px;
 }
-
-.list-button {
-  margin: 0px 8px;
+.main-Content {
+  margin: 16px 0px;
+  padding: 16px 0px;
 }
 
-.list-button .button-select {
-  margin: 8px 0px;
+#Close-Alter-Button {
+  margin-left: auto;
+}
+
+.student-data {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  margin: 16px 0px;
+}
+.input {
+  border: none;
+  border-bottom: #212121 solid 1px;
+  height: 32px;
+  outline-color: rgb(67, 160, 71);
 }

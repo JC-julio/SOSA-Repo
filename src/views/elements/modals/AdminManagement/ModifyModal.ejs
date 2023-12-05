@@ -1,0 +1,19 @@
+<div id="Blur1" class="hider"></div>
+<div id="DeleteModal" class="hider">
+  <div class="modal-header">
+    <h2>Edição de Entidades</h2>
+    <button id="close-DeleteModal" class="button-select" type="button">
+      Fechar
+    </button>
+  </div>
+  <div class="modal-body">
+    <h3>Realmente Deseja Apagar esta entidade?</h3>
+    <div class="modal-quest">
+      <form method="DELETE" class="modifyModal" action="/AdminManagement">
+        <input type="hidden" value="<%= element.id  %>" />
+        <button class="button-select" id="Sim" type="button">Sim</button>
+        <button class="button-select" id="Nao" type="button">Não</button>
+      </form>
+    </div>
+  </div>
+</div>

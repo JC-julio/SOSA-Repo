@@ -39,3 +39,19 @@ td {
   text-align: center;
   padding: 8px 0px;
 }
+
+.delete,
+.alter-class {
+  cursor: pointer;
+}
+
+.alter-class:hover {
+  transition: 0.5s;
+  color: rgb(67, 160, 71);
+}
+
+.delete:hover,
+#Del-Class:hover {
+  transition: 0.5s;
+  color: rgb(239, 83, 80);
+}

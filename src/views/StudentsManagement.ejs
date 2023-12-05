@@ -5,11 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="styles/home.css" />
     <link rel="stylesheet" href="styles/StudentsManagement.css" />
-    <link rel="stylesheet" href="styles/modals/ModalStudentsManagement.css" />
-    <link rel="stylesheet" href="Styles/modals/StudentsADDclass.css" />
+    <link
+      rel="stylesheet"
+      href="styles/modals/StudentsManagement/ModalStudentsManagement.css"
+    />
+    <link
+      rel="stylesheet"
+      href="Styles/modals/StudentsManagement/StudentsADDclass.css"
+    />
+    <link
+      rel="stylesheet"
+      href="Styles/modals/StudentsManagement/ClassADDStudents.css"
+    />
+
     <link rel="shortcut icon" href="assets/logo_SOSA.png" />
+
     <script src="js/StudentsManagement/OpenStudentsModal.js" defer></script>
-    <script src="js/StudentsManagement/OpenStudentsADDclass.js" defer></script>
+    <script
+      src="js/StudentsManagement/OpenStudentsManagementclass.js"
+      defer
+    ></script>
+    <script src="js/StudentsManagement/OpenClassADDStudents.js" defer></script>
     <title>Students Management</title>
   </head>
   <body class="layout-wrapper">
@@ -23,8 +39,8 @@
               <button class="button-select" id="Open-Add-Class">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
+                  width="17"
+                  height="17"
                   fill="currentColor"
                   class="bi bi-plus-circle"
                   viewBox="0 0 16 16"
@@ -55,15 +71,33 @@
                     d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-3.5-2a.5.5 0 0 0-.5.5v1.5a.5.5 0 0 0 1 0V11a.5.5 0 0 0-.5-.5Zm0 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1Z"
                   />
                 </svg>
-                Gerenciar turmas
+                Adicionar Aluno
+              </button>
+              <button class="button-select" id="Del-Class">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  fill="currentColor"
+                  class="bi bi-x-circle"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"
+                  />
+                  <path
+                    d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"
+                  />
+                </svg>
+                Excluir Turma
               </button>
             </div>
             <div class="button-right">
               <button class="button-select" id="Open-Student-Modal">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
+                  width="20"
+                  height="20"
                   fill="currentColor"
                   class="bi bi-search"
                   viewBox="0 0 16 16"
@@ -75,9 +109,11 @@
                 Pesquisar por turma
               </button>
             </div>
-            <%- include('./elements/modals/StudentsManagementModal.ejs')%>
+            <%-
+            include('./elements/modals/StudentsManagement/StudentsManagementModal.ejs')%>
           </div>
-          <%-include('./elements/modals/StudentsADDClass.ejs')%>
+          <%-include('./elements/modals/StudentsManagement/StudentsADDClass.ejs')%>
+          <%-include('./elements/modals/StudentsManagement/ClassStudentsManagement.ejs')%>
           <div class="students-Table">
             <table>
               <tr>
@@ -90,7 +126,40 @@
                 <td>Júlio César Aguiar Guedes Pereira</td>
                 <td>2022 A TI</td>
                 <td>Aluno Não Autorizado</td>
-                <td>OI</td>
+                <td class="Options">
+                  <div class="delete">
+                    <svg
+                      xml
+                      s="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      fill="currentColor"
+                      class="bi bi-x-circle"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
+                      />
+                      <path
+                        d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"
+                      />
+                    </svg>
+                  </div>
+                  <div class="alter-class">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      fill="currentColor"
+                      class="bi bi-share"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5m-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3m11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3"
+                      />
+                    </svg>
+                  </div>
+                </td>
               </tr>
             </table>
           </div>

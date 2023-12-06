@@ -3,7 +3,8 @@ import * as bcrypt from 'bcrypt';
 
 export default class Manager {
   model = ManagerModel;
-  constructor(private props: ManagerDto) { }
+  constructor(private props: ManagerDto) {}
+
   async Post() {
     const password = await bcrypt.hash(this.props.password, 6);
     return this.model.create({
@@ -12,6 +13,7 @@ export default class Manager {
       password: password,
     });
   }
+
   static async GetOne(managerId) {
     const manager = await ManagerModel.findById(managerId);
     return new Manager({
@@ -26,7 +28,6 @@ export default class Manager {
     return managers.map(
       (Data) => new Manager({ name: Data.name, type: Data.type, id: Data.id }),
     ); //transformar em nova lista
-    console.log(managers);
   }
   static async Delete(managerId) {
     await ManagerModel.findByIdAndDelete(managerId);

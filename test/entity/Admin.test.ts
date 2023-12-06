@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import { config } from 'dotenv';
 
 config();
+
 test('Que ela possa gerenciar os dados da classe de teste de adminitradores da classe Manager.ts', () => {
   const input = {
     name: 'Bruna',

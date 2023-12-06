@@ -58,13 +58,16 @@ th:not(.mid) {
   border-right: 1px solid rgb(224, 224, 224);
   border-left: 1px solid rgb(224, 224, 224);
 }
+
 td {
   text-align: center;
 }
+
 td:not(.mid1) {
   border-right: 1px solid rgb(224, 224, 224);
   border-left: 1px solid rgb(224, 224, 224);
 }
+
 .table-options {
   display: flex;
   justify-content: center;
@@ -87,4 +90,9 @@ td:not(.mid1) {
   transition: 0.5s;
   color: rgb(67, 160, 71);
   cursor: pointer;
+}
+
+.option-buttom {
+  background-color: transparent;
+  border: none;
 }

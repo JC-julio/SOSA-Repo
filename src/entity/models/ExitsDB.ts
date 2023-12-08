@@ -5,6 +5,7 @@ const ExistsSchema = new mongoose.Schema({
   nameWorker: String,
   time: Number,
   observes: String,
+  dateExit: Date,
 });
 
 export const ExitsModel = mongoose.model('Exits', ExistsSchema);

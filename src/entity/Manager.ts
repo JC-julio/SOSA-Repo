@@ -29,6 +29,7 @@ export default class Manager {
       (Data) => new Manager({ name: Data.name, type: Data.type, id: Data.id }),
     ); //transformar em nova lista
   }
+
   static async Delete(managerId) {
     await ManagerModel.findByIdAndDelete(managerId);
   }

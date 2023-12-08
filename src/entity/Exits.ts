@@ -24,6 +24,7 @@ export default class Exits {
       time: exit.time,
       observes: exit.observes,
       dateExit: exit.dateExit,
+      id: exit.id,
     });
   }
 
@@ -35,6 +36,7 @@ export default class Exits {
       time: Data.time,
       observes: Data.observes,
       dateExit: Data.dateExit,
+      id: Data.id,
     }))// transforma a lista recebida em um objeto a cada indice da lista, assim como na classe
        //manager.ts :)  
   }
@@ -63,6 +65,10 @@ export default class Exits {
     return this.props.dateExit;
   }
 
+  public get id(): string{
+    return this.props.id;
+  }
+
   public set nameStudents(nameStudent: string) {
     this.props.nameStudent = nameStudent;
   }
@@ -89,4 +95,5 @@ export type ExitsDto = {
   time: number;
   observes: string;
   dateExit: Date;
+  id?: string,
 };

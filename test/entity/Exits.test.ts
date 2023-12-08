@@ -36,9 +36,11 @@ test('Deve testar o post e o GetOne da classe Exits', async () => {
   expect(GetExit.time).toBe(input.time);
   expect(GetExit.observes).toBe(input.observes);
   expect(GetExit.dateExit).toStrictEqual(input.dateExit);
+  await mongoose.connection.close();
 }, 15000);
 
 test('Deve testar o GetAll da classe Exits', async() => {
+  await mongoose.connect(process.env.connectionString);
   const input = {
     nameStudent: 'Julinho',
     nameWorker: 'Ana Paula',
@@ -63,9 +65,12 @@ test('Deve testar o GetAll da classe Exits', async() => {
   expect(returnExits.time).toBe(input.time);
   const returnExits1 = exits.find((Element) => Element.NameStudent == input1.nameStudent);
   expect(returnExits1.NameStudent).toBe(input1.nameStudent);
+  await mongoose.connection.close();
+
 }, 15000)
 
 test('Deve testar o DeleteALL',async () => {
-  Exits.DeleteAll();
+  await mongoose.connect(process.env.connectionString);
+  await Exits.DeleteAll();
   await mongoose.connection.close();
 }, 15000)

@@ -4,11 +4,49 @@ export default class Student{
     model = studentsModel
     constructor(private props: StudentDto){}
 
+    async Post(){
+        return this.model.create({
+            name: this.name,
+            classStudent: this.classStudent,
+            type: this.type,
+        })
+    }
+
+    static async GetOne(studentId) {
+        const student = await studentsModel.findById(studentId);
+        return new Student({
+            name: student.name,
+            classStudent: student.classStudent,
+            type: student.type,
+            id: student.id,
+        })
+    }
+
+    static async GetByClass(ClassStudent){
+        const Class = await studentsModel.find({classStudent: ClassStudent});
+        return Class.map((Data) => ({
+            name: Data.name,
+            type: Data.type,
+            classStudent: Data.classStudent,
+            id: Data.id,
+        }))
+        }
+
+    static async Delete(studentId){
+        await studentsModel.findByIdAndDelete(studentId);
+    }
+    
+    async Update() {
+        await studentsModel.findByIdAndUpdate(this.id, {
+          type: this.type,
+        });
+      }
+
     public get name(): String {
         return this.props.name;
     }
 
-    public get ClassStudent(): String {
+    public get classStudent(): String {
         return this.props.classStudent;
     }
 
@@ -16,21 +54,26 @@ export default class Student{
         return this.props.type;
     }
 
-    public set name(name: String) {
+    public get id(): string {
+        return this.props.id;
+    }
+
+    public set name(name: string) {
         this.props.name = name;
     }
 
-    public set ClassStudent(ClassStudent: String) {
-        this.props.classStudent = ClassStudent;
+    public set classStudent(classStudent: string) {
+        this.props.classStudent = classStudent;
     }
 
-    public set type(type: String){
+    public set type(type: string){
         this.props.type = type;
     }
 }
 
 export type StudentDto = {
-    name: String,
-    classStudent: String,
-    type: String,
+    name: string,
+    classStudent: string,
+    type: string,
+    id?: string,
 }

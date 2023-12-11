@@ -55,3 +55,9 @@ td {
   transition: 0.5s;
   color: rgb(239, 83, 80);
 }
+
+.Options {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}

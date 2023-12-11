@@ -1,4 +1,4 @@
-#Fader {
+#Pattern {
   position: fixed;
   top: 0;
   left: 0;
@@ -21,45 +21,25 @@
   z-index: 10;
 }
 
-#Fader,
+#Pattern,
 #Modal-ADD-class {
   transition: 0.5s;
   opacity: 1;
   pointer-events: all;
 }
 
-#Modal-ADD-class.hider-me,
-#Fader.hider-me {
+#Modal-ADD-class.esconda-me,
+#Pattern.esconda-me {
   opacity: 0;
   pointer-events: none;
 }
 
-#Modal-ADD-class.hider-me {
+#Modal-ADD-class.esconda-me {
   top: 0;
 }
 
-/*Modal Abaixo*/
+/* config do modal de adicionar turma abaixo!!*/
 
-.modalInput {
-  border: none;
-  border-bottom: #212121 solid 1px;
-  height: 32px;
-  outline-color: rgb(67, 160, 71);
+.principal-Content input {
   margin: 16px 0px;
-}
-
-.layout-rooter-modal {
-  border-top: 1px solid #ccc;
-  padding: 16px 0px;
-}
-
-.layout-rooter-modal {
-  display: flex;
-  justify-content: right;
-}
-
-.Options {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
 }

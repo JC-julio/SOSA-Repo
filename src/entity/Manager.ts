@@ -1,3 +1,4 @@
+import { find } from 'rxjs';
 import { ManagerModel } from '../entity/models/ManagerDB';
 import * as bcrypt from 'bcrypt';
 
@@ -13,7 +14,18 @@ export default class Manager {
       password: password,
     });
   }
-
+  
+  static async Login(user: string, password: string) {
+    if(!user)
+    throw new Error('Nome de usuário não informado ou inválido!')
+    if(!password)
+    throw new Error('Senha não informado ou encontrada!')
+    const manager = await ManagerModel.find({name: user})
+    if(!manager)
+    throw new Error('Nome de usuário não informado ou inválido!')
+    const ComparePassword = bcrypt.compare(password, ManagerDto .password)
+  }
+  
   static async GetOne(managerId) {
     const manager = await ManagerModel.findById(managerId);
     return new Manager({

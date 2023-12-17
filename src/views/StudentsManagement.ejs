@@ -36,7 +36,11 @@
         <div class="students-Principal">
           <div class="students-Header-Button">
             <div class="button-left">
-              <button class="button-select" id="open-modal-alterClass">
+              <button
+                class="button-select"
+                id="open-modal-alterClass"
+                type="button"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
@@ -55,7 +59,7 @@
                 </svg>
                 Adicionar Aluno
               </button>
-              <button class="button-select" id="open-ADD-Class">
+              <button class="button-select" id="open-ADD-Class" type="button">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
@@ -73,7 +77,7 @@
                 </svg>
                 Adicionar Turma
               </button>
-              <button class="button-select" id="Del-Class">
+              <button class="button-select" id="Del-Class" type="button">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
@@ -93,7 +97,12 @@
               </button>
             </div>
             <div class="button-right">
-              <button class="button-select" id="Open-Student-Modal">
+              <button
+                class="button-select"
+                id="Open-Student-Modal"
+                type="button"
+                type="button"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
@@ -109,10 +118,7 @@
                 Pesquisar por turma
               </button>
             </div>
-            <%-
-            include('./elements/modals/StudentsManagement/StudentsManagementModal.ejs')%>
           </div>
-          <%-include('./elements/modals/StudentsManagement/ClassStudentsManagement.ejs')%>
           <div class="students-Table">
             <table>
               <tr>
@@ -169,7 +175,9 @@
     <div id="Modal-Delete-class" class="hider-me">
       <div class="modal-header">
         <h2>Deletar Turma</h2>
-        <button id="close-StudentsModal" class="button-select">Fechar</button>
+        <button id="close-StudentsModal" class="button-select" type="button">
+          Fechar
+        </button>
       </div>
       <div class="modal-body">
         <div class="principal-Content">
@@ -179,37 +187,39 @@
             <option name="Opcoes">Selecione</option>
           </select>
           <div class="layout-rooter-modal">
-            <button class="button-select" id="Close-Modal-Button">
+            <button class="button-select" id="Close-Modal-Button" type="button">
               Deletar turma
             </button>
           </div>
         </div>
       </div>
     </div>
-
-    <div id="Pattern" class="esconda-me"></div>
-    <div id="Modal-ADD-class" class="esconda-me">
-      <div class="modal-header">
-        <h2>Adiconar Turma</h2>
-        <button id="close-modal1" class="button-select">Fechar</button>
-      </div>
-      <div class="modal-body">
+  </body>
+  <div id="Pattern" class="esconda-me"></div>
+  <div id="Modal-ADD-class" class="esconda-me">
+    <div class="modal-header">
+      <h2>Adiconar Turma</h2>
+      <button id="close-modal1" class="button-select" type="button">
+        Fechar
+      </button>
+    </div>
+    <div class="modal-body">
+      <form action="/StudentsManagement" method="POST">
         <div class="principal-Content">
           <h4>Digite o nome da nova turma abaixo:</h4>
           <input
             type="text"
-            name=""
-            id=""
+            name="name"
             class="input"
             placeholder="Exemplo: 2022 A TI"
           />
           <div class="layout-rooter-modal">
-            <button class="button-select" id="close-modal">
+            <button class="button-select" id="close-modal" type="submit">
               Adicionar turma
             </button>
           </div>
         </div>
-      </div>
+      </form>
     </div>
-  </body>
+  </div>
 </html>

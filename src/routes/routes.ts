@@ -1,8 +1,10 @@
 // Importando os módulos necessários
 import express from 'express';
 import ManagerController from '../controllers/AdminManagement/ManagerController';
+import ClassController from '../controllers/StudentsManagement/ClassController';
 
 const router = express.Router();
+
 
 router.get('/Home', (req, res) => {
   // res.send({ info: 'sim' });
@@ -24,5 +26,7 @@ router.put('/AdminManagement/:id', ManagerController.Update);
 router.get('/StudentsManagement', (req, res) => {
   res.render('StudentsManagement');
 });
+
+router.post('/StudentsManagement', ClassController.Post)
 
 export default router;

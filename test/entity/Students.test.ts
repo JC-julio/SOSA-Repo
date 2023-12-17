@@ -32,7 +32,6 @@ test('Deve testar o post e o GetOne da classe Students', async () => {
 }, 15000)
 
 test('Deve testar a função que pega todas as turmas, e seta as informações que o front-end filtra', async() => {
-    await mongoose.connect(process.env.connectionString);
     const input = {
         name: 'JuliO César Aguiar',
         classStudent: '2022 B TI',
@@ -44,6 +43,7 @@ test('Deve testar a função que pega todas as turmas, e seta as informações q
         classStudent: '2022 B TI',
         type: 'Autorizado',
     };
+    await mongoose.connect(process.env.connectionString);
     const studentinput = new Student(input);
     const studentResult = (await studentinput.Post()).classStudent;
     const studentinput1 = new Student(input1);
@@ -54,4 +54,4 @@ test('Deve testar a função que pega todas as turmas, e seta as informações q
     const ReturnStudents1 = Students.find((Element) => Element.classStudent == input1.classStudent);
     expect(ReturnStudents1.classStudent).toBe(input1.classStudent);
     await mongoose.connection.close();
-})
+}, 15000)

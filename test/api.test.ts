@@ -27,7 +27,6 @@ test('Deve testar o DeleteUser', async () => {
     'http://localhost:3000/AdminManagement',
     input,
   );
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const AxiosDEL = await axios.delete(
     'http://localhost:3000/AdminManagement',
     AxiosOutput.data.id,

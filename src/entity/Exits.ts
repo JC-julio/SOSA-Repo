@@ -16,14 +16,14 @@ export default class Exits {
     });
   }
 
-  static async GetExits(DataInit: Date, DateEnd: Date) {
+  static async GetExits(DateInit: Date, DateEnd: Date) {
     const saidas = await ExitsModel.find({
-      dateExit: { $gte: DataInit, $lte: DateEnd },
+      dateExit: { $gte: DateInit, $lte: DateEnd },
     });
     // Mapeia cada item e ordena dentro da função map
     const formattedExits = saidas.map((Data) => ({
-      NameStudent: Data.nameStudent,
-      NameWorker: Data.nameWorker,
+      nameStudent: Data.nameStudent,
+      nameWorker: Data.nameWorker,
       time: Data.time,
       observes: Data.observes,
       dateExit: Data.dateExit,
@@ -47,8 +47,8 @@ export default class Exits {
   static async GetAll(){
     const exits = await ExitsModel.find();
     return exits.map((Data) => ({
-      NameStudent: Data.nameStudent,
-      NameWorker: Data.nameWorker,
+      nameStudent: Data.nameStudent,
+      nameWorker: Data.nameWorker,
       time: Data.time,
       observes: Data.observes,
       dateExit: Data.dateExit,

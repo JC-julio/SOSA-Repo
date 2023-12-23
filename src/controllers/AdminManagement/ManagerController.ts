@@ -1,6 +1,5 @@
 import Express from 'express';
 import Manager from '../../entity/Manager';
-import { Request, Response } from "express";
 import { config } from 'dotenv';
 config();
 
@@ -14,6 +13,17 @@ export default class ManagerController {
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: error.message });
+    }
+  }
+
+  static async GetOne(req:Express.Request, res:Express.Response) {
+    try{
+      const managerId = req.params.id;
+      const returnManager = await Manager.GetOne(managerId);
+      res.status(200).send(returnManager);
+    } catch(error){
+      console.error(error);
+      res.status(500).json({msg: error.message});
     }
   }
 

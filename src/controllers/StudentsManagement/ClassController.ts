@@ -13,6 +13,16 @@ export default class ClassController {
     }
 }
 
+    static async GetOne(req: Express.Request, res: Express.Response){
+        try{
+            const classID = req.params.id;
+            const returnClass = await StudentClass.GetOne(classID)
+            res.status(226).send(returnClass);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+    }
+}
+
     static async GetAll(req: Express.Request, res: Express.Response){
         try{
             const classes = await StudentClass.GetAll();

@@ -1,5 +1,6 @@
 import Manager from '../../src/entity/Manager';
 import mongoose from 'mongoose';
+import { TokenModel } from '../../src/entity/models/BlackListDB';
 import { config } from 'dotenv';
 config();
 
@@ -57,7 +58,7 @@ test('Deve testar o GetAll da classe Manager.ts', async () => {
   await mongoose.connection.close();
 }, 15000);
 
-test('Deve testar o Login e o Logout da classe Manager.ts',async () => {
+test('Deve testar o Login e o Logout da classe Manager.ts', async () => {
   const input = {
     name: 'Júlio',
     password: 'JulinhoFazAPI',
@@ -66,9 +67,12 @@ test('Deve testar o Login e o Logout da classe Manager.ts',async () => {
   await mongoose.connect(process.env.connectionString);
   const NewLogin = new Manager(input);
   NewLogin.Post();
-  const Return = await Manager.Login(input.name, input.password);
-  expect(Return)
-  const EndToken = await Manager.logout(Return);
-  expect(EndToken).toBeUndefined();
+  const token = await Manager.Login(input.name, input.password);
+    expect(token).toBeTruthy(); // Verifica se o token existe
+  const bannedToken = await Manager.logout(token);
+    expect(bannedToken).toBeTruthy(); // Verifica se o token invalidado existe
+  const foundToken = await TokenModel.findOne({ bannedToken: token });
+    expect(foundToken).toBeTruthy(); // Verifica se o token invalidado foi adicionado à lista de bloqueio
   await mongoose.connection.close();
-}, 15000)
+  //esse texte foi dificil :)
+}, 15000);

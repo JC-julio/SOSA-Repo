@@ -7,6 +7,8 @@ config();
 
 export default class Manager {
   model = ManagerModel;
+  TokenDB = TokenModel;
+  
   constructor(private props: ManagerDto) {}
 
   async Post() {
@@ -38,7 +40,7 @@ export default class Manager {
   static async logout(Token: String){
     const tokenVerificado = jwt.verify(Token, process.env.secretJWTkey)
     if(tokenVerificado){
-      TokenModel.create({
+      return TokenModel.create({
       bannedToken: Token,
       })
     } else {

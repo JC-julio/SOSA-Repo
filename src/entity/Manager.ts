@@ -1,6 +1,9 @@
-import { find } from 'rxjs';
 import { ManagerModel } from '../entity/models/ManagerDB';
+import { TokenModel } from '../entity/models/BlackListDB';
 import * as bcrypt from 'bcrypt';
+import jwt from "jsonwebtoken"
+import { config } from 'dotenv';
+config();
 
 export default class Manager {
   model = ManagerModel;
@@ -17,13 +20,30 @@ export default class Manager {
   
   static async Login(user: string, password: string) {
     if(!user)
-    throw new Error('Nome de usuário não informado ou inválido!')
+      throw new Error('Nome de usuário não informado ou inválido!')
     if(!password)
-    throw new Error('Senha não informado ou encontrada!')
+      throw new Error('Senha não informado ou não encontrada!')
     const manager = await ManagerModel.find({name: user})
     if(!manager)
-    throw new Error('Nome de usuário não informado ou inválido!')
-    const ComparePassword = bcrypt.compare(password, ManagerDto .password)
+      throw new Error('Nome de usuário não informado ou inválido!')
+      const ComparePassword = bcrypt.compare(password, manager[0]['password'])
+    if(ComparePassword) {
+      const token = jwt.sign({managerEntity: manager['id']}, process.env.secretJWTkey, {expiresIn: '7d'});
+      return token;
+    } else {
+      throw new Error("Nome de usuário ou senha incorretos");
+    }
+  }
+
+  static async logout(Token: String){
+    const tokenVerificado = jwt.verify(Token, process.env.secretJWTkey)
+    if(tokenVerificado){
+      TokenModel.create({
+      bannedToken: Token,
+      })
+    } else {
+      throw new Error("Token inválido")
+    }
   }
   
   static async GetOne(managerId) {

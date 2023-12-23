@@ -1,7 +1,6 @@
 import Manager from '../../src/entity/Manager';
 import mongoose from 'mongoose';
 import { config } from 'dotenv';
-
 config();
 
 test('Que ele possa gerenciar os dados da classe de teste de adminitradores da classe Manager.ts', () => {
@@ -57,3 +56,19 @@ test('Deve testar o GetAll da classe Manager.ts', async () => {
   expect(ReturnManager1.type).toBe(input2.type);
   await mongoose.connection.close();
 }, 15000);
+
+test('Deve testar o Login e o Logout da classe Manager.ts',async () => {
+  const input = {
+    name: 'Júlio',
+    password: 'JulinhoFazAPI',
+    type: 'Guarda',
+  }
+  await mongoose.connect(process.env.connectionString);
+  const NewLogin = new Manager(input);
+  NewLogin.Post();
+  const Return = await Manager.Login(input.name, input.password);
+  expect(Return)
+  const EndToken = await Manager.logout(Return);
+  expect(EndToken).toBeUndefined();
+  await mongoose.connection.close();
+}, 15000)

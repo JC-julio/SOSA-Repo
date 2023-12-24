@@ -1,5 +1,5 @@
 import Express from 'express';
-import Student from 'src/entity/Students';
+import Student from '../../entity/Students';
 
 export default class StudentController {
     static async Post(req:Express.Request, res:Express.Response) {

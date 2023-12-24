@@ -56,8 +56,10 @@ export default class ManagerController {
   static async Update(req: Express.Request, res: Express.Response) {
     try {
       const manager = await Manager.GetOne(req.params.id);
-      if (manager.type == 'Guarda') manager.type = 'Servidor da CAED';
-      else manager.type = 'Guarda';
+      if (manager.type == 'Guarda') 
+      manager.type = 'Servidor da CAED';
+      else 
+      manager.type = 'Guarda';
       await manager.Update();
       res.status(200).end();
     } catch (error) {

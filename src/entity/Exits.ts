@@ -13,6 +13,7 @@ export default class Exits {
       time: this.time,
       observes: this.observes,
       dateExit: this.dateExit,
+      confirmExit: this.confirmExit,
     });
   }
 
@@ -27,6 +28,7 @@ export default class Exits {
       time: Data.time,
       observes: Data.observes,
       dateExit: Data.dateExit,
+      confirmExit: Data.confirmExit,
       id: Data.id,
     })).sort((a, b) => a.dateExit.getTime() - b.dateExit.getTime());
     return formattedExits;
@@ -40,6 +42,7 @@ export default class Exits {
       time: exit.time,
       observes: exit.observes,
       dateExit: exit.dateExit,
+      confirmExit: exit.confirmExit,
       id: exit.id,
     });
   }
@@ -52,6 +55,7 @@ export default class Exits {
       time: Data.time,
       observes: Data.observes,
       dateExit: Data.dateExit,
+      confirmExit: Data.confirmExit,
       id: Data.id,
     }))// transforma a lista recebida em um objeto a cada indice da lista, assim como na classe
        //manager.ts :)  
@@ -59,6 +63,12 @@ export default class Exits {
 
   static async DeleteAll(){
     await ExitsModel.deleteMany();
+  }
+
+  async Update() {
+    await ExitsModel.findByIdAndUpdate(this.id, {
+    confirmExit: this.confirmExit,
+    })
   }
 
   public get nameStudent(): string {
@@ -85,6 +95,10 @@ export default class Exits {
     return this.props.id;
   }
 
+  public get confirmExit(): boolean {
+    return this.props.confirmExit;
+  }
+
   public set nameStudents(nameStudent: string) {
     this.props.nameStudent = nameStudent;
   }
@@ -104,6 +118,10 @@ export default class Exits {
   public set dateExit(DateExit: Date){
     this.props.dateExit = DateExit;
   }
+
+  public set confirmExit(confirmExit: boolean) {
+    this.props.confirmExit = confirmExit;
+  }
 }
 export type ExitsDto = {
   nameStudent: string;
@@ -111,5 +129,6 @@ export type ExitsDto = {
   time: number;
   observes: string;
   dateExit: Date;
+  confirmExit: boolean;
   id?: string,
 };

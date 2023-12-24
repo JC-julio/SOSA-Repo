@@ -6,6 +6,7 @@ const ExistsSchema = new mongoose.Schema({
   time: Number,
   observes: String,
   dateExit: Date,
+  confirmExit: Boolean,
 });
 
 export const ExitsModel = mongoose.model('Exits', ExistsSchema);

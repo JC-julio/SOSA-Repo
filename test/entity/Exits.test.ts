@@ -10,6 +10,7 @@ test('Testar a classe de novas saidas do SOSA', () => {
     time: 15,
     observes: 'tudo certo',
     dateExit: new Date(),
+    confirmExit: false,
   };
   const Exit = new Exits(input);
   expect(input.nameStudent).toBe(Exit.nameStudent);
@@ -26,6 +27,7 @@ test('Deve testar o post e o GetOne da classe Exits', async () => {
     time: 15,
     observes: 'tudo certo',
     dateExit: new Date(),
+    confirmExit: false,
   };
   const Exit = new Exits(input);
   await mongoose.connect(process.env.connectionString);
@@ -47,6 +49,7 @@ test('Deve testar o GetAll da classe Exits', async() => {
     time: 30,
     observes: 'tudo certo',
     dateExit: new Date(),
+    confirmExit: false,
   };
 
   const input1 = {
@@ -55,6 +58,7 @@ test('Deve testar o GetAll da classe Exits', async() => {
     time: 45,
     observes: 'tudo certo por aqui',
     dateExit: new Date(),
+    confirmExit: false,
   };
   const exitJulio = new Exits(input);
   await exitJulio.Post();
@@ -63,8 +67,8 @@ test('Deve testar o GetAll da classe Exits', async() => {
   const exits = await Exits.GetAll();
   const returnExits = exits.find((Element) => Element.time == input.time); //percorrer a lista retornada pelo GetALL em busca de um tempo igual
   expect(returnExits.time).toBe(input.time);
-  const returnExits1 = exits.find((Element) => Element.NameStudent == input1.nameStudent);
-  expect(returnExits1.NameStudent).toBe(input1.nameStudent);
+  const returnExits1 = exits.find((Element) => Element.nameStudent == input1.nameStudent);
+  expect(returnExits1.nameStudent).toBe(input1.nameStudent);
   await mongoose.connection.close();
 
 }, 15000)
@@ -85,6 +89,7 @@ test('Deve testar o método que pega todas as saídas especificadas pelos dois p
     time: 15,
     observes: 'tudo certo',
     dateExit: new Date('04-02-2007'),
+    confirmExit: false,
   }
   const Exit1 = new Exits(input1);
   Exit1.Post();
@@ -96,6 +101,7 @@ test('Deve testar o método que pega todas as saídas especificadas pelos dois p
     time: 20,
     observes: 'Aluno Passando mal',
     dateExit: new Date('12-12-2013'),
+    confirmExit: false,
   }
   const Exit2 = new Exits(input2);
   Exit2.Post();
@@ -107,6 +113,7 @@ test('Deve testar o método que pega todas as saídas especificadas pelos dois p
     time: 20,
     observes: 'Tudo dboas',
     dateExit: new Date('12-12-2012'),
+    confirmExit: false,
   }
   const Exit3 = new Exits(input3);
   Exit3.Post();
@@ -118,6 +125,7 @@ test('Deve testar o método que pega todas as saídas especificadas pelos dois p
     time: 20,
     observes: 'Aluno de Luto',
     dateExit: new Date('12-12-2014'),
+    confirmExit: false,
   }
   const Exit4 = new Exits(input4);
   Exit4.Post();
@@ -128,6 +136,7 @@ test('Deve testar o método que pega todas as saídas especificadas pelos dois p
     nameWorker: 'Maria',
     time: 10,
     observes: 'regular',
+    confirmExit: false,
     dateExit: new Date('01-01-2022'),
   }
   const Exit5 = new Exits(input5);
@@ -139,10 +148,34 @@ test('Deve testar o método que pega todas as saídas especificadas pelos dois p
     time: 10,
     observes: 'regular',
     dateExit: new Date('01-01-2001'),
+    confirmExit: false,
   }
   const Exit6 = new Exits(input6);
   Exit6.Post();
 
   const Saidas = await Exits.GetExits(input6.dateExit, input5.dateExit)
   console.log(Saidas)
+  await mongoose.connection.close();
+}, 15000)
+
+test('Deve testar o Update da classe Exits.ts', async () => {
+  await mongoose.connect(process.env.connectionString);
+  const input = {
+    nameStudent: 'Júlio',
+    nameWorker: 'Ruan',
+    time: 45,
+    observes: 'Aluno passando mal',
+    dateExit: new Date('11-25-2023'),
+    confirmExit: true,
+  }
+  const returnExit = new Exits(input);
+  const ExitId = (await returnExit.Post())._id;
+  const Exit = await Exits.GetOne(ExitId);
+  if(Exit.confirmExit == false)
+    Exit.confirmExit = true
+  else 
+    Exit.confirmExit = false
+  await Exit.Update();
+  expect(input.confirmExit).not.toBe(Exit.confirmExit);
+  await mongoose.connection.close();
 }, 15000)

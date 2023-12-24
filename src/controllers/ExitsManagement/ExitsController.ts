@@ -4,13 +4,14 @@ import StudentClass from '../../entity/Exits';
 export default class ExitsController {
     static async Post(req: Express.Request, res: Express.Response) {
         try{
-            const {nameStudent, nameWorker, time, observes, dateExit} = req.body;
+            const {nameStudent, nameWorker, time, observes, dateExit, confirmExit} = req.body;
             const Exit = new StudentClass({
                 nameStudent: nameStudent,
                 nameWorker: nameWorker,
                 time: time,
                 observes: observes,
                 dateExit: dateExit,
+                confirmExit: confirmExit,
         });
             await Exit.Post();
             res.status(201).end();
@@ -18,7 +19,7 @@ export default class ExitsController {
                 console.error(error);
                 res.send(500).json({msg: error.message})    
             }
-        }
+    }
 
     static async GetOne(req: Express.Request, res: Express.Response) {
         try{
@@ -41,6 +42,7 @@ export default class ExitsController {
                 time: Data.time,
                 observes: Data.observes,
                 dateExit: Data.dateExit,
+                confirmExit: Data.confirmExit,
                 id: Data.id,
               }))
               res.status(226).send(returnExits);
@@ -58,6 +60,7 @@ export default class ExitsController {
                 time: Data.time,
                 observes: Data.observes,
                 dateExit: Data.dateExit,
+                confirmExit: Data.confirmExit,
                 id: Data.id,
               }))
               res.status(226).send(returnExits);
@@ -74,6 +77,21 @@ export default class ExitsController {
         } catch(error){
             console.error(error);
             res.status(500).json({msg: error.message})
+        }
+    }
+
+    static async Update(req: Express.Request, res: Express.Response) {
+        try{
+        const exit = await StudentClass.GetOne(req.params.id);
+        if(exit.confirmExit == false)
+            exit.confirmExit = true;
+        else
+            exit.confirmExit = false;    
+        await exit.Update();
+        res.status(200).end();
+        } catch(error) {
+            console.error(error)
+            res.status(500).json({error: error.message})
         }
     }
 }

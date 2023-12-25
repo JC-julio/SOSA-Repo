@@ -8,7 +8,7 @@ router.post('/StudentsManagement', loginRequired, StudentsController.Post);
 
 router.get('/StudentsManagement/:id', loginRequired, StudentsController.GetOne);
 
-router.get('StudentsManagement/:id', loginRequired, StudentsController.GetbyClass)
+router.get('StudentsManagement/Class/:id', loginRequired, StudentsController.GetbyClass)
 
 router.delete('/StudentsManagement/:id', loginRequired, StudentsController.Delete);
 

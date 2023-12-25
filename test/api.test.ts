@@ -28,7 +28,13 @@ test('Deve testar o DeleteUser', async () => {
     input,
   );
   const AxiosDEL = await axios.delete(
-    'http://localhost:3000/AdminManagement',
+    'http://localhost:3000/AdminManagement/'+ AxiosOutput.data.id,
     AxiosOutput.data.id,
   );
 }, 15000);
+
+// const AxiosDEL = await axios.delete(
+//   'http://localhost:3000/AdminManagement/'+ AxiosOutput.data.id,
+//   AxiosOutput.data.id,
+// );
+// }, 15000);

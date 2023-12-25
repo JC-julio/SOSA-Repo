@@ -12,4 +12,8 @@ router.delete('/AdminManagement/:id', loginRequired, ManagerController.Delete);
 
 router.put('/AdminManagement/:id', loginRequired, ManagerController.Update);
 
+router.get('/Login', ManagerController.Login);
+
+router.get('/Logout', loginRequired, ManagerController.Logout);
+
 export default router;

@@ -6,8 +6,8 @@ export default class ClassController {
         try{
             const {name} = req.body;
             const Class = new StudentClass({nameClass:name});
-            await Class.Post();
-            res.status(201).end();
+            const ClassID = (await Class.Post())._id;
+            res.status(201).json({id: ClassID});
         }catch(error){
             res.status(500).json({ error: error.message });
     }

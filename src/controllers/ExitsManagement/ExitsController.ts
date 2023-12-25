@@ -13,8 +13,8 @@ export default class ExitsController {
                 dateExit: dateExit,
                 confirmExit: confirmExit,
         });
-            await Exit.Post();
-            res.status(201).end();
+            const exitID = (await Exit.Post())._id;
+            res.status(201).json({Id: exitID});
             } catch(error) {
                 console.error(error);
                 res.send(500).json({msg: error.message})    
@@ -34,8 +34,9 @@ export default class ExitsController {
     
     static async GetExits(req: Express.Request, res: Express.Response) {
         try{
-            const {DateInit, DateEnd} = req.body;
-            const returnExits = await StudentClass.GetExits(DateInit, DateEnd);
+            const dateInit = new Date(req.params.dateInit);
+            const dateEnd = new Date(req.params.dateEnd);
+            const returnExits = await StudentClass.GetExits(dateInit, dateEnd);
             returnExits.map((Data) => ({
                 nameStudent: Data.nameStudent,
                 nameWorker: Data.nameWorker,

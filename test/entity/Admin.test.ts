@@ -74,5 +74,5 @@ test('Deve testar o Login e o Logout da classe Manager.ts', async () => {
   const foundToken = await TokenModel.findOne({ bannedToken: token });
     expect(foundToken).toBeTruthy(); // Verifica se o token invalidado foi adicionado à lista de bloqueio
   await mongoose.connection.close();
-  //esse texte foi dificil :)
+  //esse teste foi dificil :)
 }, 15000);

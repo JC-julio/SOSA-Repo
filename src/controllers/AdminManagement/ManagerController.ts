@@ -8,8 +8,8 @@ export default class ManagerController {
     try {
       const { name, password, type } = req.body;
       const manager = new Manager({ name: name, password: password, type: type });
-      await manager.Post();
-      res.status(200).end();
+      const managerID = (await manager.Post())._id;
+      res.status(200).json({Id: managerID});
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: error.message });
@@ -20,7 +20,7 @@ export default class ManagerController {
     try{
       const managerId = req.params.id;
       const returnManager = await Manager.GetOne(managerId);
-      res.status(200).send(returnManager);
+      res.status(226).send(returnManager);
     } catch(error){
       console.error(error);
       res.status(500).json({msg: error.message});
@@ -35,7 +35,7 @@ export default class ManagerController {
         type: ManagersDto.type,
         id: ManagersDto.id,
       }));
-      res.status(200).send(ManagersDTO);
+      res.status(226).send(ManagersDTO);
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: error.message });
@@ -65,6 +65,28 @@ export default class ManagerController {
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: error.message });
+    }
+  }
+
+  static async Login(req: Express.Request, res: Express.Response) {
+    try {
+      const {user, password} = req.body;
+      const token = await Manager.Login(user, password);
+      res.status(200).json({Token: token})
+    } catch(error) {
+      console.error(error);
+      res.status(500).json({msg: error.message})
+    }
+  }
+
+  static async Logout(req: Express.Request, res: Express.Response) {
+    try {
+      const Token = req.params.token;
+      await Manager.logout(Token);
+      res.status(500).end();
+    } catch(error) {
+      console.error(error);
+      res.status(500).json({msg: error.message});
     }
   }
 }

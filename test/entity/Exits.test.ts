@@ -106,7 +106,7 @@ test('Deve testar o método que pega todas as saídas especificadas pelos dois p
   const Exit2 = new Exits(input2);
   Exit2.Post();
 
-  // Exemplo 3
+  //Exemplo 3
   const input3 = {
     nameStudent: 'João',
     nameWorker: 'Ana',
@@ -130,7 +130,7 @@ test('Deve testar o método que pega todas as saídas especificadas pelos dois p
   const Exit4 = new Exits(input4);
   Exit4.Post();
 
-  // Exemplo 5
+  //Exemplo 5
   const input5 = {
     nameStudent: 'Pedro',
     nameWorker: 'Maria',
@@ -155,11 +155,9 @@ test('Deve testar o método que pega todas as saídas especificadas pelos dois p
 
   const Saidas = await Exits.GetExits(input6.dateExit, input5.dateExit)
   console.log(Saidas)
-  await mongoose.connection.close();
 }, 15000)
 
 test('Deve testar o Update da classe Exits.ts', async () => {
-  await mongoose.connect(process.env.connectionString);
   const input = {
     nameStudent: 'Júlio',
     nameWorker: 'Ruan',

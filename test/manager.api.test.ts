@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { config } from 'dotenv';
+import { ManagerModel } from '../src/entity/models/ManagerDB';
 import mongoose from 'mongoose';
 config();
 
@@ -52,7 +53,7 @@ test('Deve testar o GetOne da classe de admin da API', async() => {
      login,
   )
   const token = AxiosLogin.data.Token;
-  console.log(token)
+  // console.log(token)
 
   const input = {
     name: 'input do post',
@@ -63,12 +64,52 @@ test('Deve testar o GetOne da classe de admin da API', async() => {
     'http://localhost:3000/AdminManagement',
     input
   );
-console.log(AxiosOutput.data.Id);
+// console.log(AxiosOutput.data.Id);
   const AxiosGetOne = await axios.get(
-    'http://localhost:3000/AdminManagement/'+ AxiosOutput.data.Id
+    'http://localhost:3000/AdminManagement/'+ AxiosOutput.data.Id,
+    {
+      headers: {authorization: token}
+    },
   );
-  console.log(AxiosGetOne.data)
+  // console.log(AxiosGetOne.data)
   expect(AxiosGetOne.data.props.name).toBe(input.name);
   expect(AxiosGetOne.data.props.password).not.toBe(input.password);
   expect(AxiosGetOne.data.props.type).toBe(input.type)
+}, 15000);
+
+test('Deve testar o Delete da classe de admin da API', async() => {
+  const login = {
+    user: "Júlio",
+    password: "JulinhoFazAPI",
+  }
+  const AxiosLogin = await axios.post(
+    'http://localhost:3000/Login',
+    login,
+  )
+  const token = AxiosLogin.data.Token;
+  console.log(token)
+  //Login^
+  
+  const input = {
+    name: 'input do post',
+    password: '12345678',
+    type: 'Servidor da CAED',
+  };
+  const AxiosOutput = await axios.post(
+    'http://localhost:3000/AdminManagement',
+    input
+  );
+  console.log(AxiosOutput.data.Id)
+  //post^
+
+  const AxiosDelete = await axios.delete(
+    'http://localhost:3000/AdminManagement/' + AxiosOutput.data.Id,
+    {
+      headers: {authorization: token}
+    },
+  );
+
+  console.log(AxiosDelete.data.Id)
+  //delete^
+  expect(AxiosDelete.data.Id).toBeUndefined();
 }, 15000);

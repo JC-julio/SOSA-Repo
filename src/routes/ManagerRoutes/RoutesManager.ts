@@ -8,7 +8,7 @@ router.get('/AdminManagement', loginRequired, ManagerController.GetAll);
 
 router.post('/AdminManagement', ManagerController.Post);
 
-router.get('/AdminManagement/:id', ManagerController.GetOne);
+router.get('/AdminManagement/:id', loginRequired, ManagerController.GetOne);
 
 router.delete('/AdminManagement/:id', loginRequired, ManagerController.Delete);
 

@@ -5,7 +5,6 @@ import { TokenModel } from '../entity/models/BlackListDB';
 
 export function loginRequired(req:Request, res:Response, nextFunction: NextFunction){
     const token = req.headers.authorization;
-    console.log(token);
     if (!token) {
         return res.status(401).json({msg:"Você deve estar logado para acessar esta pagina"})
     }

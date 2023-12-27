@@ -147,3 +147,15 @@ test('Deve testar o Update da classe de admin da API', async() => {
   //GetOne para verificar se a mudança realmente ocorreu
   expect(AxiosGetOne.data.props.type).toBe('Guarda')
 }, 15000)
+
+test("Deve testar o Login da classe de admin da API", async() => {
+  const user = {
+    user: 'Bruna',
+    password: '12345678',
+  }
+  const AxiosLogin = await axios.post(
+    'http://localhost:3000/Login',
+     user,
+  )
+  expect(AxiosLogin.data.Token).toBeDefined();
+}, 15000)

@@ -6,13 +6,13 @@ const router = express.Router();
 
 router.get('/AdminManagement', loginRequired, ManagerController.GetAll);
 
-router.post('/AdminManagement', loginRequired, ManagerController.Post);
+router.post('/AdminManagement', ManagerController.Post);
 
 router.delete('/AdminManagement/:id', loginRequired, ManagerController.Delete);
 
 router.put('/AdminManagement/:id', loginRequired, ManagerController.Update);
 
-router.get('/Login', ManagerController.Login);
+router.post('/Login', ManagerController.Login);
 
 router.get('/Logout', loginRequired, ManagerController.Logout);
 

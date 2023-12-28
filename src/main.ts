@@ -1,5 +1,4 @@
 import express from 'express';
-import path from 'path';
 import ClassRoutes from './routes/StudentsRoutes/RoutesClass';
 import StudentsRoutes from './routes/StudentsRoutes/RoutesStudents';
 import ManagerRoutes from './routes/ManagerRoutes/RoutesManager';

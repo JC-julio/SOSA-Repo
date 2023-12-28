@@ -89,6 +89,7 @@ test('Deve testar o GetOne da classe de admin da API', async() => {
       headers: {authorization: token}
     },
   );
+  console.log(AxiosGetOne.data)
   // console.log(AxiosGetOne.data)
   expect(AxiosGetOne.data.props.name).toBe(input.name);
   expect(AxiosGetOne.data.props.password).not.toBe(input.password);

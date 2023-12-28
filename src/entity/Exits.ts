@@ -1,5 +1,6 @@
 import { model } from 'mongoose';
 import { ExitsModel } from './models/ExitsDB';
+import { error } from 'console';
 export default class Exits {
   model = ExitsModel;
   constructor(private props: ExitsDto) {}
@@ -36,6 +37,8 @@ export default class Exits {
   
   static async GetOne(ExitID) {
     const exit = await ExitsModel.findById(ExitID);
+    if (!exit)
+      throw new error("Usuario não encontrado")
     return new Exits({
       nameStudent: exit.nameStudent,
       nameWorker: exit.nameWorker,

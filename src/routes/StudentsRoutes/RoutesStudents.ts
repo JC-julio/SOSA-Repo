@@ -4,7 +4,7 @@ import { loginRequired } from '../../middlewares/middlewareDeLogin';
 
 const router = express.Router();
 
-router.post('/StudentsManagement', loginRequired, StudentsController.Post);
+router.post('/StudentsManagement', StudentsController.Post);
 
 router.get('/StudentsManagement/:id', loginRequired, StudentsController.GetOne);
 

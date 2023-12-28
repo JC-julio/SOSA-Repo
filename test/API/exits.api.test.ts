@@ -2,7 +2,7 @@ import axios from 'axios';
 import { config } from 'dotenv';
 config();
 
-test('Deve testar o post das classe de saídas da API', async () => {
+test('Deve testar o post da classe de saídas da API', async () => {
     const input = {
         nameStudent: 'Julio',
         nameWorker: 'Ana',

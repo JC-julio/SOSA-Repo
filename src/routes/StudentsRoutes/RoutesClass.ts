@@ -5,12 +5,12 @@ import { loginRequired } from '../../middlewares/middlewareDeLogin';
 
 const router = express.Router();
 
-router.post('/StudentsManagement', loginRequired, ClassController.Post);
+router.post('/Class', ClassController.Post);
 
-router.get('/StudentsManagement/:id', loginRequired, ClassController.GetOne);
+router.get('/Class/:id', loginRequired, ClassController.GetOne);
 
-router.get('/StudentsManagement', loginRequired, ClassController.GetAll);
+router.get('/Class', loginRequired, ClassController.GetAll);
 
-router.delete('/StudentsManagement/:id', loginRequired, ClassController.Delete);
+router.delete('/Class/:id', loginRequired, ClassController.Delete);
 
 export default router;

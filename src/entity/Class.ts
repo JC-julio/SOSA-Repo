@@ -3,18 +3,19 @@ import { ClassModel } from "./models/classDB";
 
 export default class StudentClass{
     model = ClassModel
-    constructor(private props: ExitsDto) {}
-
+    constructor(private props: ClassDto) {
+        console.log(props)
+    }
     async Post(){
         return this.model.create({
-            name: this.nameClass
+            name: this.name
         });
     }
 
     static async GetOne(ClassID){
         const OneClass = await ClassModel.findById(ClassID);
         return new StudentClass({
-            nameClass: OneClass.name,
+            name: OneClass.name,
             id: OneClass.id
         })
     }
@@ -22,7 +23,7 @@ export default class StudentClass{
     static async GetAll(){
         const Classes = await ClassModel.find();
         return Classes.map((Data) => ({
-            nameClass: Data.name,
+            name: Data.name,
             id: Data.id,
         }))
     }
@@ -32,20 +33,20 @@ export default class StudentClass{
     }
 
 
-    public get nameClass(): string {
-        return this.props.nameClass;
+    public get name(): String {
+        return this.props.name;
     }
 
-    public get id(): string {
+    public get id(): String {
         return this.props.id;
     }
 
-    public set nameClass(nameClass: string){
-        this.props.nameClass = nameClass;
+    public set name(nameClass: String){
+        this.props.name = nameClass;
     }
 }
 
-export type ExitsDto = {
-    nameClass: string;
-    id?: string,
+export type ClassDto = {
+    name: String;
+    id?: String,
 };

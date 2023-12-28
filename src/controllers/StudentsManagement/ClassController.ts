@@ -5,9 +5,11 @@ export default class ClassController {
     static async Post(req: Express.Request, res: Express.Response){
         try{
             const {name} = req.body;
-            const Class = new StudentClass({nameClass:name});
-            const ClassID = (await Class.Post())._id;
-            res.status(201).json({id: ClassID});
+            console.log(name)
+            const newClass = new StudentClass({name: name,});
+            console.log(newClass)
+            const ClassID = (await newClass.Post())._id;
+            res.status(201).json({Id: ClassID});
         }catch(error){
             res.status(500).json({ error: error.message });
     }
@@ -27,7 +29,7 @@ export default class ClassController {
         try{
             const classes = await StudentClass.GetAll();
             const classesDTO = classes.map((ClassesDTO) => ({
-            name: ClassesDTO.nameClass,
+            name: ClassesDTO.name,
             id: ClassesDTO.id,
             }))
             res.status(226).json(classesDTO);

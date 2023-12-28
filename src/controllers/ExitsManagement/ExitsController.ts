@@ -37,7 +37,7 @@ export default class ExitsController {
             const dateInit = new Date(req.params.dateInit);
             const dateEnd = new Date(req.params.dateEnd);
             const returnExits = await StudentClass.GetExits(dateInit, dateEnd);
-            returnExits.map((Data) => ({
+            const exits = returnExits.map((Data) => ({
                 nameStudent: Data.nameStudent,
                 nameWorker: Data.nameWorker,
                 time: Data.time,
@@ -46,7 +46,7 @@ export default class ExitsController {
                 confirmExit: Data.confirmExit,
                 id: Data.id,
               }))
-              res.status(226).send(returnExits);
+              res.status(226).send(exits);
         } catch(error) {
             console.error(error);
             res.status(500).json({msg: error.message})

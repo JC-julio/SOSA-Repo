@@ -8,7 +8,7 @@ router.post('/ExitsManagement', ExitsController.Post);
 
 router.get('/ExitsManagement/:id', loginRequired, ExitsController.GetOne);
 
-router.get('/ExitsManagement/:dateInit&:dateEnd', loginRequired, ExitsController.GetExits);
+router.get('/ExitsManagement/:dateInit/:dateEnd', loginRequired, ExitsController.GetExits); 
 
 router.get('/ExitsManagement', loginRequired, ExitsController.GetAll);
 

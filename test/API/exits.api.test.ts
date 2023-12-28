@@ -1,9 +1,6 @@
 import axios from 'axios';
 import { config } from 'dotenv';
 config();
-axios.defaults.validateStatus = function () {
-    return true;
-};
 
 test('Deve testar o post das classe de saídas da API', async () => {
     const input = {
@@ -58,7 +55,7 @@ test('Deve testar o GetOne da classe exits da API', async() => {
         input
     )
     //post^
-    console.log(AxiosOutput.data.Id)
+    // console.log(AxiosOutput.data.Id
     
     const AxiosGetOne = await axios.get(
         'http://localhost:3000/ExitsManagement/'+ AxiosOutput.data.Id,
@@ -74,3 +71,72 @@ test('Deve testar o GetOne da classe exits da API', async() => {
       expect(AxiosGetOne.data.props.dateExit).toEqual(input.dateExit.toISOString());
       expect(AxiosGetOne.data.props.confirmExit).toBe(input.confirmExit)
 }, 15000);
+
+test("Deve testar o GetExits da classe de saídas da API", async() => {
+    const inputLogin = {
+        name: 'input do post',
+        password: '12345678', 
+        type: 'Servidor da CAED',
+    };
+    const AxiosPostLogin = await axios.post(
+        'http://localhost:3000/ExitsManagement',
+        inputLogin
+    );
+    
+    const login = {
+        user: inputLogin.name,
+        password: inputLogin.password,
+    }
+    const AxiosLogin = await axios.post(
+        'http://localhost:3000/Login',
+         login,
+    )
+    const token = AxiosLogin.data.Token;
+    //login^
+    
+    // console.log('oi')
+    const input = {
+        nameStudent: 'Júlio César Aguiar',
+        nameWorker: 'Ana',
+        time: 15,
+        observes: 'Isso aqui está nos testes de API',
+        dateExit: new Date('01-01-2001'),
+        confirmExit: false,
+    };
+    const AxiosPost = await axios.post(
+        'http://localhost:3000/ExitsManagement',
+         input,
+    )
+    // console.log('oi de novo')
+    const input1 = {
+        nameStudent: 'Júlio César Aguiar',
+        nameWorker: 'Ana',
+        time: 15,
+        observes: 'Isso aqui está nos testes de API',
+        dateExit: new Date('04-02-2007'),
+        confirmExit: false,
+    };
+    const AxiosPost1 = await axios.post(
+        'http://localhost:3000/ExitsManagement',
+         input1,
+    )
+    // console.log('oi, sou eu de novo')
+    const input2 = {
+        nameStudent: 'Júlio César Aguiar',
+        nameWorker: 'Ana',
+        time: 15,
+        observes: 'Isso aqui está nos testes de API',
+        dateExit: new Date('12-12-2013'),
+        confirmExit: false,
+    };
+    const AxiosPost2 = await axios.post(
+        'http://localhost:3000/ExitsManagement',
+         input2,
+    )
+//posts^
+    const GetExits = await axios.get('http://localhost:3000/ExitsManagement/' + input.dateExit + '/' + input2.dateExit,
+    {
+        headers: { authorization: token },
+    }
+    );
+}, 15000)   

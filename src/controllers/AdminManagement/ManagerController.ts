@@ -83,7 +83,7 @@ export default class ManagerController {
     try {
       const Token = req.params.token;
       await Manager.logout(Token);
-      res.status(500).end();
+      res.status(200).end();
     } catch(error) {
       console.error(error);
       res.status(500).json({msg: error.message});

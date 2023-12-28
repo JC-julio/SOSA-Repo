@@ -16,6 +16,6 @@ router.put('/AdminManagementUpdate/:id', loginRequired, ManagerController.Update
 
 router.post('/Login', ManagerController.Login);
 
-router.get('/Logout', loginRequired, ManagerController.Logout);
+router.post('/Logout/:token', loginRequired, ManagerController.Logout);
 
 export default router;

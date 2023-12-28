@@ -50,6 +50,8 @@ export default class Manager {
   
   static async GetOne(managerId) {
     const manager = await ManagerModel.findById(managerId);
+    if (!manager)
+      throw new Error("Usuario não encontrado");
     return new Manager({
       name: manager.name,
       type: manager.type,

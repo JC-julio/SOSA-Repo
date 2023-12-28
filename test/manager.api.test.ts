@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { config } from 'dotenv';
-import { ManagerModel } from '../src/entity/models/ManagerDB';
-import jwt from "jsonwebtoken"
+import { TokenModel } from '../src/entity/models/BlackListDB';
 config();
+axios.defaults.validateStatus = function () {
+  return true;
+};
 
 test('Deve testar o post dos admins da API', async () => {
   const input = {
@@ -16,12 +18,22 @@ test('Deve testar o post dos admins da API', async () => {
   );
 
   expect(AxiosOutput.data).toBeDefined();
-}, 300000);
+}, 30000);
 
 test('Deve testar o GetAll dos admins da API', async () => {
+  const input = {
+    name: 'input do post',
+    password: '12345678',
+    type: 'Servidor da CAED',
+  };
+  const AxiosPost = await axios.post(
+    'http://localhost:3000/AdminManagement',
+    input
+  );
+
   const login = {
-    user: "Júlio",
-    password: "JulinhoFazAPI",
+    user: input.name,
+    password: input.password,
   }
 
   const AxiosLogin = await axios.post(
@@ -42,9 +54,19 @@ test('Deve testar o GetAll dos admins da API', async () => {
 
 
 test('Deve testar o GetOne da classe de admin da API', async() => {
+  const inputLogin = {
+    name: 'input do post',
+    password: '12345678',
+    type: 'Servidor da CAED',
+  };
+  const AxiosPost = await axios.post(
+    'http://localhost:3000/AdminManagement',
+    inputLogin
+  );
+
   const login = {
-    user: "Júlio",
-    password: "JulinhoFazAPI",
+    user: inputLogin.name,
+    password: inputLogin.password,
   }
   const AxiosLogin = await axios.post(
     'http://localhost:3000/Login',
@@ -74,9 +96,19 @@ test('Deve testar o GetOne da classe de admin da API', async() => {
 }, 15000);
 
 test('Deve testar o Delete da classe de admin da API', async() => {
+  const inputLogin = {
+    name: 'input do post',
+    password: '12345678',
+    type: 'Servidor da CAED',
+  };
+  const AxiosPost = await axios.post(
+    'http://localhost:3000/AdminManagement',
+    inputLogin
+  );
+  
   const login = {
-    user: "Júlio",
-    password: "JulinhoFazAPI",
+    user: inputLogin.name,
+    password: inputLogin.password,
   }
   const AxiosLogin = await axios.post(
     'http://localhost:3000/Login',
@@ -103,14 +135,32 @@ test('Deve testar o Delete da classe de admin da API', async() => {
     },
   );
   //delete^
+
+  const AxiosGetOne = await axios.get(
+    'http://localhost:3000/AdminManagement/'+ AxiosOutput.data.Id,
+    {
+      headers: {authorization: token}
+    },
+  );
+
+  expect(AxiosGetOne.data.msg).toBe("Usuario não encontrado");
   
-  expect(AxiosDelete.data.Id).toBeUndefined();
 }, 15000);
 
 test('Deve testar o Update da classe de admin da API', async() => {
+  const inputLogin = {
+    name: 'input do post',
+    password: '12345678',
+    type: 'Servidor da CAED',
+  };
+  const AxiosPost = await axios.post(
+    'http://localhost:3000/AdminManagement',
+    inputLogin
+  );
+
   const login = {
-    user: "Bruna",
-    password: "12345678",
+    user: inputLogin.name,
+    password: inputLogin.password,
   }
   const AxiosLogin = await axios.post(
     'http://localhost:3000/Login',
@@ -118,6 +168,7 @@ test('Deve testar o Update da classe de admin da API', async() => {
   )
   const token = AxiosLogin.data.Token;
   //Login^
+
   const input = {
     name: 'input do post',
     password: '12345678',
@@ -128,11 +179,10 @@ test('Deve testar o Update da classe de admin da API', async() => {
     input
   );
   //post^
+
   const AxiosPut = await axios.put(
     'http://localhost:3000/AdminManagementUpdate/' + AxiosOutput.data.Id,
-    {
-      type: 'Undefined"'
-    },
+    {},
     {
       headers: {authorization: token}
     });
@@ -149,9 +199,19 @@ test('Deve testar o Update da classe de admin da API', async() => {
 }, 15000)
 
 test("Deve testar o Login da classe de admin da API", async() => {
-  const user = {
-    user: 'Bruna',
+  const inputLogin = {
+    name: 'input do post',
     password: '12345678',
+    type: 'Servidor da CAED',
+  };
+  const AxiosPost = await axios.post(
+    'http://localhost:3000/AdminManagement',
+    inputLogin
+  );
+
+  const user = {
+    user: inputLogin.name,
+    password: inputLogin.password,
   }
   const AxiosLogin = await axios.post(
     'http://localhost:3000/Login',
@@ -159,3 +219,39 @@ test("Deve testar o Login da classe de admin da API", async() => {
   )
   expect(AxiosLogin.data.Token).toBeDefined();
 }, 15000)
+
+test('Deve testar o Logout da classe admin da API', async () => {
+  const inputLogin = {
+    name: 'input do post',
+    password: '12345678',
+    type: 'Servidor da CAED',
+  };
+  const AxiosPost = await axios.post(
+    'http://localhost:3000/AdminManagement',
+    inputLogin
+  );
+
+  const login = {
+    user: inputLogin.name,
+    password: inputLogin.password,
+  }
+  const AxiosLogin = await axios.post(
+    'http://localhost:3000/Login',
+    login,
+    )
+  const token = AxiosLogin.data.Token;
+// console.log(token)
+  //login^
+
+  const AxiosLogout = await axios.post(
+    'http://localhost:3000/Logout/' + token,
+    {},
+    {
+    headers: {authorization: token}
+    },
+  );
+  
+  const returnToken = TokenModel.findOne({bannedToken: token}) 
+  // console.log(token);
+  expect(returnToken).toBeDefined
+}, 30000);

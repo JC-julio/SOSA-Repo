@@ -87,9 +87,9 @@ export default class ExitsController {
         if(exit.confirmExit == false)
             exit.confirmExit = true;
         else
-            exit.confirmExit = false;    
-        await exit.Update();
-        res.status(200).end();
+            exit.confirmExit = false;
+        await exit.Update(); 
+        res.status(200).end()
         } catch(error) {
             console.error(error)
             res.status(500).json({error: error.message})

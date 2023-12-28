@@ -72,6 +72,7 @@ export default class Exits {
     await ExitsModel.findByIdAndUpdate(this.id, {
     confirmExit: this.confirmExit,
     })
+    return this.confirmExit
   }
 
   public get nameStudent(): string {

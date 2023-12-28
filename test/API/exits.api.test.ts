@@ -167,7 +167,6 @@ test("Deve testar o GetAll da classe de saídas da API", async() => {
     {
         headers: { authorization: token },
     });
-    console.log(GetAll.data);
     expect(GetAll.data).toBeDefined();
 }, 15000)
 
@@ -201,3 +200,56 @@ test("Deve testar o DeleteAll da classe de saídas da API", async() => {
     expect(DeleteAll.status).toBe(200)
 }, 15000)
 
+test("Deve testar o Update da classe de saídas da API", async() => {
+    const inputLogin = {
+        name: 'input do post',
+        password: '12345678', 
+        type: 'Servidor da CAED',
+    };
+    const AxiosPostLogin = await axios.post(
+        'http://localhost:3000/ExitsManagement',
+        inputLogin
+    );
+    
+    const login = {
+        user: inputLogin.name,
+        password: inputLogin.password,
+    }
+    const AxiosLogin = await axios.post(
+        'http://localhost:3000/Login',
+         login,
+    )
+    const token = AxiosLogin.data.Token;
+    //login^
+
+    const input = {
+        nameStudent: 'Júlio César Aguiar',
+        nameWorker: 'Ana Paula Risscher',
+        time: 15,
+        observes: 'Isso aqui está nos testes de API',
+        dateExit: new Date('12-12-2023'),
+        confirmExit: false,
+    };
+    const AxiosPost = await axios.post(
+        'http://localhost:3000/ExitsManagement',
+         input,
+    )
+    //post para teste^
+    
+    const update = await axios.put('http://localhost:3000/ExitsManagement/'+ AxiosPost.data.Id,
+    {},
+    {
+        headers: {authorization: token}
+      },
+    )
+    //update^
+    const AxiosGetOne = await axios.get(
+        'http://localhost:3000/ExitsManagement/'+ AxiosPost.data.Id,
+        {
+          headers: {authorization: token}
+        },
+      );
+      console.log(AxiosGetOne.data.props.confirmExit)
+      //GetOne para verificar se a mudança realmente ocorreu
+      expect(AxiosGetOne.data.props.confirmExit).toBe(true)
+    }, 15000)

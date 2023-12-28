@@ -4,7 +4,7 @@ import { loginRequired } from '../../middlewares/middlewareDeLogin';
 
 const router = express.Router();
 
-router.post('/ExitsManagement', loginRequired, ExitsController.Post);
+router.post('/ExitsManagement', ExitsController.Post);
 
 router.get('ExitsManagement/:id', loginRequired, ExitsController.GetOne);
 

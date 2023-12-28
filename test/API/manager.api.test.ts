@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { config } from 'dotenv';
-import { TokenModel } from '../src/entity/models/BlackListDB';
+import { TokenModel } from '../../src/entity/models/BlackListDB';
 config();
 axios.defaults.validateStatus = function () {
   return true;

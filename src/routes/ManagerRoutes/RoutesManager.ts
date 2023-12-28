@@ -2,6 +2,8 @@ import express from 'express';
 import ManagerController from '../../controllers/AdminManagement/ManagerController';
 import { loginRequired } from '../../middlewares/middlewareDeLogin';
 
+//ALL TESTED
+
 const router = express.Router();
 
 router.get('/AdminManagement', loginRequired, ManagerController.GetAll);

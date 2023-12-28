@@ -139,4 +139,65 @@ test("Deve testar o GetExits da classe de saídas da API", async() => {
         headers: { authorization: token },
     }
     );
-}, 15000)   
+    expect(GetExits.data).toBeDefined();
+}, 15000)
+
+test("Deve testar o GetAll da classe de saídas da API", async() => {
+    const inputLogin = {
+        name: 'input do post',
+        password: '12345678', 
+        type: 'Servidor da CAED',
+    };
+    const AxiosPostLogin = await axios.post(
+        'http://localhost:3000/ExitsManagement',
+        inputLogin
+    );
+    
+    const login = {
+        user: inputLogin.name,
+        password: inputLogin.password,
+    }
+    const AxiosLogin = await axios.post(
+        'http://localhost:3000/Login',
+         login,
+    )
+    const token = AxiosLogin.data.Token;
+    //login^
+    const GetAll = await axios.get('http://localhost:3000/ExitsManagement',
+    {
+        headers: { authorization: token },
+    });
+    console.log(GetAll.data);
+    expect(GetAll.data).toBeDefined();
+}, 15000)
+
+test("Deve testar o DeleteAll da classe de saídas da API", async() => {
+    const inputLogin = {
+        name: 'input do post',
+        password: '12345678', 
+        type: 'Servidor da CAED',
+    };
+    const AxiosPostLogin = await axios.post(
+        'http://localhost:3000/ExitsManagement',
+        inputLogin
+    );
+    
+    const login = {
+        user: inputLogin.name,
+        password: inputLogin.password,
+    }
+    const AxiosLogin = await axios.post(
+        'http://localhost:3000/Login',
+         login,
+    )
+    const token = AxiosLogin.data.Token;
+    //login^
+
+    const DeleteAll = await axios.delete('http://localhost:3000/ExitsManagement',
+    {
+        headers: { authorization: token },
+    });
+    // console.log(DeleteAll.status)
+    expect(DeleteAll.status).toBe(200)
+}, 15000)
+

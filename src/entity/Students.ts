@@ -14,6 +14,8 @@ export default class Student{
 
     static async GetOne(studentId) {
         const student = await studentsModel.findById(studentId);
+        if(!student)
+            throw new Error("Estudante não encontrado!")
         return new Student({
             name: student.name,
             classStudent: student.classStudent,

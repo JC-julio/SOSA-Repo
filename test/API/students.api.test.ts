@@ -141,3 +141,51 @@ test("Deve testar o método Delete da classe de estudantes da API", async() => {
         );
         expect(AxiosGetOne.data.msg).toBe("Estudante não encontrado!");
 }, 15000)
+
+test("Deve testar o Update da classe de estudantes da API", async() => {
+    const input = {
+        name: 'input do post',
+        password: '12345678',
+        type: 'Servidor da CAED',
+      };
+      const AxioPost = await axios.post(
+        'http://localhost:3000/AdminManagement',
+        input
+      );
+    
+      const login = {
+        user: input.name,
+        password: input.password,
+      }
+    
+      const AxiosLogin = await axios.post(
+        'http://localhost:3000/Login',
+         login,
+      )
+      const token = AxiosLogin.data.Token;
+      //login^
+      const PostParam = {
+        name: 'Thicianae Frata Borges',
+        classStudent: '2022 B TI',
+        type: 'Autorizado',
+        }
+        const AxiosPost = await axios.post('http://localhost:3000/Student', PostParam);    
+        //post para testar o Update
+
+        const AxiosPut = await axios.put('http://localhost:3000/Student/' + AxiosPost.data.Id,
+        {},
+        {
+            headers: {authorization: token}
+          },
+        );
+        //Update^
+        const AxiosGetOne = await axios.get(
+            'http://localhost:3000/Student/'+ AxiosPost.data.Id,
+            {
+              headers: {authorization: token}
+            },
+        );
+        //GetOne para testar o Update
+        console.log(AxiosGetOne.data.props.type)
+        expect(AxiosGetOne.data.props.type).toBe('Não autorizado');
+}, 15000);

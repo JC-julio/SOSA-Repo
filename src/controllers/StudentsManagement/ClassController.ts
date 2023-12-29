@@ -39,7 +39,7 @@ export default class ClassController {
 }
 
     static async Delete(req: Express.Request, res: Express.Response){
-        const ClassID = req.body.id;
+        const ClassID = req.params.id;
         try{
             await StudentClass.Delete(ClassID);
             res.status(200).end();

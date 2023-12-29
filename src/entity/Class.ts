@@ -14,6 +14,8 @@ export default class StudentClass{
 
     static async GetOne(ClassID){
         const OneClass = await ClassModel.findById(ClassID);
+        if(!OneClass)
+            throw new Error("Turma não encontrada");
         return new StudentClass({
             name: OneClass.name,
             id: OneClass.id

@@ -1,6 +1,9 @@
 import axios from 'axios';
 import { config } from 'dotenv';
 config();
+axios.defaults.validateStatus = function () {
+    return true;
+  };
 
 test("Deve testar o post das classe de turmas da API", async() => {
     const input = {
@@ -47,7 +50,6 @@ test('Deve testar o GetOne da classe de turmas da API', async() => {
         headers: {authorization: token}
       },
     );
-    // console.log(AxiosGetOne.data)
     expect(AxiosGetOne.data.props.name).toEqual(input.name);
 }, 15000)
 
@@ -82,7 +84,7 @@ test("Deve testar o GetAll da classe de turmas da API", async() => {
     expect(GetAll.data).toBeDefined();
 }, 15000)
 
-test('Deve testar o GetAll da classe de turmas da API', async() => {
+test('Deve testar o Delete da classe de turmas da API', async() => {
     const inputLogin = {
         name: 'input do post',
         password: '12345678',
@@ -116,4 +118,12 @@ test('Deve testar o GetAll da classe de turmas da API', async() => {
         headers: {authorization: token}
     },
     )
+
+    const AxiosGetOne = await axios.get('http://localhost:3000/Class/' + PostForDelete.data.Id,
+    {
+        headers: {authorization: token}
+      },
+    );
+    console.log(AxiosGetOne.data.error)
+    expect(AxiosGetOne.data.error).toBe("Turma não encontrada");
 }, 15000)

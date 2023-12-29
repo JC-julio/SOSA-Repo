@@ -3,6 +3,8 @@ import express from 'express';
 import ClassController from '../../controllers/StudentsManagement/ClassController';
 import { loginRequired } from '../../middlewares/middlewareDeLogin';
 
+//ALL TESTED
+
 const router = express.Router();
 
 router.post('/Class', ClassController.Post);

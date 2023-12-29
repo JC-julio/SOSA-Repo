@@ -25,10 +25,10 @@ export default class StudentController {
         }
       }
 
-    static async GetbyClass(req:Express.Request, res:Express.Response) {
+    static async GetByClassName(req:Express.Request, res:Express.Response) {
         try{
-            const classID = req.params.id;
-            const returnsClass = await Student.GetByClass(classID);
+            const ClassName = req.params.ClassName;
+            const returnsClass = await Student.GetByClassName(ClassName);
             returnsClass.map((Data) => ({
                 name: Data.name,
                 type: Data.type,

@@ -2,6 +2,8 @@ import express from 'express';
 import ExitsController from '../../controllers/ExitsManagement/ExitsController';
 import { loginRequired } from '../../middlewares/middlewareDeLogin';
 
+//ALL TESTED
+
 const router = express.Router();
 
 router.post('/ExitsManagement', ExitsController.Post);

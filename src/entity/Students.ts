@@ -22,7 +22,7 @@ export default class Student{
         })
     }
 
-    static async GetByClass(ClassStudent){
+    static async GetByClassName(ClassStudent){
         const Class = await studentsModel.find({classStudent: ClassStudent});
         return Class.map((Data) => ({
             name: Data.name,

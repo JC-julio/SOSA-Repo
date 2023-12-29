@@ -41,6 +41,7 @@ test('Deve testar o GetAll dos admins da API', async () => {
      login,
   )
   const token = AxiosLogin.data.Token;
+  //login^
 
   const AxiosOutput = await axios.get(
     'http://localhost:3000/AdminManagement',

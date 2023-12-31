@@ -6,9 +6,9 @@ import { loginRequired } from '../../middlewares/middlewareDeLogin';
 
 const router = express.Router();
 
-router.get('/AdminManagement', loginRequired, ManagerController.GetAll);
-
 router.post('/AdminManagement', ManagerController.Post);
+
+router.get('/AdminManagement', loginRequired, ManagerController.GetAll);
 
 router.get('/AdminManagement/:id', loginRequired, ManagerController.GetOne);
 

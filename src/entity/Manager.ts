@@ -38,6 +38,11 @@ export default class Manager {
   }
 
   static async logout(Token: String){
+    const countToken = await TokenModel.find().countDocuments();
+    if(countToken >= 30){
+      console.log(countToken)
+      await TokenModel.deleteMany();
+    }
     const tokenVerificado = jwt.verify(Token, process.env.secretJWTkey)
     if(tokenVerificado){
       return TokenModel.create({

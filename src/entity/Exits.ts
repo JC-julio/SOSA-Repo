@@ -9,8 +9,8 @@ export default class Exits {
   // const Data = '04-02-2007T12:00:00';
   async Post() {
     return this.model.create({
-      nameStudent: this.nameStudent,
-      nameWorker: this.nameWorker,
+      idStudent: this.idStudent,
+      idWorker: this.idWorker,
       time: this.time,
       observes: this.observes,
       dateExit: this.dateExit,
@@ -24,8 +24,8 @@ export default class Exits {
     });
     // Mapeia cada item e ordena dentro da função map
     const formattedExits = saidas.map((Data) => ({
-      nameStudent: Data.nameStudent,
-      nameWorker: Data.nameWorker,
+      idStudent: Data.idStudent,
+      idWorker: Data.idWorker,
       time: Data.time,
       observes: Data.observes,
       dateExit: Data.dateExit,
@@ -40,8 +40,8 @@ export default class Exits {
     if (!exit)
       throw new error("Usuario não encontrado")
     return new Exits({
-      nameStudent: exit.nameStudent,
-      nameWorker: exit.nameWorker,
+      idStudent: exit.idStudent,
+      idWorker: exit.idWorker,
       time: exit.time,
       observes: exit.observes,
       dateExit: exit.dateExit,
@@ -53,8 +53,8 @@ export default class Exits {
   static async GetAll(){
     const exits = await ExitsModel.find();
     return exits.map((Data) => ({
-      nameStudent: Data.nameStudent,
-      nameWorker: Data.nameWorker,
+      idStudent: Data.idStudent,
+      idWorker: Data.idStudent,
       time: Data.time,
       observes: Data.observes,
       dateExit: Data.dateExit,
@@ -75,12 +75,12 @@ export default class Exits {
     return this.confirmExit
   }
 
-  public get nameStudent(): string {
-    return this.props.nameStudent;
+  public get idStudent(): string {
+    return this.props.idStudent;
   }
 
-  public get nameWorker(): string {
-    return this.props.nameWorker;
+  public get idWorker(): string {
+    return this.props.idWorker;
   }
 
   public get time(): number {
@@ -103,12 +103,12 @@ export default class Exits {
     return this.props.confirmExit;
   }
 
-  public set nameStudents(nameStudent: string) {
-    this.props.nameStudent = nameStudent;
+  public set idStudent(idStudent: string) {
+    this.props.idStudent = idStudent;
   }
 
-  public set nameWorker(nameWorker: string) {
-    this.props.nameWorker = nameWorker;
+  public set idWorker(idWorker: string) {
+    this.props.idWorker = idWorker;
   }
 
   public set time(time: number) {
@@ -128,8 +128,8 @@ export default class Exits {
   }
 }
 export type ExitsDto = {
-  nameStudent: string;
-  nameWorker: string;
+  idStudent: string;
+  idWorker: string;
   time: number;
   observes: string;
   dateExit: Date;

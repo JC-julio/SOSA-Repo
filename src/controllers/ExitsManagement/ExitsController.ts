@@ -4,10 +4,11 @@ import StudentClass from '../../entity/Exits';
 export default class ExitsController {
     static async Post(req: Express.Request, res: Express.Response) {
         try{
-            const {nameStudent, nameWorker, time, observes, dateExit, confirmExit} = req.body;
+            const {time, observes, dateExit, confirmExit} = req.body;
+            const {idStudent, idWorker} = req.params;
             const Exit = new StudentClass({
-                nameStudent: nameStudent,
-                nameWorker: nameWorker,
+                idStudent: idStudent,
+                idWorker: idWorker,
                 time: time,
                 observes: observes,
                 dateExit: dateExit,
@@ -38,8 +39,8 @@ export default class ExitsController {
             const dateEnd = new Date(req.params.dateEnd);
             const returnExits = await StudentClass.GetExits(dateInit, dateEnd);
             const exits = returnExits.map((Data) => ({
-                nameStudent: Data.nameStudent,
-                nameWorker: Data.nameWorker,
+                idStudent: Data.idStudent,
+                idWorker: Data.idWorker,
                 time: Data.time,
                 observes: Data.observes,
                 dateExit: Data.dateExit,
@@ -56,8 +57,8 @@ export default class ExitsController {
     static async GetAll(req: Express.Request, res: Express.Response) {
         try {const returnExits = await StudentClass.GetAll();
             returnExits.map((Data) => ({
-                nameStudent: Data.nameStudent,
-                nameWorker: Data.nameWorker,
+                idStudent: Data.idStudent,
+                idWorker: Data.idWorker,
                 time: Data.time,
                 observes: Data.observes,
                 dateExit: Data.dateExit,

@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 
 const ExistsSchema = new mongoose.Schema({
-  nameStudent: String,
-  nameWorker: String,
+  idStudent: String,
+  idWorker: String,
   time: Number,
   observes: String,
   dateExit: Date,

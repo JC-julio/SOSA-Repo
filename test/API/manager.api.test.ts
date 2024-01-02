@@ -13,7 +13,7 @@ test('Deve testar o post dos admins da API', async () => {
     type: 'Servidor da CAED',
   };
   const AxiosOutput = await axios.post(
-    'http://localhost:3000/AdminManagement',
+    'https://sosa-repo.vercel.app/AdminManagement',
     input
   );
 
@@ -27,7 +27,7 @@ test('Deve testar o GetAll dos admins da API', async () => {
     type: 'Servidor da CAED',
   };
   const AxiosPost = await axios.post(
-    'http://localhost:3000/AdminManagement',
+    'https://sosa-repo.vercel.app/AdminManagement',
     input
   );
 
@@ -37,14 +37,14 @@ test('Deve testar o GetAll dos admins da API', async () => {
   }
 
   const AxiosLogin = await axios.post(
-    'http://localhost:3000/Login',
+    'https://sosa-repo.vercel.app/Login',
      login,
   )
   const token = AxiosLogin.data.Token;
   //login^
 
   const AxiosOutput = await axios.get(
-    'http://localhost:3000/AdminManagement',
+    'https://sosa-repo.vercel.app/AdminManagement',
     {
       headers: {authorization: token}
     },
@@ -61,7 +61,7 @@ test('Deve testar o GetOne da classe de admin da API', async() => {
     type: 'Servidor da CAED',
   };
   const AxiosPost = await axios.post(
-    'http://localhost:3000/AdminManagement',
+    'https://sosa-repo.vercel.app/AdminManagement',
     inputLogin
   );
 
@@ -70,7 +70,7 @@ test('Deve testar o GetOne da classe de admin da API', async() => {
     password: inputLogin.password,
   }
   const AxiosLogin = await axios.post(
-    'http://localhost:3000/Login',
+    'https://sosa-repo.vercel.app/Login',
      login,
   )
   const token = AxiosLogin.data.Token;
@@ -81,11 +81,11 @@ test('Deve testar o GetOne da classe de admin da API', async() => {
     type: 'Servidor da CAED',
   };
   const AxiosOutput = await axios.post(
-    'http://localhost:3000/AdminManagement',
+    'https://sosa-repo.vercel.app/AdminManagement',
     input
   );
   const AxiosGetOne = await axios.get(
-    'http://localhost:3000/AdminManagement/'+ AxiosOutput.data.Id,
+    'https://sosa-repo.vercel.app/AdminManagement/'+ AxiosOutput.data.Id,
     {
       headers: {authorization: token}
     },
@@ -104,7 +104,7 @@ test('Deve testar o Delete da classe de admin da API', async() => {
     type: 'Servidor da CAED',
   };
   const AxiosPost = await axios.post(
-    'http://localhost:3000/AdminManagement',
+    'https://sosa-repo.vercel.app/AdminManagement',
     inputLogin
   );
   
@@ -113,7 +113,7 @@ test('Deve testar o Delete da classe de admin da API', async() => {
     password: inputLogin.password,
   }
   const AxiosLogin = await axios.post(
-    'http://localhost:3000/Login',
+    'https://sosa-repo.vercel.app/Login',
     login,
   )
   const token = AxiosLogin.data.Token;
@@ -125,13 +125,13 @@ test('Deve testar o Delete da classe de admin da API', async() => {
     type: 'Servidor da CAED',
   };
   const AxiosOutput = await axios.post(
-    'http://localhost:3000/AdminManagement',
+    'https://sosa-repo.vercel.app/AdminManagement',
     input
   );
   //post^
 
   const AxiosDelete = await axios.delete(
-    'http://localhost:3000/AdminManagement/' + AxiosOutput.data.Id,
+    'https://sosa-repo.vercel.app/AdminManagement/' + AxiosOutput.data.Id,
     {
       headers: {authorization: token}
     },
@@ -139,7 +139,7 @@ test('Deve testar o Delete da classe de admin da API', async() => {
   //delete^
 
   const AxiosGetOne = await axios.get(
-    'http://localhost:3000/AdminManagement/'+ AxiosOutput.data.Id,
+    'https://sosa-repo.vercel.app/AdminManagement/'+ AxiosOutput.data.Id,
     {
       headers: {authorization: token}
     },
@@ -156,7 +156,7 @@ test('Deve testar o Update da classe de admin da API', async() => {
     type: 'Servidor da CAED',
   };
   const AxiosPost = await axios.post(
-    'http://localhost:3000/AdminManagement',
+    'https://sosa-repo.vercel.app/AdminManagement',
     inputLogin
   );
 
@@ -165,7 +165,7 @@ test('Deve testar o Update da classe de admin da API', async() => {
     password: inputLogin.password,
   }
   const AxiosLogin = await axios.post(
-    'http://localhost:3000/Login',
+    'https://sosa-repo.vercel.app/Login',
     login,
   )
   const token = AxiosLogin.data.Token;
@@ -177,13 +177,13 @@ test('Deve testar o Update da classe de admin da API', async() => {
     type: 'Servidor da CAED',
   };
   const AxiosOutput = await axios.post(
-    'http://localhost:3000/AdminManagement',
+    'https://sosa-repo.vercel.app/AdminManagement',
     input
   );
   //post^
 
   const AxiosPut = await axios.put(
-    'http://localhost:3000/AdminManagementUpdate/' + AxiosOutput.data.Id,
+    'https://sosa-repo.vercel.app/AdminManagementUpdate/' + AxiosOutput.data.Id,
     {},
     {
       headers: {authorization: token}
@@ -191,7 +191,7 @@ test('Deve testar o Update da classe de admin da API', async() => {
   //Update^
 
   const AxiosGetOne = await axios.get(
-    'http://localhost:3000/AdminManagement/'+ AxiosOutput.data.Id,
+    'https://sosa-repo.vercel.app/AdminManagement/'+ AxiosOutput.data.Id,
     {
       headers: {authorization: token}
     },
@@ -207,7 +207,7 @@ test("Deve testar o Login da classe de admin da API", async() => {
     type: 'Servidor da CAED',
   };
   const AxiosPost = await axios.post(
-    'http://localhost:3000/AdminManagement',
+    'https://sosa-repo.vercel.app/AdminManagement',
     inputLogin
   );
 
@@ -216,7 +216,7 @@ test("Deve testar o Login da classe de admin da API", async() => {
     password: inputLogin.password,
   }
   const AxiosLogin = await axios.post(
-    'http://localhost:3000/Login',
+    'https://sosa-repo.vercel.app/Login',
      user,
   )
   expect(AxiosLogin.data.Token).toBeDefined();
@@ -229,7 +229,7 @@ test('Deve testar o Logout da classe admin da API', async () => {
     type: 'Servidor da CAED',
   };
   const AxiosPost = await axios.post(
-    'http://localhost:3000/AdminManagement',
+    'https://sosa-repo.vercel.app/AdminManagement',
     inputLogin
   );
 
@@ -238,7 +238,7 @@ test('Deve testar o Logout da classe admin da API', async () => {
     password: inputLogin.password,
   }
   const AxiosLogin = await axios.post(
-    'http://localhost:3000/Login',
+    'https://sosa-repo.vercel.app/Login',
     login,
     )
   const token = AxiosLogin.data.Token;
@@ -246,7 +246,7 @@ test('Deve testar o Logout da classe admin da API', async () => {
   //login^
 
   const AxiosLogout = await axios.post(
-    'http://localhost:3000/Logout/' + token,
+    'https://sosa-repo.vercel.app/Logout/' + token,
     {},
     {
     headers: {authorization: token}

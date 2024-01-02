@@ -11,7 +11,7 @@ const input = {
     classStudent: '2022 A TI',
     type: 'Autorizado'
 }
-const AxiosPost = await axios.post('http://localhost:3000/Student', input);
+const AxiosPost = await axios.post('https://sosa-repo.vercel.app/Student', input);
 
 expect(AxiosPost.data.Id).toBeDefined();
 }, 15000)
@@ -23,7 +23,7 @@ test("Deve testar o GetOne da classe de estudantes da API", async() => {
         type: 'Servidor da CAED',
       };
       const AxioPost = await axios.post(
-        'http://localhost:3000/AdminManagement',
+        'https://sosa-repo.vercel.app/AdminManagement',
         input
       );
     
@@ -33,7 +33,7 @@ test("Deve testar o GetOne da classe de estudantes da API", async() => {
       }
     
       const AxiosLogin = await axios.post(
-        'http://localhost:3000/Login',
+        'https://sosa-repo.vercel.app/Login',
          login,
       )
       const token = AxiosLogin.data.Token;
@@ -43,11 +43,11 @@ test("Deve testar o GetOne da classe de estudantes da API", async() => {
         classStudent: '2022 A TI',
         type: 'Autorizado'
     }
-    const AxiosPost = await axios.post('http://localhost:3000/Student', PostParam);    
+    const AxiosPost = await axios.post('https://sosa-repo.vercel.app/Student', PostParam);    
     //post para testar o GetOne^
 
     const AxiosGetOne = await axios.get(
-        'http://localhost:3000/Student/'+ AxiosPost.data.Id,
+        'https://sosa-repo.vercel.app/Student/'+ AxiosPost.data.Id,
         {
           headers: {authorization: token}
         },
@@ -65,7 +65,7 @@ test("Deve testar o GetbyClassName da classe de estudantes da API", async() => {
         type: 'Servidor da CAED',
       };
       const AxioPost = await axios.post(
-        'http://localhost:3000/AdminManagement',
+        'https://sosa-repo.vercel.app/AdminManagement',
         input
       );
     
@@ -75,7 +75,7 @@ test("Deve testar o GetbyClassName da classe de estudantes da API", async() => {
       }
     
       const AxiosLogin = await axios.post(
-        'http://localhost:3000/Login',
+        'https://sosa-repo.vercel.app/Login',
          login,
       )
       const token = AxiosLogin.data.Token;
@@ -86,10 +86,10 @@ test("Deve testar o GetbyClassName da classe de estudantes da API", async() => {
         classStudent: '2022 B TI',
         type: 'Autorizado'
         }
-        const AxiosPost = await axios.post('http://localhost:3000/Student', PostParam);    
+        const AxiosPost = await axios.post('https://sosa-repo.vercel.app/Student', PostParam);    
         //post para testar o GetOne^
 
-        const ReturnStudents = await axios.get('http://localhost:3000/Student/Class/' + PostParam.classStudent,
+        const ReturnStudents = await axios.get('https://sosa-repo.vercel.app/Student/Class/' + PostParam.classStudent,
         {
             headers: {authorization: token}
           },
@@ -104,7 +104,7 @@ test("Deve testar o método Delete da classe de estudantes da API", async() => {
         type: 'Servidor da CAED',
       };
       const AxioPost = await axios.post(
-        'http://localhost:3000/AdminManagement',
+        'https://sosa-repo.vercel.app/AdminManagement',
         input
       );
     
@@ -114,7 +114,7 @@ test("Deve testar o método Delete da classe de estudantes da API", async() => {
       }
     
       const AxiosLogin = await axios.post(
-        'http://localhost:3000/Login',
+        'https://sosa-repo.vercel.app/Login',
          login,
       )
       const token = AxiosLogin.data.Token;
@@ -124,17 +124,17 @@ test("Deve testar o método Delete da classe de estudantes da API", async() => {
         classStudent: '2022 B TI',
         type: 'Autorizado'
         }
-        const AxiosPost = await axios.post('http://localhost:3000/Student', PostParam);    
+        const AxiosPost = await axios.post('https://sosa-repo.vercel.app/Student', PostParam);    
         //post para testar o GetOne^
 
-        const DeleteStudent = await axios.delete('http://localhost:3000/Student/' + AxiosPost.data.Id,
+        const DeleteStudent = await axios.delete('https://sosa-repo.vercel.app/Student/' + AxiosPost.data.Id,
         {
             headers: {authorization: token}
           },
         );
         //Delete
         const AxiosGetOne = await axios.get(
-            'http://localhost:3000/Student/'+ AxiosPost.data.Id,
+            'https://sosa-repo.vercel.app/Student/'+ AxiosPost.data.Id,
             {
               headers: {authorization: token}
             },
@@ -149,7 +149,7 @@ test("Deve testar o Update da classe de estudantes da API", async() => {
         type: 'Servidor da CAED',
       };
       const AxioPost = await axios.post(
-        'http://localhost:3000/AdminManagement',
+        'https://sosa-repo.vercel.app/AdminManagement',
         input
       );
     
@@ -159,7 +159,7 @@ test("Deve testar o Update da classe de estudantes da API", async() => {
       }
     
       const AxiosLogin = await axios.post(
-        'http://localhost:3000/Login',
+        'https://sosa-repo.vercel.app/Login',
          login,
       )
       const token = AxiosLogin.data.Token;
@@ -169,10 +169,10 @@ test("Deve testar o Update da classe de estudantes da API", async() => {
         classStudent: '2022 B TI',
         type: 'Autorizado',
         }
-        const AxiosPost = await axios.post('http://localhost:3000/Student', PostParam);    
+        const AxiosPost = await axios.post('https://sosa-repo.vercel.app/Student', PostParam);    
         //post para testar o Update
 
-        const AxiosPut = await axios.put('http://localhost:3000/Student/' + AxiosPost.data.Id,
+        const AxiosPut = await axios.put('https://sosa-repo.vercel.app/Student/' + AxiosPost.data.Id,
         {},
         {
             headers: {authorization: token}
@@ -180,7 +180,7 @@ test("Deve testar o Update da classe de estudantes da API", async() => {
         );
         //Update^
         const AxiosGetOne = await axios.get(
-            'http://localhost:3000/Student/'+ AxiosPost.data.Id,
+            'https://sosa-repo.vercel.app/Student/'+ AxiosPost.data.Id,
             {
               headers: {authorization: token}
             },

@@ -9,7 +9,7 @@ test('Deve testar o post da classe de saídas da API', async () => {
         type: 'Autorizado'
     }
     const PostStudent = await axios.post(
-    'http://localhost:3000/Student',
+    'https://sosa-repo.vercel.app/Student',
     inputStudent);
     //post do estudante    
 
@@ -19,7 +19,7 @@ test('Deve testar o post da classe de saídas da API', async () => {
         type: 'Servidor da CAED',
       };
       const AxiosOutput = await axios.post(
-        'http://localhost:3000/AdminManagement',
+        'https://sosa-repo.vercel.app/AdminManagement',
         inputManager
       );
       //post do servidor da CAED
@@ -34,7 +34,7 @@ test('Deve testar o post da classe de saídas da API', async () => {
     };
 
     const AxiosPost = await axios.post(
-        'http://localhost:3000/Exits/' + input.idStudent + '/' + input.idWorker,
+        'https://sosa-repo.vercel.app/Exits/' + input.idStudent + '/' + input.idWorker,
         input
     );
     
@@ -48,7 +48,7 @@ test('Deve testar o GetOne da classe exits da API', async() => {
         type: 'Servidor da CAED',
     };
     const AxiosPost = await axios.post(
-        'http://localhost:3000/AdminManagement',
+        'https://sosa-repo.vercel.app/AdminManagement',
         inputLogin
     );
     
@@ -57,7 +57,7 @@ test('Deve testar o GetOne da classe exits da API', async() => {
         password: inputLogin.password,
     }
     const AxiosLogin = await axios.post(
-        'http://localhost:3000/Login',
+        'https://sosa-repo.vercel.app/Login',
          login,
     )
     const token = AxiosLogin.data.Token;
@@ -69,7 +69,7 @@ test('Deve testar o GetOne da classe exits da API', async() => {
         type: 'Autorizado'
     }
     const PostStudent = await axios.post(
-    'http://localhost:3000/Student',
+    'https://sosa-repo.vercel.app/Student',
     inputStudent);
     //post do estudante    
 
@@ -79,7 +79,7 @@ test('Deve testar o GetOne da classe exits da API', async() => {
         type: 'Servidor da CAED',
       };
       const PostManager = await axios.post(
-        'http://localhost:3000/AdminManagement',
+        'https://sosa-repo.vercel.app/AdminManagement',
         inputManager
       );
       //post do servidor da CAED
@@ -94,14 +94,14 @@ test('Deve testar o GetOne da classe exits da API', async() => {
     };
 
     const AxiosOutput = await axios.post(
-        'http://localhost:3000/Exits/' + input.idStudent + '/' + input.idWorker,
+        'https://sosa-repo.vercel.app/Exits/' + input.idStudent + '/' + input.idWorker,
         input
     )
     //post^
     // console.log(AxiosOutput.data.Id
     
     const AxiosGetOne = await axios.get(
-        'http://localhost:3000/Exits/'+ AxiosOutput.data.Id,
+        'https://sosa-repo.vercel.app/Exits/'+ AxiosOutput.data.Id,
         {
           headers: {authorization: token}
         },
@@ -122,7 +122,7 @@ test("Deve testar o GetExits da classe de saídas da API", async() => {
         type: 'Servidor da CAED',
     };
     const AxiosPostLogin = await axios.post(
-        'http://localhost:3000/AdminManagement',
+        'https://sosa-repo.vercel.app/AdminManagement',
         inputLogin
     );
     
@@ -131,7 +131,7 @@ test("Deve testar o GetExits da classe de saídas da API", async() => {
         password: inputLogin.password,
     }
     const AxiosLogin = await axios.post(
-        'http://localhost:3000/Login',
+        'https://sosa-repo.vercel.app/Login',
          login,
     )
     const token = AxiosLogin.data.Token;
@@ -143,7 +143,7 @@ test("Deve testar o GetExits da classe de saídas da API", async() => {
         type: 'Autorizado'
     }
     const PostStudent = await axios.post(
-    'http://localhost:3000/Student',
+    'https://sosa-repo.vercel.app/Student',
     inputStudent);
     //post do estudante    
 
@@ -153,7 +153,7 @@ test("Deve testar o GetExits da classe de saídas da API", async() => {
         type: 'Servidor da CAED',
       };
     const PostManager = await axios.post(
-        'http://localhost:3000/AdminManagement',
+        'https://sosa-repo.vercel.app/AdminManagement',
         inputManager
       );
       //post do servidor da CAED
@@ -167,7 +167,7 @@ test("Deve testar o GetExits da classe de saídas da API", async() => {
         confirmExit: false,
     };
     const AxiosPost = await axios.post(
-        'http://localhost:3000/Exits/' + input.idStudent + '/' + input.idWorker,
+        'https://sosa-repo.vercel.app/Exits/' + input.idStudent + '/' + input.idWorker,
          input,
     )
 
@@ -180,7 +180,7 @@ test("Deve testar o GetExits da classe de saídas da API", async() => {
         confirmExit: false,
     };
     const AxiosPost1 = await axios.post(
-        'http://localhost:3000/Exits/' + input1.idStudent + '/' + input1.idWorker,
+        'https://sosa-repo.vercel.app/Exits/' + input1.idStudent + '/' + input1.idWorker,
          input1,
     )
     // console.log('oi, sou eu de novo')
@@ -193,11 +193,11 @@ test("Deve testar o GetExits da classe de saídas da API", async() => {
         confirmExit: false,
     };
     const AxiosPost2 = await axios.post(
-        'http://localhost:3000/Exits/' + input2.idStudent + '/' + input2.idWorker,
+        'https://sosa-repo.vercel.app/Exits/' + input2.idStudent + '/' + input2.idWorker,
          input2,
     )
 //posts^
-    const GetExits = await axios.get('http://localhost:3000/Exits/' + input.dateExit + '/' + input2.dateExit,
+    const GetExits = await axios.get('https://sosa-repo.vercel.app/Exits/' + input.dateExit + '/' + input2.dateExit,
     {
         headers: { authorization: token },
     }
@@ -212,7 +212,7 @@ test("Deve testar o GetAll da classe de saídas da API", async() => {
         type: 'Servidor da CAED',
     };
     const AxiosPostLogin = await axios.post(
-        'http://localhost:3000/AdminManagement',
+        'https://sosa-repo.vercel.app/AdminManagement',
         inputLogin
     );
     
@@ -221,13 +221,13 @@ test("Deve testar o GetAll da classe de saídas da API", async() => {
         password: inputLogin.password,
     }
     const AxiosLogin = await axios.post(
-        'http://localhost:3000/Login',
+        'https://sosa-repo.vercel.app/Login',
          login,
     )
     const token = AxiosLogin.data.Token;
     //login^
 
-    const GetAll = await axios.get('http://localhost:3000/Exits',
+    const GetAll = await axios.get('https://sosa-repo.vercel.app/Exits',
     {
         headers: { authorization: token },
     });
@@ -241,7 +241,7 @@ test("Deve testar o DeleteAll da classe de saídas da API", async() => {
         type: 'Servidor da CAED',
     };
     const AxiosPostLogin = await axios.post(
-        'http://localhost:3000/AdminManagement',
+        'https://sosa-repo.vercel.app/AdminManagement',
         inputLogin
     );
     
@@ -250,13 +250,13 @@ test("Deve testar o DeleteAll da classe de saídas da API", async() => {
         password: inputLogin.password,
     }
     const AxiosLogin = await axios.post(
-        'http://localhost:3000/Login',
+        'https://sosa-repo.vercel.app/Login',
          login,
     )
     const token = AxiosLogin.data.Token;
     //login^
 
-    const DeleteAll = await axios.delete('http://localhost:3000/Exits',
+    const DeleteAll = await axios.delete('https://sosa-repo.vercel.app/Exits',
     {
         headers: { authorization: token },
     });
@@ -271,7 +271,7 @@ test("Deve testar o Update da classe de saídas da API", async() => {
         type: 'Servidor da CAED',
     };
     const AxiosPostLogin = await axios.post(
-        'http://localhost:3000/AdminManagement',
+        'https://sosa-repo.vercel.app/AdminManagement',
         inputLogin
     );
     
@@ -280,7 +280,7 @@ test("Deve testar o Update da classe de saídas da API", async() => {
         password: inputLogin.password,
     }
     const AxiosLogin = await axios.post(
-        'http://localhost:3000/Login',
+        'https://sosa-repo.vercel.app/Login',
          login,
     )
     const token = AxiosLogin.data.Token;
@@ -292,7 +292,7 @@ test("Deve testar o Update da classe de saídas da API", async() => {
         type: 'Autorizado'
     }
     const PostStudent = await axios.post(
-    'http://localhost:3000/Student',
+    'https://sosa-repo.vercel.app/Student',
     inputStudent);
     //post do estudante    
 
@@ -302,7 +302,7 @@ test("Deve testar o Update da classe de saídas da API", async() => {
         type: 'Servidor da CAED',
       };
     const PostManager = await axios.post(
-        'http://localhost:3000/AdminManagement',
+        'https://sosa-repo.vercel.app/AdminManagement',
         inputManager
     );
     //post do servidor da CAED
@@ -316,12 +316,12 @@ test("Deve testar o Update da classe de saídas da API", async() => {
         confirmExit: false,
     };
     const AxiosPost = await axios.post(
-        'http://localhost:3000/Exits/' + input.idStudent + '/' + input.idWorker,
+        'https://sosa-repo.vercel.app/Exits/' + input.idStudent + '/' + input.idWorker,
          input,
     )
     //post para teste^
     
-    const update = await axios.put('http://localhost:3000/Exits/'+ AxiosPost.data.Id,
+    const update = await axios.put('https://sosa-repo.vercel.app/Exits/'+ AxiosPost.data.Id,
     {},
     {
         headers: {authorization: token}
@@ -329,7 +329,7 @@ test("Deve testar o Update da classe de saídas da API", async() => {
     )
     //update^
     const AxiosGetOne = await axios.get(
-        'http://localhost:3000/Exits/'+ AxiosPost.data.Id,
+        'https://sosa-repo.vercel.app/Exits/'+ AxiosPost.data.Id,
         {
           headers: {authorization: token}
         },

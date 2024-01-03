@@ -55,7 +55,8 @@ export default class ExitsController {
     }
 
     static async GetAll(req: Express.Request, res: Express.Response) {
-        try {const returnExits = await StudentClass.GetAll();
+        try {
+            const returnExits = await StudentClass.GetAll();
             returnExits.map((Data) => ({
                 idStudent: Data.idStudent,
                 idWorker: Data.idWorker,
@@ -93,7 +94,7 @@ export default class ExitsController {
         res.status(200).end()
         } catch(error) {
             console.error(error)
-            res.status(500).json({error: error.message})
+            res.status(500).json({msg: error.message})
         }
     }
 }

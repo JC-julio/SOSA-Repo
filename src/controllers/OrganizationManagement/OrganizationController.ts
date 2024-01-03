@@ -1,13 +1,12 @@
 import  Express  from "express";
-import Organization from "src/entity/Organization";
-import { OrganizationModel } from "src/entity/models/OrganizationDB";
+import Organization from "../../entity/Organization";
 
 export default class OrganizationManagement{
     static async Post(req: Express.Request, res: Express.Response) {
         try{
-            const name = req.body
+            const {name} = req.body
             const person = new Organization({
-                name: this.name, 
+                name: name, 
             })
             const personId = (await person.Post()).id
             res.status(201).json({Id: personId});
@@ -19,7 +18,7 @@ export default class OrganizationManagement{
     static async GetOne(req: Express.Request, res: Express.Response) {
         try{
             const { personId } = req.params
-            const organization = await OrganizationModel.findById(personId);
+            const organization = await Organization.GetOne(personId);
             res.status(226).send(organization);
         } catch(error) {
             console.error(error)

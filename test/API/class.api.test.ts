@@ -5,7 +5,7 @@ axios.defaults.validateStatus = function () {
     return true;
   };
 
-test("Deve testar o post das classe de turmas da API", async() => {
+test("Deve testar o post da classe de turmas da API", async() => {
     const input = {
         name: "Eu vim do deploy"
     }

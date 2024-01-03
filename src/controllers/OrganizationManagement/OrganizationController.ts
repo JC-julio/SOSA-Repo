@@ -17,7 +17,7 @@ export default class OrganizationManagement{
     }
     static async GetOne(req: Express.Request, res: Express.Response) {
         try{
-            const { personId } = req.params
+            const  personId  = req.params.id
             const organization = await Organization.GetOne(personId);
             res.status(226).send(organization);
         } catch(error) {
@@ -40,7 +40,7 @@ export default class OrganizationManagement{
     }
     static async Delete(req: Express.Request, res: Express.Response) {
         try{
-            const { personId } = req.params;
+            const personId  = req.params.id;
             await Organization.Delete(personId);
             res.status(200).end()
         } catch(error) {

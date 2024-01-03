@@ -3,7 +3,6 @@ import ClassRoutes from './routes/StudentsRoutes/RoutesClass';
 import StudentsRoutes from './routes/StudentsRoutes/RoutesStudents';
 import ManagerRoutes from './routes/ManagerRoutes/RoutesManager';
 import RoutesExits from './routes/ExitsRoutes/RoutesExits';
-import OrganizationRoutes from './routes/OrganizationRoutes/RoutesOrganization'
 import mongoose from 'mongoose';
 import { config } from 'dotenv';
 config();
@@ -15,5 +14,4 @@ app.use(ClassRoutes);
 app.use(ManagerRoutes);
 app.use(RoutesExits);
 app.use(StudentsRoutes);
-app.use(OrganizationRoutes);
 app.listen(3000);

@@ -1,5 +1,4 @@
 import { OrganizationModel } from "./models/OrganizationDB";
-import { studentsModel } from "./models/StudentDB";
 
 export default class Organization {
     model = OrganizationModel
@@ -12,7 +11,7 @@ export default class Organization {
     }
 
     static async GetOne(OrganizationId) {
-        const organization = await studentsModel.findById(OrganizationId);
+        const organization = await OrganizationModel.findById(OrganizationId);
         if(!organization)
             throw new Error("Organização não encontrada!");
         return new Organization({

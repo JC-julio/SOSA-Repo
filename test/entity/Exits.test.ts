@@ -5,16 +5,16 @@ config();
 
 test('Testar a classe de novas saidas do SOSA', () => {
   const input = {
-    nameStudent: 'Julio',
-    nameWorker: 'Ana',
+    idStudent: 'Julio',
+    idWorker: 'Ana',
     time: 15,
     observes: 'tudo certo',
     dateExit: new Date(),
     confirmExit: false,
   };
   const Exit = new Exits(input);
-  expect(input.nameStudent).toBe(Exit.nameStudent);
-  expect(input.nameWorker).toBe(Exit.nameWorker);
+  expect(input.idStudent).toBe(Exit.idStudent);
+  expect(input.idWorker).toBe(Exit.idWorker);
   expect(input.time).toBe(Exit.time);
   expect(input.observes).toBe(Exit.observes);
   expect(input.dateExit).toBe(Exit.dateExit)
@@ -22,8 +22,8 @@ test('Testar a classe de novas saidas do SOSA', () => {
 
 test('Deve testar o post e o GetOne da classe Exits', async () => {
   const input = {
-    nameStudent: 'Julio',
-    nameWorker: 'Ana',
+    idStudent: 'Julio',
+    idWorker: 'Ana',
     time: 15,
     observes: 'tudo certo',
     dateExit: new Date(),
@@ -33,8 +33,8 @@ test('Deve testar o post e o GetOne da classe Exits', async () => {
   await mongoose.connect(process.env.connectionString);
   const ExitId = (await Exit.Post())._id;
   const GetExit = await Exits.GetOne(ExitId);
-  expect(GetExit.nameStudent).toBe(input.nameStudent);
-  expect(GetExit.nameWorker).toBe(input.nameWorker);
+  expect(GetExit.idStudent).toBe(input.idStudent);
+  expect(GetExit.idWorker).toBe(input.idWorker);
   expect(GetExit.time).toBe(input.time);
   expect(GetExit.observes).toBe(input.observes);
   expect(GetExit.dateExit).toStrictEqual(input.dateExit);
@@ -44,8 +44,8 @@ test('Deve testar o post e o GetOne da classe Exits', async () => {
 test('Deve testar o GetAll da classe Exits', async() => {
   await mongoose.connect(process.env.connectionString);
   const input = {
-    nameStudent: 'Julinho',
-    nameWorker: 'Ana Paula',
+    idStudent: 'Julinho',
+    idWorker: 'Ana Paula',
     time: 30,
     observes: 'tudo certo',
     dateExit: new Date(),
@@ -53,24 +53,29 @@ test('Deve testar o GetAll da classe Exits', async() => {
   };
 
   const input1 = {
-    nameStudent: 'Julio',
-    nameWorker: 'Bruna',
+    idStudent: 'Julio',
+    idWorker: 'Bruna',
     time: 45,
     observes: 'tudo certo por aqui',
     dateExit: new Date(),
     confirmExit: false,
   };
   const exitJulio = new Exits(input);
-  await exitJulio.Post();
+  const id = (await exitJulio.Post())._id;
+  const idString = id.toString();
+  console.log(id)
   const exitJulinho = new Exits(input1);
-  await exitJulinho.Post();
+  const id1 = (await exitJulinho.Post())._id;
+  const id1String = id1.toString();
   const exits = await Exits.GetAll();
-  const returnExits = exits.find((Element) => Element.time == input.time); //percorrer a lista retornada pelo GetALL em busca de um tempo igual
-  expect(returnExits.time).toBe(input.time);
-  const returnExits1 = exits.find((Element) => Element.nameStudent == input1.nameStudent);
-  expect(returnExits1.nameStudent).toBe(input1.nameStudent);
+  const returnExits = exits.find((Element) => Element.id == id); //percorrer a lista retornada pelo GetALL
+  console.log(returnExits)
+  console.log(returnExits?.id)
+  expect(returnExits?.id).toBe(idString);
+  const returnExits1 = exits.find((Element) => Element.id == id1);
+  expect(returnExits1?.id).toEqual(id1String);
+  console.log(returnExits1)
   await mongoose.connection.close();
-
 }, 15000)
 
 test('Deve testar o DeleteALL',async () => {
@@ -84,8 +89,8 @@ test('Deve testar o método que pega todas as saídas especificadas pelos dois p
 
   // Exemplo 1
   const input1 = {
-    nameStudent: 'Júlio',
-    nameWorker: 'Bruna',
+    idStudent: 'Júlio',
+    idWorker: 'Bruna',
     time: 15,
     observes: 'tudo certo',
     dateExit: new Date('04-02-2007'),
@@ -96,8 +101,8 @@ test('Deve testar o método que pega todas as saídas especificadas pelos dois p
 
   // Exemplo 2
   const input2 = {
-    nameStudent: 'Lucas',
-    nameWorker: 'Ana',
+    idStudent: 'Lucas',
+    idWorker: 'Ana',
     time: 20,
     observes: 'Aluno Passando mal',
     dateExit: new Date('12-12-2013'),
@@ -108,8 +113,8 @@ test('Deve testar o método que pega todas as saídas especificadas pelos dois p
 
   //Exemplo 3
   const input3 = {
-    nameStudent: 'João',
-    nameWorker: 'Ana',
+    idStudent: 'João',
+    idWorker: 'Ana',
     time: 20,
     observes: 'Tudo dboas',
     dateExit: new Date('12-12-2012'),
@@ -120,8 +125,8 @@ test('Deve testar o método que pega todas as saídas especificadas pelos dois p
 
   // Exemplo 4
   const input4 = {
-    nameStudent: 'José',
-    nameWorker: 'Ana',
+    idStudent: 'José',
+    idWorker: 'Ana',
     time: 20,
     observes: 'Aluno de Luto',
     dateExit: new Date('12-12-2014'),
@@ -132,8 +137,8 @@ test('Deve testar o método que pega todas as saídas especificadas pelos dois p
 
   //Exemplo 5
   const input5 = {
-    nameStudent: 'Pedro',
-    nameWorker: 'Maria',
+    idStudent: 'Pedro',
+    idWorker: 'Maria',
     time: 10,
     observes: 'regular',
     confirmExit: false,
@@ -143,8 +148,8 @@ test('Deve testar o método que pega todas as saídas especificadas pelos dois p
   Exit5.Post();
 
   const input6 = {
-    nameStudent: 'Marcos',
-    nameWorker: 'Maria Clara',
+    idStudent: 'Marcos',
+    idWorker: 'Maria Clara',
     time: 10,
     observes: 'regular',
     dateExit: new Date('01-01-2001'),
@@ -154,13 +159,12 @@ test('Deve testar o método que pega todas as saídas especificadas pelos dois p
   Exit6.Post();
 
   const Saidas = await Exits.GetExits(input6.dateExit, input5.dateExit)
-  console.log(Saidas)
 }, 15000)
 
 test('Deve testar o Update da classe Exits.ts', async () => {
   const input = {
-    nameStudent: 'Júlio',
-    nameWorker: 'Ruan',
+    idStudent: 'Júlio',
+    idWorker: 'Ruan',
     time: 45,
     observes: 'Aluno passando mal',
     dateExit: new Date('11-25-2023'),

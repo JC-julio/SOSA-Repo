@@ -6,18 +6,18 @@ import { loginRequired } from '../../middlewares/middlewareDeLogin';
 
 const router = express.Router();
 
-router.post('/AdminManagement', ManagerController.Post);
+router.post('/Organization/:organizationId/Admin', ManagerController.Post);
 
-router.get('/AdminManagement', loginRequired, ManagerController.GetAll);
+router.get('/Organization/:organizationId/Admin', loginRequired, ManagerController.GetAll);
 
-router.get('/AdminManagement/:id', loginRequired, ManagerController.GetOne);
+router.get('/Organization/:organizationId/Admin/:id', loginRequired, ManagerController.GetOne);
 
-router.delete('/AdminManagement/:id', loginRequired, ManagerController.Delete);
+router.delete('/Organization/:organizationId/Admin/:id', loginRequired, ManagerController.Delete);
 
-router.put('/AdminManagementUpdate/:id', loginRequired, ManagerController.Update);
+router.put('/Organization/:organizationId/Admin/:id', loginRequired, ManagerController.Update);
 
-router.post('/Login', ManagerController.Login);
+router.post('/Organization/:organizationId/Login', ManagerController.Login);
 
-router.post('/Logout/:token', loginRequired, ManagerController.Logout);
+router.post('/Organization/:organizationId/Logout/:token', loginRequired, ManagerController.Logout);
 
 export default router;

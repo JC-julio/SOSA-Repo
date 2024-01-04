@@ -13,7 +13,7 @@ test('testar a classe Class.ts, métodos tradiconais', () => {
 }, 15000);
 
 test('Devete testar o post e o GetOne da classe Class.ts', async () => {
-    await mongoose.connect(process.env.connectionString); 
+    await mongoose.connect(process.env.connectionString as string);
     const input = {
         name: '2022 B TI',
     }
@@ -33,7 +33,7 @@ test('Deve testar o GetAll da classe Class.ts',async () => {
     const input2 = {
         name: '2021 B AGROTEC',
     };
-    await mongoose.connect(process.env.connectionString);
+    await mongoose.connect(process.env.connectionString as string);
     const Class = new StudentClass(input);
     Class.Post();
     const Class1 = new StudentClass(input2);

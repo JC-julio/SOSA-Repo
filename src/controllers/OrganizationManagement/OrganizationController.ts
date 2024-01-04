@@ -1,15 +1,24 @@
 import  Express  from "express";
 import Organization from "../../entity/Organization";
+import Manager from "src/entity/Manager";
 
 export default class OrganizationManagement{
     static async Post(req: Express.Request, res: Express.Response) {
         try{
-            const {name} = req.body
-            const person = new Organization({
-                name: name, 
+            const organizationDto = req.body.organization
+            const managerDto = req.body.manager;
+            const organization = new Organization({
+                name: organizationDto.name, 
             })
-            const personId = (await person.Post()).id
-            res.status(201).json({Id: personId});
+            const organizationId = (await organization.Post()).id
+            const manager = new Manager({
+                name: managerDto.name,
+                type: managerDto.type,
+                password: managerDto.password,
+                organizationId: organizationId
+            })
+            const managerId = (await manager.Post()).id
+            res.status(201).json({organizationId, managerId});
         } catch(error){
             console.error(error);
             res.send(500).json({msg: error.message})

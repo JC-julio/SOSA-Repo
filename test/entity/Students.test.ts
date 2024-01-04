@@ -22,7 +22,7 @@ test('Deve testar o post e o GetOne da classe Students', async () => {
         type: 'Não autorizado',
 };
     const ForStudent = new Student(input);
-    await mongoose.connect(process.env.connectionString);
+    await mongoose.connect(process.env.connectionString as string);
     const StudentID = (await ForStudent.Post())._id;
     const GetStudent = await Student.GetOne(StudentID);
     expect(GetStudent.name).toBe(input.name);
@@ -43,7 +43,7 @@ test('Deve testar a função que pega todas as turmas que tiverem o mesmo nome d
         classStudent: '2022 B TI',
         type: 'Autorizado',
     };
-    await mongoose.connect(process.env.connectionString);
+    await mongoose.connect(process.env.connectionString as string);
     const studentinput = new Student(input);
     const studentResult = (await studentinput.Post()).classStudent;
     const studentinput1 = new Student(input1);

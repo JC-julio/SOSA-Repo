@@ -5,7 +5,7 @@ config();
 
 
 test("Deve testar o post da classe Organization", async() => {
-    await mongoose.connect(process.env.connectionString);
+    await mongoose.connect(process.env.connectionString as string);
     const input = {
         name: 'CAED Cacoal'
     }

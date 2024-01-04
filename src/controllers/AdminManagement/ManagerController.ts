@@ -6,7 +6,7 @@ config();
 export default class ManagerController {
   static async Post(req: Express.Request, res: Express.Response) {
     try {
-      const { name, password, type } = req.body;
+      const { name, password, type, } = req.body;
       const manager = new Manager({ name: name, password: password, type: type });
       const managerID = (await manager.Post())._id;
       res.status(200).json({Id: managerID});

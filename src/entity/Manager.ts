@@ -3,6 +3,7 @@ import { TokenModel } from '../entity/models/BlackListDB';
 import * as bcrypt from 'bcrypt';
 import jwt from "jsonwebtoken"
 import { config } from 'dotenv';
+import Organization from './Organization';
 config();
 
 export default class Manager {
@@ -17,6 +18,7 @@ export default class Manager {
       name: this.name,
       type: this.type,
       password: password,
+      organizationId: this.organizationId,
     });
   }
   
@@ -30,7 +32,7 @@ export default class Manager {
       throw new Error('Nome de usuário não informado ou inválido!')
       const ComparePassword = bcrypt.compare(password, manager[0]['password'])
     if(ComparePassword) {
-      const token = jwt.sign({managerEntity: manager['id']}, process.env.secretJWTkey, {expiresIn: '7d'});
+      const token = jwt.sign({managerEntity: manager['id'], organizationId: manager['organizationId']}, process.env.secretJWTkey, {expiresIn: '7d'});
       return token;
     } else {
       throw new Error("Nome de usuário ou senha incorretos");
@@ -60,6 +62,7 @@ export default class Manager {
     return new Manager({
       name: manager.name,
       type: manager.type,
+      organizationId: manager.organizationId,
       id: manager.id,
     });
   }
@@ -67,7 +70,7 @@ export default class Manager {
   static async GetAll() {
     const managers = await ManagerModel.find();
     return managers.map(
-      (Data) => new Manager({ name: Data.name, type: Data.type, id: Data.id }),
+      (Data) => new Manager({ name: Data.name, type: Data.type, id: Data.id, organizationId: Data.organizationId }),
     ); //transformar em nova lista
   }
 
@@ -97,6 +100,10 @@ export default class Manager {
     return this.props.id;
   }
 
+  public get organizationId(): string{
+    return this.props.organizationId;
+  }
+
   public set name(name: string) {
     this.props.name = name;
   }
@@ -114,5 +121,6 @@ export type ManagerDto = {
   name: string;
   password?: string;
   type: string;
+  organizationId: string;
   id?: string;
 };

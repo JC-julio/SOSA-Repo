@@ -16,4 +16,3 @@ export function loginRequired(req:Request, res:Response, nextFunction: NextFunct
     }
     nextFunction();
 }
-

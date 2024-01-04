@@ -38,6 +38,7 @@ test('Devete testar o post e o GetOne da classe Class.ts', async () => {
 }, 15000)
 
 test('Deve testar o GetAll da classe Class.ts', async () => {
+    await mongoose.connect(process.env.connectionString as string);
     const inputOrganization = {
         name: 'CAED ji-paraná'
       }
@@ -48,15 +49,16 @@ test('Deve testar o GetAll da classe Class.ts', async () => {
         organizationId: idOrganization,
     };
     const Class = new StudentClass(input);
+    Class.Post();
+    //primeiro input
 
     const input2 = {
         name: '2021 B AGROTEC',
+        organizationId: idOrganization,
     };
-    await mongoose.connect(process.env.connectionString as string);
-    Class.Post();
     const Class1 = new StudentClass(input2);
     Class1.Post();
-    
+
     const Classes = await StudentClass.GetAll();
     const ReturnClasses = Classes.find((Element) => Element.name == input.name);//buscar pelo mesmo nome dentro da lista retornada
     expect(ReturnClasses.name).toBe(input.name);

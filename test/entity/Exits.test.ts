@@ -1,12 +1,19 @@
 import Exits from '../../src/entity/Exits';
+import Organization from '../../src/entity/Organization';
 import mongoose from 'mongoose';
 import { config } from 'dotenv';
 config();
 
-test('Testar a classe de novas saidas do SOSA', () => {
+test('Testar a classe de novas saidas do SOSA', async () => {
+  const inputOrganization = {
+    name: 'CAED ji-paraná'
+  }
+  const organization = new Organization(inputOrganization);
+  const idOrganization = (await organization.Post()).id;
   const input = {
     idStudent: 'Julio',
     idWorker: 'Ana',
+    organizationId: idOrganization,
     time: 15,
     observes: 'tudo certo',
     dateExit: new Date(),
@@ -15,26 +22,34 @@ test('Testar a classe de novas saidas do SOSA', () => {
   const Exit = new Exits(input);
   expect(input.idStudent).toBe(Exit.idStudent);
   expect(input.idWorker).toBe(Exit.idWorker);
+  expect(input.organizationId).toBe(Exit.organizationId);
   expect(input.time).toBe(Exit.time);
   expect(input.observes).toBe(Exit.observes);
   expect(input.dateExit).toBe(Exit.dateExit)
 }, 15000);
 
 test('Deve testar o post e o GetOne da classe Exits', async () => {
+  await mongoose.connect(process.env.connectionString as string);
+  const inputOrganization = {
+    name: 'CAED ji-paraná'
+  }
+  const organization = new Organization(inputOrganization);
+  const idOrganization = (await organization.Post()).id;
   const input = {
     idStudent: 'Julio',
     idWorker: 'Ana',
+    organizationId: idOrganization,
     time: 15,
     observes: 'tudo certo',
     dateExit: new Date(),
     confirmExit: false,
   };
   const Exit = new Exits(input);
-  await mongoose.connect(process.env.connectionString);
   const ExitId = (await Exit.Post())._id;
   const GetExit = await Exits.GetOne(ExitId);
   expect(GetExit.idStudent).toBe(input.idStudent);
   expect(GetExit.idWorker).toBe(input.idWorker);
+  expect(GetExit.organizationId).toBe(input.organizationId)
   expect(GetExit.time).toBe(input.time);
   expect(GetExit.observes).toBe(input.observes);
   expect(GetExit.dateExit).toStrictEqual(input.dateExit);
@@ -42,10 +57,16 @@ test('Deve testar o post e o GetOne da classe Exits', async () => {
 }, 15000);
 
 test('Deve testar o GetAll da classe Exits', async() => {
-  await mongoose.connect(process.env.connectionString);
+  await mongoose.connect(process.env.connectionString as string);
+  const inputOrganization = {
+    name: 'CAED ji-paraná'
+  }
+  const organization = new Organization(inputOrganization);
+  const idOrganization = (await organization.Post()).id;
   const input = {
     idStudent: 'Julinho',
     idWorker: 'Ana Paula',
+    organizationId: idOrganization,
     time: 30,
     observes: 'tudo certo',
     dateExit: new Date(),
@@ -55,6 +76,7 @@ test('Deve testar o GetAll da classe Exits', async() => {
   const input1 = {
     idStudent: 'Julio',
     idWorker: 'Bruna',
+    organizationId: idOrganization,
     time: 45,
     observes: 'tudo certo por aqui',
     dateExit: new Date(),
@@ -79,18 +101,23 @@ test('Deve testar o GetAll da classe Exits', async() => {
 }, 15000)
 
 test('Deve testar o DeleteALL',async () => {
-  await mongoose.connect(process.env.connectionString);
+  await mongoose.connect(process.env.connectionString as string);
   await Exits.DeleteAll();
   await mongoose.connection.close();
 }, 15000)
 
 test('Deve testar o método que pega todas as saídas especificadas pelos dois parâmetros da função estática "GetExits" da classe Exits.ts',async () => {
-  await mongoose.connect(process.env.connectionString);
-
+  await mongoose.connect(process.env.connectionString as string);
+  const inputOrganization = {
+    name: 'CAED ji-paraná'
+  }
+  const organization = new Organization(inputOrganization);
+  const idOrganization = (await organization.Post()).id;
   // Exemplo 1
   const input1 = {
     idStudent: 'Júlio',
     idWorker: 'Bruna',
+    organizationId: idOrganization,
     time: 15,
     observes: 'tudo certo',
     dateExit: new Date('04-02-2007'),
@@ -103,6 +130,7 @@ test('Deve testar o método que pega todas as saídas especificadas pelos dois p
   const input2 = {
     idStudent: 'Lucas',
     idWorker: 'Ana',
+    organizationId: idOrganization,
     time: 20,
     observes: 'Aluno Passando mal',
     dateExit: new Date('12-12-2013'),
@@ -115,6 +143,7 @@ test('Deve testar o método que pega todas as saídas especificadas pelos dois p
   const input3 = {
     idStudent: 'João',
     idWorker: 'Ana',
+    organizationId: idOrganization,
     time: 20,
     observes: 'Tudo dboas',
     dateExit: new Date('12-12-2012'),
@@ -127,6 +156,7 @@ test('Deve testar o método que pega todas as saídas especificadas pelos dois p
   const input4 = {
     idStudent: 'José',
     idWorker: 'Ana',
+    organizationId: idOrganization,
     time: 20,
     observes: 'Aluno de Luto',
     dateExit: new Date('12-12-2014'),
@@ -139,6 +169,7 @@ test('Deve testar o método que pega todas as saídas especificadas pelos dois p
   const input5 = {
     idStudent: 'Pedro',
     idWorker: 'Maria',
+    organizationId: idOrganization,
     time: 10,
     observes: 'regular',
     confirmExit: false,
@@ -150,6 +181,7 @@ test('Deve testar o método que pega todas as saídas especificadas pelos dois p
   const input6 = {
     idStudent: 'Marcos',
     idWorker: 'Maria Clara',
+    organizationId: idOrganization,
     time: 10,
     observes: 'regular',
     dateExit: new Date('01-01-2001'),
@@ -162,9 +194,15 @@ test('Deve testar o método que pega todas as saídas especificadas pelos dois p
 }, 15000)
 
 test('Deve testar o Update da classe Exits.ts', async () => {
+  const inputOrganization = {
+    name: 'CAED ji-paraná'
+  }
+  const organization = new Organization(inputOrganization);
+  const idOrganization = (await organization.Post()).id;
   const input = {
     idStudent: 'Júlio',
     idWorker: 'Ruan',
+    organizationId: idOrganization,
     time: 45,
     observes: 'Aluno passando mal',
     dateExit: new Date('11-25-2023'),

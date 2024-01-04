@@ -5,23 +5,6 @@ import { TokenModel } from '../../src/entity/models/BlackListDB';
 import { config } from 'dotenv';
 config();
 
-// async function NewManager() {
-//   const inputOrganization = {
-//     name: 'CAED ji-paraná'
-//   }
-//   const organization = new Organization(inputOrganization);
-//   const idOrganization = (await organization.Post()).id;
-//   const input = {
-//     name: 'Julio',
-//     password: '12345678',
-//     type: 'Guarda',
-//     organizationId: idOrganization,  
-//   }
-//   const manager = new Manager(input)
-//   const managerId = (await manager.Post()).id
-//   return managerId;
-// }
-
 test('Que ele possa gerenciar os dados da classe de teste de adminitradores da classe Manager.ts', async () => {
   await mongoose.connect(process.env.connectionString as string);
   const inputOrganization = {
@@ -63,7 +46,7 @@ test('Deve testar o post e o GetOne da classe Manager.ts', async () => {
   expect(getUser.organizationId).toBe(input.organizationId)
 }, 15000);
 
-test('shouldTestGetAllFromManagerClass', async () => {
+test('Deve testar o GetAll da entidade manager', async () => {
   await mongoose.connect(process.env.connectionString as string);
 
   const initialOrganizationInput = {

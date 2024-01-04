@@ -7,7 +7,8 @@ export default class ManagerController {
   static async Post(req: Express.Request, res: Express.Response) {
     try {
       const { name, password, type, } = req.body;
-      const manager = new Manager({ name: name, password: password, type: type });
+      const { organizationId } = req.params
+      const manager = new Manager({ name: name, password: password, type: type, organizationId:organizationId });
       const managerID = (await manager.Post())._id;
       res.status(200).json({Id: managerID});
     } catch (error) {
@@ -33,6 +34,7 @@ export default class ManagerController {
       const ManagersDTO = managers.map((ManagersDto) => ({
         name: ManagersDto.name,
         type: ManagersDto.type,
+        organizationId: ManagersDto.organizationId,
         id: ManagersDto.id,
       }));
       res.status(226).send(ManagersDTO);

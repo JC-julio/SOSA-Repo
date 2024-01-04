@@ -11,6 +11,7 @@ export default class Exits {
     return this.model.create({
       idStudent: this.idStudent,
       idWorker: this.idWorker,
+      organizationId: this.organizationId,
       time: this.time,
       observes: this.observes,
       dateExit: this.dateExit,
@@ -26,6 +27,7 @@ export default class Exits {
     const formattedExits = saidas.map((Data) => ({
       idStudent: Data.idStudent,
       idWorker: Data.idWorker,
+      organizationId: Data.organizationId,
       time: Data.time,
       observes: Data.observes,
       dateExit: Data.dateExit,
@@ -42,6 +44,7 @@ export default class Exits {
     return new Exits({
       idStudent: exit.idStudent,
       idWorker: exit.idWorker,
+      organizationId: exit.organizationId,
       time: exit.time,
       observes: exit.observes,
       dateExit: exit.dateExit,
@@ -55,6 +58,7 @@ export default class Exits {
     return exits.map((Data) => ({
       idStudent: Data.idStudent,
       idWorker: Data.idStudent,
+      organizationId: Data.organizationId,
       time: Data.time,
       observes: Data.observes,
       dateExit: Data.dateExit,
@@ -103,6 +107,10 @@ export default class Exits {
     return this.props.confirmExit;
   }
 
+  public get organizationId(): string {
+    return this.props.organizationId;
+  }
+
   public set idStudent(idStudent: string) {
     this.props.idStudent = idStudent;
   }
@@ -130,6 +138,7 @@ export default class Exits {
 export type ExitsDto = {
   idStudent: string;
   idWorker: string;
+  organizationId: string;
   time: number;
   observes: string;
   dateExit: Date;

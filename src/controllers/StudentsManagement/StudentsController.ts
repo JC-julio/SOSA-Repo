@@ -5,7 +5,8 @@ export default class StudentController {
     static async Post(req:Express.Request, res:Express.Response) {
         try{
             const {name, classStudent, type} = req.body;
-            const student = new Student({name: name, classStudent: classStudent, type: type})
+            const { organizationId } = req.params;
+            const student = new Student({name: name, classStudent: classStudent, type: type, organizationId:organizationId})
             const studentID = (await student.Post())._id;
             res.status(201).json({Id: studentID});
         } catch(error){
@@ -32,6 +33,7 @@ export default class StudentController {
             returnsClass.map((Data) => ({
                 name: Data.name,
                 type: Data.type,
+                organizationId: Data.organizationId,
                 classStudent: Data.classStudent,
                 id: Data.id,
             }))

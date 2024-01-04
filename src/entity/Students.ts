@@ -9,6 +9,7 @@ export default class Student{
             name: this.name,
             classStudent: this.classStudent,
             type: this.type,
+            organizationId: this.organizationId,
         })
     }
 
@@ -20,6 +21,7 @@ export default class Student{
             name: student.name,
             classStudent: student.classStudent,
             type: student.type,
+            organizationId: student.organizationId,
             id: student.id,
         })
     }
@@ -30,6 +32,7 @@ export default class Student{
             name: Data.name,
             type: Data.type,
             classStudent: Data.classStudent,
+            organizationId: Data.organizationId,
             id: Data.id,
         }))
         }
@@ -60,6 +63,10 @@ export default class Student{
         return this.props.id;
     }
 
+    public get organizationId(): string {
+        return this.props.organizationId;
+    }
+
     public set name(name: string) {
         this.props.name = name;
     }
@@ -77,5 +84,6 @@ export type StudentDto = {
     name: string,
     classStudent: string,
     type: string,
+    organizationId: string,
     id?: string,
 }

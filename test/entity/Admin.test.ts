@@ -5,22 +5,22 @@ import { TokenModel } from '../../src/entity/models/BlackListDB';
 import { config } from 'dotenv';
 config();
 
-async function NewManager() {
-  const inputOrganization = {
-    name: 'CAED ji-paraná'
-  }
-  const organization = new Organization(inputOrganization);
-  const idOrganization = (await organization.Post()).id;
-  const input = {
-    name: 'Julio',
-    password: '12345678',
-    type: 'Guarda',
-    organizationId: idOrganization,  
-  }
-  const manager = new Manager(input)
-  const managerId = (await manager.Post()).id
-  return managerId;
-}
+// async function NewManager() {
+//   const inputOrganization = {
+//     name: 'CAED ji-paraná'
+//   }
+//   const organization = new Organization(inputOrganization);
+//   const idOrganization = (await organization.Post()).id;
+//   const input = {
+//     name: 'Julio',
+//     password: '12345678',
+//     type: 'Guarda',
+//     organizationId: idOrganization,  
+//   }
+//   const manager = new Manager(input)
+//   const managerId = (await manager.Post()).id
+//   return managerId;
+// }
 
 test('Que ele possa gerenciar os dados da classe de teste de adminitradores da classe Manager.ts', async () => {
   await mongoose.connect(process.env.connectionString as string);
@@ -79,7 +79,6 @@ test('shouldTestGetAllFromManagerClass', async () => {
     organizationId: createdOrganizationId,
   };
   const createdManager = new Manager(initialManagerInput);
-  const createdManagerId = (await createdManager.Post()).id;
 
   const secondManagerInput = {
     name: 'Guilherme',
@@ -88,7 +87,6 @@ test('shouldTestGetAllFromManagerClass', async () => {
     organizationId: createdOrganizationId,
   };
   const secondManager = new Manager(secondManagerInput);
-  const managerTwoId =  (await secondManager.Post()).id
 
   const retrievedManagers = await Manager.GetAll();
   const retrievedManagerByName = retrievedManagers.find(

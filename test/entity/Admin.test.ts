@@ -1,14 +1,39 @@
 import Manager from '../../src/entity/Manager';
+import Organization from '../../src/entity/Organization';
 import mongoose from 'mongoose';
 import { TokenModel } from '../../src/entity/models/BlackListDB';
 import { config } from 'dotenv';
 config();
 
-test('Que ele possa gerenciar os dados da classe de teste de adminitradores da classe Manager.ts', () => {
+async function NewManager() {
+  const inputOrganization = {
+    name: 'CAED ji-paraná'
+  }
+  const organization = new Organization(inputOrganization);
+  const idOrganization = (await organization.Post()).id;
+  const input = {
+    name: 'Julio',
+    password: '12345678',
+    type: 'Guarda',
+    organizationId: idOrganization,  
+  }
+  const manager = new Manager(input)
+  const managerId = (await manager.Post()).id
+  return managerId;
+}
+
+test('Que ele possa gerenciar os dados da classe de teste de adminitradores da classe Manager.ts', async () => {
+  await mongoose.connect(process.env.connectionString as string);
+  const inputOrganization = {
+    name: 'CAED ji-paraná'
+  }
+  const organization = new Organization(inputOrganization);
+  const idOrganization = (await organization.Post()).id;
   const input = {
     name: 'Bruna',
     password: '12345678',
     type: 'Servidor da CAED',
+    organizationId: idOrganization,
   };
   const manager = new Manager(input);
   expect(manager.name).toBe(input.name);
@@ -17,54 +42,85 @@ test('Que ele possa gerenciar os dados da classe de teste de adminitradores da c
 }, 15000);
 
 test('Deve testar o post e o GetOne da classe Manager.ts', async () => {
+  await mongoose.connect(process.env.connectionString as string);
+  const inputOrganization = {
+    name: 'CAED ji-paraná'
+  }
+  const organization = new Organization(inputOrganization);
+  const idOrganization = (await organization.Post()).id;
   const input = {
-    name: 'Bruna',
+    name: 'Julio',
     password: '12345678',
-    type: 'Servidor da CAED',
-  };
-  const manager = new Manager(input);
-  await mongoose.connect(process.env.connectionString);
-  const managerId = (await manager.Post())._id;
+    type: 'Guarda',
+    organizationId: idOrganization,  
+  }
+  const manager = new Manager(input)
+  const managerId = (await manager.Post()).id
   const getUser = await Manager.GetOne(managerId);
   expect(getUser.name).toBe(input.name);
   expect(getUser.password).not.toBe(input.password);
   expect(getUser.type).toBe(input.type);
+  expect(getUser.organizationId).toBe(input.organizationId)
 }, 15000);
 
-test('Deve testar o GetAll da classe Manager.ts', async () => {
-  const input = {
-    name: 'Ana',
-    password: '12345678',
-    type: 'Servidor da CAED',
-  };
+test('shouldTestGetAllFromManagerClass', async () => {
+  await mongoose.connect(process.env.connectionString as string);
 
-  const input2 = {
-    name: 'Bruna',
+  const initialOrganizationInput = {
+    name: 'CAED ji-paraná',
+  };
+  const createdOrganization = new Organization(initialOrganizationInput);
+  const createdOrganizationId = (await createdOrganization.Post()).id;
+
+  const initialManagerInput = {
+    name: 'Julio',
     password: '12345678',
     type: 'Guarda',
+    organizationId: createdOrganizationId,
   };
-  await mongoose.connect(process.env.connectionString);
-  const manager = new Manager(input);
-  manager.Post();
-  const manager1 = new Manager(input2);
-  await manager1.Post();
-  const managers = await Manager.GetAll();
-  const ReturnManager = managers.find((Element) => Element.name == input.name); //buscar dentro da lista
-  expect(ReturnManager.name).toBe(input.name);
-  const ReturnManager1 = managers.find(
-    (Element) => Element.type == input2.type,
+  const createdManager = new Manager(initialManagerInput);
+  const createdManagerId = (await createdManager.Post()).id;
+
+  const secondManagerInput = {
+    name: 'Guilherme',
+    password: '12345678',
+    type: 'Guarda',
+    organizationId: createdOrganizationId,
+  };
+  const secondManager = new Manager(secondManagerInput);
+  const managerTwoId =  (await secondManager.Post()).id
+
+  const retrievedManagers = await Manager.GetAll();
+  const retrievedManagerByName = retrievedManagers.find(
+    (manager) => manager.name == initialManagerInput.name
   );
-  expect(ReturnManager1.type).toBe(input2.type);
+  expect(retrievedManagerByName.name).toBe(initialManagerInput.name);
+
+  const retrievedManagerByType = retrievedManagers.find(
+    (manager) => manager.type == secondManagerInput.type
+  );
+  expect(retrievedManagerByType.type).toBe(secondManagerInput.type);
+
   await mongoose.connection.close();
 }, 15000);
 
+
 test('Deve testar o Login e o Logout da classe Manager.ts', async () => {
-  const input = {
-    name: 'Júlio',
-    password: 'JulinhoFazAPI',
-    type: 'Guarda',
+  await mongoose.connect(process.env.connectionString as string);
+  const inputOrganization = {
+    name: 'CAED ji-paraná'
   }
-  await mongoose.connect(process.env.connectionString);
+  const organization = new Organization(inputOrganization);
+  const idOrganization = (await organization.Post()).id;
+  const input = {
+    name: 'Julio',
+    password: '12345678',
+    type: 'Guarda',
+    organizationId: idOrganization,  
+  }
+    const manager = new Manager(input)
+    const managerId = (await manager.Post()).id
+  
   const NewLogin = new Manager(input);
   NewLogin.Post();
   const token = await Manager.Login(input.name, input.password);

@@ -1,10 +1,11 @@
 import express from 'express';
+import mongoose from 'mongoose';
+mongoose.set('strictQuery', false);
 import ClassRoutes from './routes/StudentsRoutes/RoutesClass';
 import StudentsRoutes from './routes/StudentsRoutes/RoutesStudents';
 import ManagerRoutes from './routes/ManagerRoutes/RoutesManager';
 import RoutesExits from './routes/ExitsRoutes/RoutesExits';
 import OrganizationRoutes from './routes/OrganizationRoutes/RoutesOrganization'
-import mongoose from 'mongoose';
 import { config } from 'dotenv';
 config();
 mongoose.connect(process.env.connectionString);

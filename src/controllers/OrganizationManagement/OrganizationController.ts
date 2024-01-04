@@ -1,6 +1,6 @@
 import  Express  from "express";
 import Organization from "../../entity/Organization";
-import Manager from "src/entity/Manager";
+import Manager from "../../entity/Manager";
 
 export default class OrganizationManagement{
     static async Post(req: Express.Request, res: Express.Response) {

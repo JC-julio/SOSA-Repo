@@ -5,10 +5,11 @@ export default class ExitsController {
     static async Post(req: Express.Request, res: Express.Response) {
         try{
             const {time, observes, dateExit, confirmExit} = req.body;
-            const {idStudent, idWorker} = req.params;
+            const {idStudent, idWorker, organizationId} = req.params;
             const Exit = new StudentClass({
                 idStudent: idStudent,
                 idWorker: idWorker,
+                organizationId: organizationId,
                 time: time,
                 observes: observes,
                 dateExit: dateExit,
@@ -41,6 +42,7 @@ export default class ExitsController {
             const exits = returnExits.map((Data) => ({
                 idStudent: Data.idStudent,
                 idWorker: Data.idWorker,
+                organizationId: Data.organizationId,
                 time: Data.time,
                 observes: Data.observes,
                 dateExit: Data.dateExit,
@@ -60,6 +62,7 @@ export default class ExitsController {
             returnExits.map((Data) => ({
                 idStudent: Data.idStudent,
                 idWorker: Data.idWorker,
+                organizationId: Data.organizationId,
                 time: Data.time,
                 observes: Data.observes,
                 dateExit: Data.dateExit,

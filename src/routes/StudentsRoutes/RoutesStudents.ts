@@ -1,17 +1,17 @@
 import express from 'express';
 import StudentsController from '../../controllers/StudentsManagement/StudentsController';
-import { loginRequired } from '../../middlewares/middlewareDeLogin';
+import { organizationRequired } from 'src/middlewares/middlewareDeOrganization';
 
 const router = express.Router();
 
-router.post('/Student', StudentsController.Post);
+router.post('/Organization/:idOrganization/Student', organizationRequired, StudentsController.Post);
 
-router.get('/Student/:id', loginRequired, StudentsController.GetOne);
+router.get('/Organization/:idOrganization/Student/:id', organizationRequired, StudentsController.GetOne);
 
-router.get('/Student/Class/:ClassName', loginRequired, StudentsController.GetByClassName);
+router.get('/Organization/:idOrganization/Student/Class/:ClassName', organizationRequired, StudentsController.GetByClassName);
 
-router.delete('/Student/:id', loginRequired, StudentsController.Delete);
+router.delete('/Organization/:idOrganization/Student/:id', organizationRequired, StudentsController.Delete);
 
-router.put('/Student/:id', loginRequired, StudentsController.Update);
+router.put('/Organization/:idOrganization/Student/:id', organizationRequired, StudentsController.Update);
 
 export default router;

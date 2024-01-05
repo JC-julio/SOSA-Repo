@@ -1,5 +1,6 @@
 import { Response, Request, NextFunction } from "express";
 import jwt from "jsonwebtoken"
+import { TokenModel } from '../entity/models/BlackListDB';
 
 export function organizationRequired(req:Request, res:Response, nextFunction: NextFunction) {
     const { idOrganization } = req.params;
@@ -11,10 +12,11 @@ export function organizationRequired(req:Request, res:Response, nextFunction: Ne
         if (err) {
             return res.status(500).json({msg: 'Token inválido'});
         }
-        if (decoded.organizationId == idOrganization) {
-            nextFunction();
-        } else {
-            return res.status(401).json({msg: 'Não autorizado'});
-        }
-    });
+        const returnToken = TokenModel.find({bannedToken: token})
+        if (returnToken){
+            return res.status(401).json({msg:'Token expirado'})
+        }  else {
+            if (decoded.organizationId == idOrganization) {
+             nextFunction() }
+}});
 }

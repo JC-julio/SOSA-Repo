@@ -6,7 +6,7 @@ import { organizationRequired } from 'src/middlewares/middlewareDeOrganization';
 
 const router = express.Router();
 
-router.post('/Organization/:idOrganization/Exits/:idStudent/:idWorker', ExitsController.Post);
+router.post('/Organization/:idOrganization/Exits/:idStudent/:idWorker', organizationRequired, ExitsController.Post);
 
 router.get('/Organization/:idOrganization/Exits/:id', organizationRequired, ExitsController.GetOne);
 

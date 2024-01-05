@@ -1,18 +1,16 @@
-// Importando os módulos necessários
 import express from 'express';
 import ClassController from '../../controllers/StudentsManagement/ClassController';
-import { loginRequired } from '../../middlewares/middlewareDeLogin';
-
+import { organizationRequired } from 'src/middlewares/middlewareDeOrganization';
 //ALL TESTED
 
 const router = express.Router();
 
-router.post('/Class', ClassController.Post);
+router.post('/Organization/:idOrganization/Class', organizationRequired, ClassController.Post);
 
-router.get('/Class/:id', loginRequired, ClassController.GetOne);
+router.get('/Organization/:idOrganization/Class/:id', organizationRequired, ClassController.GetOne);
 
-router.get('/Class', loginRequired, ClassController.GetAll);
+router.get('/Organization/:idOrganization/Class', organizationRequired, ClassController.GetAll);
 
-router.delete('/Class/:id', loginRequired, ClassController.Delete);
+router.delete('/Organization/:idOrganization/Class/:id', organizationRequired, ClassController.Delete);
 
 export default router;

@@ -1,16 +1,15 @@
 import express from 'express';
 import OrganizationController from '../../controllers/OrganizationManagement/OrganizationController';
-import { loginRequired } from '../../middlewares/middlewareDeLogin';
-
+import { organizationRequired } from 'src/middlewares/middlewareDeOrganization';
 
 const router = express.Router();
 
 router.post('/Organization', OrganizationController.Post);
 
-router.get('/Organization/:id', loginRequired, OrganizationController.GetOne);
+router.get('/Organization/:idOrganization/:id', organizationRequired, OrganizationController.GetOne);
 
-router.get('/Organization', loginRequired, OrganizationController.GetAll)
+router.get('/Organization/:idOrganization', organizationRequired, OrganizationController.GetAll)
 
-router.delete('/Organization/:id', loginRequired, OrganizationController.Delete);
+router.delete('/Organization/:idOrganization/:id', organizationRequired, OrganizationController.Delete);
 
 export default router;

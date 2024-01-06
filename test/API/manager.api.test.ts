@@ -13,7 +13,7 @@ test('Deve testar o post dos admins da API', async () => {
     type: 'Servidor da CAED',
   };
   const AxiosOutput = await axios.post(
-    'https://sosa-repo.vercel.app/AdminManagement',
+    'http://localhost:3000/AdminManagement',
     input
   );
 

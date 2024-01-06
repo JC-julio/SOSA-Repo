@@ -32,20 +32,20 @@ export default class Organization {
         await OrganizationModel.findByIdAndDelete(OrganizationId);
     }
 
-    public get name(): String {
+    public get name(): string {
         return this.props.name;
     }
 
-    public get id(): String {
+    public get id(): string {
         return this.props.id;
     }
 
-    public set name(name: String) {
+    public set name(name: string) {
         this.props.name = name;
     }
 }
 
 export type OrganizationDto = {
-    name: String,
-    id?: String,
+    name: string,
+    id?: string,
 }

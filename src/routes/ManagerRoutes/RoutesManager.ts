@@ -1,6 +1,6 @@
 import express from 'express';
 import ManagerController from '../../controllers/AdminManagement/ManagerController';
-import { organizationRequired } from 'src/middlewares/middlewareDeOrganization';
+import { organizationRequired } from '../../middlewares/middlewareDeOrganization';
 
 //ALL TESTED
 

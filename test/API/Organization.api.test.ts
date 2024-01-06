@@ -10,16 +10,17 @@ test("Deve testar o post da classe Organization da API", async() => {
     const input = {
         organization: {
             name: 'CAED Cacoal'
-        },//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        },
         manager: {
             name: 'input do post',
             password: '12345678',
             type: 'Servidor da CAED',
         }
     }
-    const personPost = await axios.post('https://sosa-repo.vercel.app/Organization',
+    const personPost = await axios.post('http://localhost:3000/Organization',
     input);
-    expect(personPost.data.Id).toBeDefined()
+    expect(personPost.data.organizationId).toBeDefined()
+    expect(personPost.data.managerId).toBeDefined()
 }, 15000)
 
 test("Deve testar o GetOne da classe Organization da API", async() => {

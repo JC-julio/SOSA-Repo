@@ -30,8 +30,8 @@ export default class Manager {
     const manager = await ManagerModel.find({name: user})
     if(!manager)
       throw new Error('Nome de usuário não informado ou inválido!')
-      const ComparePassword = bcrypt.compare(password, manager[0]['password'])
-    if(ComparePassword) {
+      const passwordIsValid = bcrypt.compare(password, manager[0]['password'])
+    if(passwordIsValid) {
       const token = jwt.sign({managerEntity: manager['id'], organizationId: manager['organizationId']}, process.env.secretJWTkey, {expiresIn: '7d'});
       return token;
     } else {
@@ -58,7 +58,6 @@ export default class Manager {
   static async GetOne(managerId) {
     const manager = await ManagerModel.findById(managerId);
     if (!manager)
-      throw new Error("Usuario não encontrado");
     return new Manager({
       name: manager.name,
       type: manager.type,

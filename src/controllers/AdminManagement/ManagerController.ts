@@ -7,8 +7,8 @@ export default class ManagerController {
   static async Post(req: Express.Request, res: Express.Response) {
     try {
       const { name, password, type, } = req.body;
-      const { organizationId } = req.params
-      const manager = new Manager({ name: name, password: password, type: type, organizationId:organizationId });
+      const { idOrganization } = req.params
+      const manager = new Manager({ name: name, password: password, type: type, organizationId:idOrganization });
       const managerID = (await manager.Post())._id;
       res.status(200).json({Id: managerID});
     } catch (error) {
@@ -21,6 +21,8 @@ export default class ManagerController {
     try{
       const managerId = req.params.id;
       const returnManager = await Manager.GetOne(managerId);
+      if (returnManager.organizationId != req.params.organizationId)
+       return res.status(401).json({msg: 'rota inacessivel'})
       res.status(226).send(returnManager);
     } catch(error){
       console.error(error);

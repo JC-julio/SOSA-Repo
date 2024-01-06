@@ -28,6 +28,8 @@ export default class OrganizationManagement{
         try{
             const  personId  = req.params.id
             const organization = await Organization.GetOne(personId);
+            if (organization.id != req.params.idOrganization)
+                return res.status(403).json({msg: 'rota inacessivel'});
             res.status(226).send(organization);
         } catch(error) {
             console.error(error)
@@ -36,12 +38,17 @@ export default class OrganizationManagement{
     }
     static async GetAll(req: Express.Request, res: Express.Response) {
         try{
-            const persons = await Organization.GetAll();
-            persons.map((Data) => ({
+            const organizations = await Organization.GetAll();
+                const FilterOrganizations = organizations.filter(organizacao =>
+                req.params.idOrganization.includes(organizacao.id)
+                );
+                if (FilterOrganizations.length == 0)
+                    res.status(404).json({msg: 'nenhuma organização encontrada'})
+            FilterOrganizations.map((Data) => ({
                 name: Data.name,
                 id: Data.id,
-            }))
-            res.status(226).send(persons);
+            }))    
+            res.status(226).send(FilterOrganizations);
         } catch(error) {
             console.error(error);
             res.status(500).json({msg: error.message});
@@ -50,6 +57,9 @@ export default class OrganizationManagement{
     static async Delete(req: Express.Request, res: Express.Response) {
         try{
             const personId  = req.params.id;
+            const organization = await Organization.GetOne(personId);
+            if (organization.id != req.params.idOrganization)
+                return res.status(403).json({msg: 'rota inacessivel'});
             await Organization.Delete(personId);
             res.status(200).end()
         } catch(error) {

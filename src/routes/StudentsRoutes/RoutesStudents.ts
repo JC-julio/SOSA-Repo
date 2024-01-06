@@ -1,6 +1,6 @@
 import express from 'express';
 import StudentsController from '../../controllers/StudentsManagement/StudentsController';
-import { organizationRequired } from 'src/middlewares/middlewareDeOrganization';
+import { organizationRequired } from '../../middlewares/middlewareDeOrganization';
 
 const router = express.Router();
 

@@ -1,6 +1,6 @@
 import express from 'express';
 import ClassController from '../../controllers/StudentsManagement/ClassController';
-import { organizationRequired } from 'src/middlewares/middlewareDeOrganization';
+import { organizationRequired } from '../../middlewares/middlewareDeOrganization';
 //ALL TESTED
 
 const router = express.Router();

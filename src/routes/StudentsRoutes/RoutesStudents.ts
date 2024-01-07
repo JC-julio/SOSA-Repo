@@ -1,7 +1,7 @@
 import express from 'express';
 import StudentsController from '../../controllers/StudentsManagement/StudentsController';
 import { organizationRequired } from '../../middlewares/middlewareDeOrganization';
-//all right
+//NOT all right :)
 const router = express.Router();
 
 router.post('/Organization/:idOrganization/Student', organizationRequired, StudentsController.Post);

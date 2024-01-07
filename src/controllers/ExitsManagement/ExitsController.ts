@@ -3,8 +3,8 @@ import StudentClass from '../../entity/Exits';
 export default class ExitsController {
     static async Post(req: Express.Request, res: Express.Response) {
         try{
-            const {time, observes, dateExit, confirmExit} = req.body;
-            const {idStudent, idWorker, idOrganization} = req.params;
+            const {time, observes, dateExit, confirmExit, idStudent, idWorker} = req.body;
+            const {idOrganization} = req.params;
             const Exit = new StudentClass({
                 idStudent: idStudent,
                 idWorker: idWorker,
@@ -42,8 +42,8 @@ export default class ExitsController {
             const returnExits = await StudentClass.GetExits(dateInit, dateEnd);
             const filterExitByOrganizationId = returnExits.filter(exits => 
             req.params.idOrganization.includes(exits.organizationId));
-            if (filterExitByOrganizationId.length == 0)
-                res.status(404).json({msg: 'nenhuma saida encontrada!'})
+            // if (filterExitByOrganizationId.length == 0)
+            //     res.status(404).json({msg: 'nenhuma saida encontrada!'})
             filterExitByOrganizationId.map((Data) => ({
                 idStudent: Data.idStudent,
                 idWorker: Data.idWorker,
@@ -66,8 +66,8 @@ export default class ExitsController {
             const returnExits = await StudentClass.GetAll();
             const filterExitByOrganizationId = returnExits.filter(exits =>
             req.params.idOrganization.includes(exits.organizationId));
-            if(filterExitByOrganizationId.length == 0)
-                res.status(404).json({msg: 'nenhuma saida encontrada'})
+            // if(filterExitByOrganizationId.length == 0)
+            //     res.status(404).json({msg: 'nenhuma saida encontrada'})
             filterExitByOrganizationId.map((Data) => ({
                 idStudent: Data.idStudent,
                 idWorker: Data.idWorker,
@@ -107,6 +107,7 @@ export default class ExitsController {
         await exit.Update(); 
         res.status(200).end()
         } catch(error) {
+            //switch
             console.error(error)
             res.status(500).json({msg: error.message})
         }

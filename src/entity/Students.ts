@@ -10,7 +10,7 @@ export default class Student{
             className: this.className,
             type: this.type,
             organizationId: this.organizationId,
-        })
+        }, {new:true})
     }
 
     static async GetOne(studentId) {

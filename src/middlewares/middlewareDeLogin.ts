@@ -2,7 +2,7 @@ import {Response, Request, NextFunction} from 'express';
 import jwt from "jsonwebtoken"
 import { TokenModel } from '../entity/models/BlackListDB';
 
-
+// IMPORTAR .ENV
 export function loginRequired(req:Request, res:Response, nextFunction: NextFunction){
     const token = req.headers.authorization;
     if (!token) {

@@ -1,6 +1,5 @@
 import express from 'express';
 import ClassController from '../../controllers/StudentsManagement/ClassController';
-import { organizationRequired } from '../../middlewares/middlewareDeOrganization';
 import { loginRequired } from '../../middlewares/middlewareDeLogin';
 //ALL right
 

@@ -1,7 +1,7 @@
 import  Express  from "express";
 import Organization from "../../entity/Organization";
 import Manager from "../../entity/Manager";
-
+//all right
 export default class OrganizationManagement{
     static async Post(req: Express.Request, res: Express.Response) {
         try{

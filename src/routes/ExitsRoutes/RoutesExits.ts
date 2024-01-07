@@ -6,7 +6,7 @@ import { loginRequired } from '../../middlewares/middlewareDeLogin';
 
 const router = express.Router();
 
-router.post('/Organization/:idOrganization/Exits/:idStudent/:idWorker', loginRequired ,  ExitsController.Post);
+router.post('/Exits/:idOrganization/:idStudent/:idWorker', loginRequired ,  ExitsController.Post);
 
 router.get('/Organization/:idOrganization/Exits/:id', loginRequired,  ExitsController.GetOne);
 
@@ -14,7 +14,7 @@ router.get('/Organization/:idOrganization/Exits/:dateInit/:dateEnd', loginRequir
 
 router.get('/Organization/:idOrganization/Exits', loginRequired,  ExitsController.GetAll);
 
-router.delete('/Organization/:idOrganization/Exits', loginRequired,  ExitsController.DeleteAll);
+router.delete('/Organization/Exits', loginRequired,  ExitsController.DeleteAll);
 
 router.put('/Organization/:idOrganization/Exits/:id', loginRequired,  ExitsController.Update);
 

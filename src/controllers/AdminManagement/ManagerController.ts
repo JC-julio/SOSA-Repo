@@ -9,8 +9,8 @@ export default class ManagerController {
       const { name, password, type, } = req.body;
       const { idOrganization } = req.params
       const manager = new Manager({ name: name, password: password, type: type, organizationId:idOrganization });
-      const managerID = (await manager.Post())._id;
-      res.status(200).json({Id: managerID});
+      const managerId = (await manager.Post())._id;
+      res.status(200).json({Id: managerId});
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: error.message });
@@ -33,13 +33,17 @@ export default class ManagerController {
   static async GetAll(req: Express.Request, res: Express.Response) {
     try {
       const managers = await Manager.GetAll();
-      const ManagersDTO = managers.map((ManagersDto) => ({
+      const filterManagerByOrganzationId = managers.filter(Admin =>
+      req.params.idOrganization.includes(Admin.organizationId));
+      if(filterManagerByOrganzationId.length == 0)
+        res.status(404).json({msg: 'nenhum administrador encontrado'})
+        filterManagerByOrganzationId.map((ManagersDto) => ({
         name: ManagersDto.name,
         type: ManagersDto.type,
         organizationId: ManagersDto.organizationId,
         id: ManagersDto.id,
       }));
-      res.status(226).send(ManagersDTO);
+      res.status(226).send(filterManagerByOrganzationId);
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: error.message });
@@ -49,6 +53,9 @@ export default class ManagerController {
   static async Delete(req: Express.Request, res: Express.Response) {
     try {
       const managerId = req.params.id;
+      const GetOneManager = await Manager.GetOne(managerId);
+      if(GetOneManager.organizationId != req.params.idOrganization)
+        res.status(401).json({msg: 'rota inacessivel'})
       await Manager.Delete(managerId);
       res.status(200).end();
     } catch (error) {
@@ -59,12 +66,14 @@ export default class ManagerController {
 
   static async Update(req: Express.Request, res: Express.Response) {
     try {
-      const manager = await Manager.GetOne(req.params.id);
-      if (manager.type == 'Guarda') 
-      manager.type = 'Servidor da CAED';
+      const GetOneManager = await Manager.GetOne(req.params.id);
+      if(GetOneManager.organizationId != req.params.idOrganization)
+      res.status(401).json({msg: 'rota inacessivel'})
+      if (GetOneManager.type == 'Guarda') 
+      GetOneManager.type = 'Servidor da CAED';
       else 
-      manager.type = 'Guarda';
-      await manager.Update();
+      GetOneManager.type = 'Guarda';
+      await GetOneManager.Update();
       res.status(200).end();
     } catch (error) {
       console.error(error);

@@ -1,23 +1,23 @@
 import express from 'express';
 import ManagerController from '../../controllers/AdminManagement/ManagerController';
-import { organizationRequired } from '../../middlewares/middlewareDeOrganization';
+import { loginRequired } from '../../middlewares/middlewareDeLogin';
 
 //ALL TESTED
 
 const router = express.Router();
 
-router.post('/Organization/:idOrganization/Admin', organizationRequired, ManagerController.Post);
+router.post('/Organization/:idOrganization/Admin', loginRequired, ManagerController.Post);
 
-router.get('/Organization/:idOrganization/Admin', organizationRequired, ManagerController.GetAll);
+router.get('/Organization/:idOrganization/Admin', loginRequired, ManagerController.GetAll);
 
-router.get('/Organization/:idOrganization/Admin/:id', organizationRequired, ManagerController.GetOne);
+router.get('/Organization/:idOrganization/Admin/:id', loginRequired, ManagerController.GetOne);
 
-router.delete('/Organization/:idOrganization/Admin/:id', organizationRequired, ManagerController.Delete);
+router.delete('/Organization/:idOrganization/Admin/:id', loginRequired, ManagerController.Delete);
 
-router.put('/Organization/:idOrganization/Admin/:id', organizationRequired, ManagerController.Update);
+router.put('/Organization/:idOrganization/Admin/:id', loginRequired, ManagerController.Update);
 
-router.post('/Organization/:idOrganization/Login', ManagerController.Login);
+router.post('/Organization/Login', ManagerController.Login);
 
-router.post('/Organization/:idOrganization/Logout/:token', organizationRequired, ManagerController.Logout);
+router.post('/Organization/Logout/:token', loginRequired, ManagerController.Logout);
 
 export default router;

@@ -58,6 +58,7 @@ export default class Manager {
   static async GetOne(managerId) {
     const manager = await ManagerModel.findById(managerId);
     if (!manager)
+    //throw new error BURRO
     return new Manager({
       name: manager.name,
       type: manager.type,
@@ -66,8 +67,8 @@ export default class Manager {
     });
   }
 
-  static async GetAll() {
-    const managers = await ManagerModel.find();
+  static async GetAll(organizationId) {
+    const managers = await ManagerModel.find({organizationId: organizationId});
     return managers.map(
       (Data) => new Manager({ name: Data.name, type: Data.type, id: Data.id, organizationId: Data.organizationId }),
     ); //transformar em nova lista

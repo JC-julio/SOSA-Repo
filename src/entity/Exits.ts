@@ -69,6 +69,7 @@ export default class Exits {
   }
 
   static async DeleteAll(){
+    //deve passar parâmetros para apagar apenas os exits da organização que  mandou
     await ExitsModel.deleteMany();
   }
 

@@ -1,7 +1,7 @@
 import  Express  from "express";
 import Organization from "../../entity/Organization";
 import Manager from "../../entity/Manager";
-//all right
+//Nome da classe errado :D
 export default class OrganizationManagement{
     static async Post(req: Express.Request, res: Express.Response) {
         try{
@@ -32,16 +32,30 @@ export default class OrganizationManagement{
                 return res.status(403).json({msg: 'rota inacessivel'});
             res.status(226).send(organization);
         } catch(error) {
-            console.error(error)
-            res.status(500).json({msg: error.message})
+            let errorNumber: number;
+            //HA SWITCH (Fazer isso para o restante dos cases)
+            switch( error.msg ){
+                case 'Organização não encontrada!': {
+                    errorNumber = 404
+                    break
+                }
+                default: {
+                    errorNumber = 500
+                    break
+                }
+            }
+            res.status(errorNumber).json({msg: error.message})
         }
     }
     static async GetAll(req: Express.Request, res: Express.Response) {
         try{
             const organizations = await Organization.GetAll();
-                const FilterOrganizations = organizations.filter(organizacao =>
-                req.params.idOrganization.includes(organizacao.id)
-                );
+                // const FilterOrganizations = organizations.filter(organizacao =>
+                // req.params.idOrganization.includes(organizacao.id)
+                // );
+                
+                // FAZ DO JEITO PERFORMATICO LÁ
+                
                 if (FilterOrganizations.length == 0)
                     res.status(404).json({msg: 'nenhuma organização encontrada'})
             FilterOrganizations.map((Data) => ({
@@ -63,6 +77,7 @@ export default class OrganizationManagement{
             await Organization.Delete(personId);
             res.status(200).end()
         } catch(error) {
+            //CATCH DO 'NAO ACHEI ID'
             console.error(error);
             res.status(500).json({msg: error.message});
         }

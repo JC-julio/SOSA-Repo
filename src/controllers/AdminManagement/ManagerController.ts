@@ -11,6 +11,7 @@ export default class ManagerController {
       const manager = new Manager({ name: name, password: password, type: type, organizationId:idOrganization });
       const managerId = (await manager.Post())._id;
       res.status(200).json({Id: managerId});
+      // retornar o objeto completo a partir do post
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: error.message });
@@ -25,23 +26,29 @@ export default class ManagerController {
        return res.status(401).json({msg: 'rota inacessivel'})
       res.status(226).send(returnManager);
     } catch(error){
-      console.error(error);
+      // if error message == 'id nao encontrado' 
+      // res.status tanan tanan
+      // else:
+
       res.status(500).json({msg: error.message});
     }
   }
 
   static async GetAll(req: Express.Request, res: Express.Response) {
     try {
-      const managers = await Manager.GetAll();
-      const ManagerByOrganzationId = managers.filter(Admin =>
-      req.params.idOrganization.includes(Admin.organizationId));
-      ManagerByOrganzationId.map((ManagersDto) => ({
+      const {idOrganization} = req.params
+      const managers = await Manager.GetAll(idOrganization);
+      /*
+      if (managers[0].organizationId != idOrganization )
+       return res.status(401).json({msg: 'rota inacessivel'})
+      */
+      managers.map((ManagersDto) => ({
       name: ManagersDto.name,
       type: ManagersDto.type,
       organizationId: ManagersDto.organizationId,
       id: ManagersDto.id,
      }));
-      res.status(226).send(ManagerByOrganzationId);
+      res.status(226).send(managers);
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: error.message });
@@ -53,7 +60,7 @@ export default class ManagerController {
       const managerId = req.params.id;
       const GetOneManager = await Manager.GetOne(managerId);
       if(GetOneManager.organizationId != req.params.idOrganization)
-        res.status(401).json({msg: 'rota inacessivel'})
+        return res.status(401).json({msg: 'rota inacessivel'})
       await Manager.Delete(managerId);
       res.status(200).end();
     } catch (error) {
@@ -66,7 +73,8 @@ export default class ManagerController {
     try {
       const GetOneManager = await Manager.GetOne(req.params.id);
       if(GetOneManager.organizationId != req.params.idOrganization)
-      res.status(401).json({msg: 'rota inacessivel'})
+        return res.status(401).json({msg: 'rota inacessivel'})
+      //O certo é um ENUM, se não fodase tbm
       if (GetOneManager.type == 'Guarda') 
       GetOneManager.type = 'Servidor da CAED';
       else 
@@ -85,6 +93,8 @@ export default class ManagerController {
       const token = await Manager.Login(user, password);
       res.status(200).json({Token: token})
     } catch(error) {
+
+      // acatar todos os Throws que estão dentro da entidade :)
       console.error(error);
       res.status(500).json({msg: error.message})
     }
@@ -96,6 +106,7 @@ export default class ManagerController {
       await Manager.logout(Token);
       res.status(200).end();
     } catch(error) {
+      // acatar todos os Throws que estão dentro da entidade :)
       console.error(error);
       res.status(500).json({msg: error.message});
     }

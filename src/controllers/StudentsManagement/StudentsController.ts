@@ -7,8 +7,8 @@ export default class StudentController {
             const {name, className, type} = req.body;
             const { idOrganization } = req.params;
             const student = new Student({name: name, className: className, type: type, organizationId:idOrganization})
-            const studentID = (await student.Post())._id;
-            res.status(201).json({Id: studentID});
+            const newStudent = (await student.Post());
+            res.status(201).json(newStudent);
         } catch(error){
             console.error(error);
             res.status(500).json({msg: error.message});
@@ -20,9 +20,10 @@ export default class StudentController {
           const studentID = req.params.id;
           const returnStudent = await Student.GetOne(studentID);
           if(returnStudent.organizationId != req.params.idOrganization)
-            res.status(401).json({msg: 'rota inacessivel'})
+            return res.status(401).json({msg: 'rota inacessivel'})
           res.status(200).send(returnStudent);
         } catch(error){
+          //akele problema lá do switch
           console.error(error);
           res.status(500).json({msg: error.message});
         }
@@ -32,10 +33,10 @@ export default class StudentController {
         try{
             const ClassName = req.params.ClassName;
             const returnsClass = await Student.GetByClassName(ClassName);
-            const FilterClassByOrganizationId = returnsClass.filter(turm => 
-            req.params.idOrganization.includes(turm.organizationId));
-            if(FilterClassByOrganizationId.length == 0)
-              res.status(404).json({msg: 'nenhum estudante encontrado'})
+            // const FilterClassByOrganizationId = returnsClass.filter(turm => 
+            // req.params.idOrganization.includes(turm.organizationId));
+            // if(FilterClassByOrganizationId.length == 0)
+            //   res.status(404).json({msg: 'nenhum estudante encontrado'})
             returnsClass.map((Data) => ({
                 name: Data.name,
                 type: Data.type,
@@ -59,6 +60,8 @@ export default class StudentController {
             await Student.Delete(StudentID);
             res.status(200).end()
         } catch(error) {
+          //akele problema lá do switch
+
             console.error(error);
             res.status(500).json({msg: error.message});
         }
@@ -69,6 +72,7 @@ export default class StudentController {
             const student = await Student.GetOne(req.params.id);
             if(student.organizationId != req.params.idOrganization)
               res.status(401).json({msg: 'rota inacessivel'})
+            // Mudar o type pra boolean
             if (student.type == 'Autorizado'){ 
               student.type = 'Não autorizado';
             } else { 
@@ -77,6 +81,7 @@ export default class StudentController {
               await student.Update();
               res.status(200).end();
             } catch (error) {
+              //akele problema lá do switch
               console.error(error);
               res.status(500).json({ error: error.message });
             }

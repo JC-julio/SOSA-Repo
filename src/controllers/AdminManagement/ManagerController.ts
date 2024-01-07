@@ -33,17 +33,15 @@ export default class ManagerController {
   static async GetAll(req: Express.Request, res: Express.Response) {
     try {
       const managers = await Manager.GetAll();
-      const filterManagerByOrganzationId = managers.filter(Admin =>
+      const ManagerByOrganzationId = managers.filter(Admin =>
       req.params.idOrganization.includes(Admin.organizationId));
-      if(filterManagerByOrganzationId.length == 0)
-        res.status(404).json({msg: 'nenhum administrador encontrado'})
-        filterManagerByOrganzationId.map((ManagersDto) => ({
-        name: ManagersDto.name,
-        type: ManagersDto.type,
-        organizationId: ManagersDto.organizationId,
-        id: ManagersDto.id,
-      }));
-      res.status(226).send(filterManagerByOrganzationId);
+      ManagerByOrganzationId.map((ManagersDto) => ({
+      name: ManagersDto.name,
+      type: ManagersDto.type,
+      organizationId: ManagersDto.organizationId,
+      id: ManagersDto.id,
+     }));
+      res.status(226).send(ManagerByOrganzationId);
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: error.message });

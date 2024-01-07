@@ -7,7 +7,7 @@ export default class Student{
     async Post(){
         return this.model.create({
             name: this.name,
-            classStudent: this.classStudent,
+            className: this.className,
             type: this.type,
             organizationId: this.organizationId,
         })
@@ -19,19 +19,19 @@ export default class Student{
             throw new Error("Estudante não encontrado!")
         return new Student({
             name: student.name,
-            classStudent: student.classStudent,
+            className: student.className,
             type: student.type,
             organizationId: student.organizationId,
             id: student.id,
         })
     }
 
-    static async GetByClassName(ClassStudent){
-        const Class = await studentsModel.find({classStudent: ClassStudent});
+    static async GetByClassName(className){
+        const Class = await studentsModel.find({className: className});
         return Class.map((Data) => ({
             name: Data.name,
             type: Data.type,
-            classStudent: Data.classStudent,
+            className: Data.className,
             organizationId: Data.organizationId,
             id: Data.id,
         }))
@@ -51,8 +51,8 @@ export default class Student{
         return this.props.name;
     }
 
-    public get classStudent(): String {
-        return this.props.classStudent;
+    public get className(): String {
+        return this.props.className;
     }
 
     public get type(): String {
@@ -71,8 +71,8 @@ export default class Student{
         this.props.name = name;
     }
 
-    public set classStudent(classStudent: string) {
-        this.props.classStudent = classStudent;
+    public set className(className: string) {
+        this.props.className = className;
     }
 
     public set type(type: string){
@@ -82,7 +82,7 @@ export default class Student{
 
 export type StudentDto = {
     name: string,
-    classStudent: string,
+    className: string,
     type: string,
     organizationId: string,
     id?: string,

@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const StudentSchema = new mongoose.Schema({
     name: String,
-    classStudent: String,
+    className: String,
     type: String,
     organizationId: String,
 })

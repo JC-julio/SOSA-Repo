@@ -4,9 +4,9 @@ import Student from '../../entity/Students';
 export default class StudentController {
     static async Post(req:Express.Request, res:Express.Response) {
         try{
-            const {name, classStudent, type} = req.body;
+            const {name, className, type} = req.body;
             const { idOrganization } = req.params;
-            const student = new Student({name: name, classStudent: classStudent, type: type, organizationId:idOrganization})
+            const student = new Student({name: name, className: className, type: type, organizationId:idOrganization})
             const studentID = (await student.Post())._id;
             res.status(201).json({Id: studentID});
         } catch(error){
@@ -40,7 +40,7 @@ export default class StudentController {
                 name: Data.name,
                 type: Data.type,
                 organizationId: Data.organizationId,
-                classStudent: Data.classStudent,
+                className: Data.className,
                 id: Data.id,
             }))
             res.status(226).send(returnsClass);

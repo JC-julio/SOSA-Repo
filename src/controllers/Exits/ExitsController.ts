@@ -27,7 +27,7 @@ export default class ExitsController {
             const ExitID = req.params.id;
             const returnExit = await StudentClass.GetOne(ExitID);
             if (returnExit.organizationId != req.params.idOrganization)
-                res.status(401).json({msg: 'rota inacessivel'})
+            return res.status(401).json({msg: 'rota inacessivel'})
             res.status(226).send(returnExit);
         } catch(error) {
             let errorNumber: number;
@@ -51,7 +51,7 @@ export default class ExitsController {
             const dateEnd = new Date(req.params.dateEnd);
             const returnExits = await StudentClass.GetExits(dateInit, dateEnd, req.params.idOrganization);
             if (returnExits.length == 0)
-                res.status(404).json({msg: 'nenhuma saida encontrada!'})
+                return res.status(404).json({msg: 'nenhuma saida encontrada!'})
             returnExits.map((Data) => ({
                 idStudent: Data.idStudent,
                 idWorker: Data.idWorker,
@@ -73,7 +73,7 @@ export default class ExitsController {
         try {
             const returnExits = await StudentClass.GetAll(req.params.idOrganization);
             if(returnExits.length == 0)
-                res.status(404).json({msg: 'nenhuma saida encontrada'})
+                return res.status(404).json({msg: 'nenhuma saida encontrada'})
             returnExits.map((Data) => ({
                 idStudent: Data.idStudent,
                 idWorker: Data.idWorker,
@@ -105,7 +105,7 @@ export default class ExitsController {
         try{
         const exit = await StudentClass.GetOne(req.params.id);
         if (exit.organizationId != req.params.idOrganization)
-            res.status(403).json({msg: 'rota inacessivel'})
+            return res.status(403).json({msg: 'rota inacessivel'})
         if(exit.confirmExit == false)
             exit.confirmExit = true;
         else

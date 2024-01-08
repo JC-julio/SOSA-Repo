@@ -12,16 +12,26 @@ export default class ManagerController {
       const newManager = (await manager.Post());
       res.status(200).send(newManager)
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: error.message });
-    }
+      let errorNumber: number;
+      switch( error.msg ){
+          case 'Um usuário com este nome já existe': {
+              errorNumber = 400
+              break
+          }
+          default: {
+              errorNumber = 500
+              break
+          }
+      }
+      res.status(errorNumber).json({msg: error.message})
+  }
   }
 
   static async GetOne(req:Express.Request, res:Express.Response) {
     try{
       const managerId = req.params.id;
       const returnManager = await Manager.GetOne(managerId);
-      if (returnManager.organizationId != req.params.organizationId)
+      if (returnManager.organizationId != req.params.idOrganization)
        return res.status(401).json({msg: 'rota inacessivel'})
       res.status(226).send(returnManager);
     } catch(error) {
@@ -61,7 +71,7 @@ export default class ManagerController {
       const managerId = req.params.id;
       const GetOneManager = await Manager.GetOne(managerId);
       if(GetOneManager.organizationId != req.params.idOrganization)
-        res.status(401).json({msg: 'rota inacessivel'})
+        return res.status(401).json({msg: 'rota inacessivel'})
       await Manager.Delete(managerId);
       res.status(200).end();
     } catch (error){
@@ -84,7 +94,7 @@ export default class ManagerController {
     try {
       const GetOneManager = await Manager.GetOne(req.params.id);
       if(GetOneManager.organizationId != req.params.idOrganization)
-      res.status(401).json({msg: 'rota inacessivel'})
+      return res.status(401).json({msg: 'rota inacessivel'})
       if (GetOneManager.type == 'Guarda') 
       GetOneManager.type = 'Servidor da CAED';
       else 
@@ -123,7 +133,7 @@ export default class ManagerController {
             errorNumber = 400
             break
           }
-          case 'Nome de usuário não informado ou inválido!': {
+          case 'Nome de usuário inválido!': {
             errorNumber = 401
             break
           }

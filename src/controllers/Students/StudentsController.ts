@@ -20,7 +20,7 @@ export default class StudentController {
           const studentID = req.params.id;
           const returnStudent = await Student.GetOne(studentID);
           if(returnStudent.organizationId != req.params.idOrganization)
-            res.status(401).json({msg: 'rota inacessivel'})
+            return res.status(401).json({msg: 'rota inacessivel'})
           res.status(200).send(returnStudent);
         } catch(error){
           let errorNumber: number;
@@ -71,7 +71,7 @@ export default class StudentController {
             const StudentID = req.params.id;
             const GetOneStudent = await Student.GetOne(StudentID)
             if(GetOneStudent.organizationId != req.params.idOrganization)
-              res.status(401).json({msg: 'rota inacessivel'})
+              return res.status(401).json({msg: 'rota inacessivel'})
             await Student.Delete(StudentID);
             res.status(200).end()
         } catch(error){
@@ -94,7 +94,7 @@ export default class StudentController {
       try {
         const student = await Student.GetOne(req.params.id);
         if(student.organizationId != req.params.idOrganization)
-          res.status(401).json({msg: 'rota inacessivel'})
+          return res.status(401).json({msg: 'rota inacessivel'})
         if (student.type == false){ 
           student.type = true;
         } else { 

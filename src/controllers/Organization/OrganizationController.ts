@@ -18,10 +18,24 @@ export default class OrganizationManagement{
                 organizationId: organizationId
             })
             const manager = (await NewManager.Post())
-            res.status(201).json({organizationId, manager});
-        } catch(error){
-            console.error(error);
-            res.send(500).json({msg: error.message})
+            const managerId = manager.id
+            console.log(manager)
+            console.log(organizationId)
+            console.log(NewManager)
+            res.status(201).json({organizationId, manager, managerId});
+        } catch(error) {
+            let errorNumber: number;
+            switch( error.msg ){
+                case 'Um usuário com este nome já existe': {
+                    errorNumber = 400
+                    break
+                }
+                default: {
+                    errorNumber = 500
+                    break
+                }
+            }
+            res.status(errorNumber).json({msg: error.message})
         }
     }
     static async GetOne(req: Express.Request, res: Express.Response) {
@@ -50,7 +64,7 @@ export default class OrganizationManagement{
         try{
             const organizations = await Organization.GetAll(req.params.idOrganization);
             if (organizations.length == 0)
-                res.status(404).json({msg: 'nenhuma organização encontrada'})
+                return res.status(404).json({msg: 'nenhuma organização encontrada'})
             organizations.map((Data) => ({
                 name: Data.name,
                 id: Data.id,

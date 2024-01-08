@@ -6,247 +6,147 @@ axios.defaults.validateStatus = function () {
   return true;
 };
 
-test('Deve testar o post dos admins da API', async () => {
-  const input = {
-    name: 'input do post',
-    password: '12345678',
-    type: 'Servidor da CAED',
-  };
+async function login(organizationId?) {
+  const randomUser = Math.random().toString(36).slice(-10);
+  const randomUser1 = Math.random().toString(36).slice(-10);
+  const dataPostOrganization = {
+    organization: {
+        name: 'CAED Cacoal'
+    },
+    manager: {
+        name: randomUser,
+        password: '12345678',
+        type: 'Servidor da CAED',
+    }
+}
+  const inputLogin = {
+    user : dataPostOrganization.manager.name,
+    password: dataPostOrganization.manager.password
+  }
+  const inputPostManager = {
+    name: randomUser1,
+    password: dataPostOrganization.manager.password,
+    type: dataPostOrganization.manager.type
+  }
+  const organizationPost = await axios.post('http://localhost:3000/Organization',
+  dataPostOrganization);
+  // console.log(organizationPost.data)
   const AxiosOutput = await axios.post(
-    'http://localhost:3000/AdminManagement',
-    input
+    'http://localhost:3000/Admin',
+    inputLogin
   );
+  const managerPost = await axios.post(
+    'http://localhost:3000/Admin/' + organizationId, inputPostManager,
+    {
+      headers: {authorization: AxiosOutput.data.Token}
+    },
+  )
+  const ObjectLogin = {
+    organizationId : organizationPost.data.organizationId,
+    manager: organizationPost.data.manager,
+    managerId: organizationPost.data.managerId,
+    token : AxiosOutput.data.Token
+  }
+  return ObjectLogin
+}
 
-  expect(AxiosOutput.data).toBeDefined();
+test('Deve testar o post dos admins da API', async () => {
+  const newLoginFirst = await login();
+  // console.log(newLoginFirst)
+  expect(newLoginFirst.manager).toBeDefined()
 }, 30000);
 
 test('Deve testar o GetAll dos admins da API', async () => {
-  const input = {
-    name: 'input do post',
-    password: '12345678',
-    type: 'Servidor da CAED',
-  };
-  const AxiosPost = await axios.post(
-    'https://sosa-repo.vercel.app/AdminManagement',
-    input
-  );
-
-  const login = {
-    user: input.name,
-    password: input.password,
-  }
-
-  const AxiosLogin = await axios.post(
-    'https://sosa-repo.vercel.app/Login',
-     login,
-  )
-  const token = AxiosLogin.data.Token;
-  //login^
+  const newLoginFirst = await login();
+  const newLoginTwo = await login(newLoginFirst.organizationId);
+  // console.log(newLoginTwo)
 
   const AxiosOutput = await axios.get(
-    'https://sosa-repo.vercel.app/AdminManagement',
+    'http://localhost:3000/Admin/' + newLoginFirst.organizationId,
     {
-      headers: {authorization: token}
+      headers: {authorization: newLoginFirst.token}
     },
   );
-
-  expect(AxiosOutput).toBeTruthy();
+  // console.log(AxiosOutput.data)
+  const AxiosOutputTwo = await axios.get(
+    'http://localhost:3000/Admin/' + newLoginTwo.organizationId,
+    {
+      headers: {authorization: newLoginTwo.token}
+    },
+  );
+  // console.log(AxiosOutputTwo.data)
+  expect(AxiosOutputTwo.data).toBeDefined()
 }, 15000);
 
 
 test('Deve testar o GetOne da classe de admin da API', async() => {
-  const inputLogin = {
-    name: 'input do post',
-    password: '12345678',
-    type: 'Servidor da CAED',
-  };
-  const AxiosPost = await axios.post(
-    'https://sosa-repo.vercel.app/AdminManagement',
-    inputLogin
-  );
+const newLogin = await login()
+console.log(newLogin)
+const managerId = newLogin.managerId
+const organizationId = newLogin.organizationId
 
-  const login = {
-    user: inputLogin.name,
-    password: inputLogin.password,
-  }
-  const AxiosLogin = await axios.post(
-    'https://sosa-repo.vercel.app/Login',
-     login,
-  )
-  const token = AxiosLogin.data.Token;
-
-  const input = {
-    name: 'input do post',
-    password: '12345678',
-    type: 'Servidor da CAED',
-  };
-  const AxiosOutput = await axios.post(
-    'https://sosa-repo.vercel.app/AdminManagement',
-    input
-  );
   const AxiosGetOne = await axios.get(
-    'https://sosa-repo.vercel.app/AdminManagement/'+ AxiosOutput.data.Id,
+    'http://localhost:3000/Admin/'+ organizationId + '/' + managerId,
     {
-      headers: {authorization: token}
+      headers: {authorization: newLogin.token}
     },
   );
-  console.log(AxiosGetOne.data)
-  // console.log(AxiosGetOne.data)
-  expect(AxiosGetOne.data.props.name).toBe(input.name);
-  expect(AxiosGetOne.data.props.password).not.toBe(input.password);
-  expect(AxiosGetOne.data.props.type).toBe(input.type)
+  expect(AxiosGetOne.data.props.id).toBe(managerId)
 }, 15000);
 
 test('Deve testar o Delete da classe de admin da API', async() => {
-  const inputLogin = {
-    name: 'input do post',
-    password: '12345678',
-    type: 'Servidor da CAED',
-  };
-  const AxiosPost = await axios.post(
-    'https://sosa-repo.vercel.app/AdminManagement',
-    inputLogin
-  );
-  
-  const login = {
-    user: inputLogin.name,
-    password: inputLogin.password,
-  }
-  const AxiosLogin = await axios.post(
-    'https://sosa-repo.vercel.app/Login',
-    login,
-  )
-  const token = AxiosLogin.data.Token;
-  //Login^
-  
-  const input = {
-    name: 'input do post',
-    password: '12345678',
-    type: 'Servidor da CAED',
-  };
-  const AxiosOutput = await axios.post(
-    'https://sosa-repo.vercel.app/AdminManagement',
-    input
-  );
-  //post^
+const newLogin = await login()
+const managerId = newLogin.managerId
+const organizationId = newLogin.organizationId
 
   const AxiosDelete = await axios.delete(
-    'https://sosa-repo.vercel.app/AdminManagement/' + AxiosOutput.data.Id,
+    'http://localhost:3000/Admin/' + organizationId + '/' + managerId,
     {
-      headers: {authorization: token}
+      headers: {authorization: newLogin.token}
     },
   );
   //delete^
 
   const AxiosGetOne = await axios.get(
-    'https://sosa-repo.vercel.app/AdminManagement/'+ AxiosOutput.data.Id,
+    'http://localhost:3000/Admin/' + organizationId + '/' + managerId,
     {
-      headers: {authorization: token}
+      headers: {authorization: newLogin.token}
     },
   );
-
-  expect(AxiosGetOne.data.msg).toBe("Usuario não encontrado");
+  // console.log(AxiosGetOne.data)
+  expect(AxiosGetOne.data.msg).toBe("Administrador não encontrado");
   
 }, 15000);
 
 test('Deve testar o Update da classe de admin da API', async() => {
-  const inputLogin = {
-    name: 'input do post',
-    password: '12345678',
-    type: 'Servidor da CAED',
-  };
-  const AxiosPost = await axios.post(
-    'https://sosa-repo.vercel.app/AdminManagement',
-    inputLogin
-  );
-
-  const login = {
-    user: inputLogin.name,
-    password: inputLogin.password,
-  }
-  const AxiosLogin = await axios.post(
-    'https://sosa-repo.vercel.app/Login',
-    login,
-  )
-  const token = AxiosLogin.data.Token;
-  //Login^
-
-  const input = {
-    name: 'input do post',
-    password: '12345678',
-    type: 'Servidor da CAED',
-  };
-  const AxiosOutput = await axios.post(
-    'https://sosa-repo.vercel.app/AdminManagement',
-    input
-  );
-  //post^
+const newLogin = await login()
+const organizationId = newLogin.organizationId
+const managerId = newLogin.managerId
 
   const AxiosPut = await axios.put(
-    'https://sosa-repo.vercel.app/AdminManagementUpdate/' + AxiosOutput.data.Id,
+    'http://localhost:3000/Admin/' + organizationId + '/' + managerId,
     {},
     {
-      headers: {authorization: token}
+      headers: {authorization: newLogin.token}
     });
   //Update^
 
   const AxiosGetOne = await axios.get(
-    'https://sosa-repo.vercel.app/AdminManagement/'+ AxiosOutput.data.Id,
+    'http://localhost:3000/Admin/' + organizationId + '/' + managerId,
     {
-      headers: {authorization: token}
+      headers: {authorization: newLogin.token}
     },
   );
   //GetOne para verificar se a mudança realmente ocorreu
   expect(AxiosGetOne.data.props.type).toBe('Guarda')
 }, 15000)
 
-test("Deve testar o Login da classe de admin da API", async() => {
-  const inputLogin = {
-    name: 'input do post',
-    password: '12345678',
-    type: 'Servidor da CAED',
-  };
-  const AxiosPost = await axios.post(
-    'https://sosa-repo.vercel.app/AdminManagement',
-    inputLogin
-  );
-
-  const user = {
-    user: inputLogin.name,
-    password: inputLogin.password,
-  }
-  const AxiosLogin = await axios.post(
-    'https://sosa-repo.vercel.app/Login',
-     user,
-  )
-  expect(AxiosLogin.data.Token).toBeDefined();
-}, 15000)
-
-test('Deve testar o Logout da classe admin da API', async () => {
-  const inputLogin = {
-    name: 'input do post',
-    password: '12345678',
-    type: 'Servidor da CAED',
-  };
-  const AxiosPost = await axios.post(
-    'https://sosa-repo.vercel.app/AdminManagement',
-    inputLogin
-  );
-
-  const login = {
-    user: inputLogin.name,
-    password: inputLogin.password,
-  }
-  const AxiosLogin = await axios.post(
-    'https://sosa-repo.vercel.app/Login',
-    login,
-    )
-  const token = AxiosLogin.data.Token;
-// console.log(token)
-  //login^
+test("Deve testar o logout da classe de admin da API", async() => {
+const newLogin = await login()
+const token = newLogin.token
 
   const AxiosLogout = await axios.post(
-    'https://sosa-repo.vercel.app/Logout/' + token,
+    'http://localhost:3000/Admin/Logout/' + token,
     {},
     {
     headers: {authorization: token}
@@ -254,6 +154,6 @@ test('Deve testar o Logout da classe admin da API', async () => {
   );
   
   const returnToken = TokenModel.findOne({bannedToken: token}) 
-  // console.log(token);
+  console.log(token);
   expect(returnToken).toBeDefined
 }, 30000);

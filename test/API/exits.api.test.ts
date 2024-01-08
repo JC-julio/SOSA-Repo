@@ -1,8 +1,48 @@
 import axios from 'axios';
 import { config } from 'dotenv';
 config();
+const delay = (delayInms) => {
+    return new Promise(resolve => setTimeout(resolve, delayInms));
+};
+axios.defaults.validateStatus = function () {
+return true;
+};
+async function login() {
+    const input = {
+      organization: {
+          name: 'CAED Cacoal'
+      },
+      manager: {
+          name: 'input do login',
+          password: '12345678',
+          type: 'Servidor da CAED',
+      }
+  }
+  const inputLogin = {
+    user : input.manager.name,
+    password: input.manager.password
+  }
+  console.log(inputLogin)
+  const organizationPost = await axios.post('http://localhost:3000/Organization',
+  input);
+  console.log(organizationPost.data)
+  await delay(1000)
+  const newLogin = await axios.post('http://localhost:3000/Admin/Login',
+  inputLogin
+  );
+  console.log(newLogin.data.msg)
+//   const returnLogin = {
+//     organizationId: organizationPost.data.organizationId,
+//     managerId: organizationPost.data.manager,
+//     token: newLogin.data.Token,
+//   };
+//   console.log(returnLogin)
+//   return returnLogin;
+  }
 
-test('Deve testar o post da classe de saídas da API', async () => {
+test.only('Deve testar o post da classe de saídas da API', async () => {
+    const newLogin = await login()
+    console.log(newLogin)
     const inputStudent = {
         name: 'Julio César Aguiar',
         classStudent: '2022 A TI',

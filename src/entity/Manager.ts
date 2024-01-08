@@ -3,7 +3,6 @@ import { TokenModel } from '../entity/models/BlackListDB';
 import * as bcrypt from 'bcrypt';
 import jwt from "jsonwebtoken"
 import { config } from 'dotenv';
-import Organization from './Organization';
 config();
 
 export default class Manager {
@@ -14,12 +13,15 @@ export default class Manager {
   
   async Post() {
     const password = await bcrypt.hash(this.props.password, 6);
-    return this.model.create({
-      name: this.name,
-      type: this.type,
+    const isManager = await ManagerModel.find({name: this.props.name})
+    if(isManager.length != 0)
+      throw new Error("Um usuário com este nome já existe")
+    return  await this.model.create({
+      name: this.props.name,
+      type: this.props.type,
       password: password,
-      organizationId: this.organizationId,
-    }, {new:true});
+      organizationId: this.props.organizationId,
+    });
   }
   
   static async GetOne(managerId) {
@@ -58,7 +60,7 @@ static async Login(user: string, password: string) {
       throw new Error('Senha não informada')
     const manager = await ManagerModel.find({name: user})
     if(!manager)
-      throw new Error('Nome de usuário não informado ou inválido!')
+      throw new Error('Nome de usuário inválido!')
       const passwordIsValid = bcrypt.compare(password, manager[0]['password'])
     if(passwordIsValid) {
       const token = jwt.sign({managerEntity: manager['id'], organizationId: manager['organizationId']}, process.env.secretJWTkey, {expiresIn: '7d'});

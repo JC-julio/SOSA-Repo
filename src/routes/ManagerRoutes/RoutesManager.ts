@@ -16,7 +16,7 @@ router.delete('/Admin/:idOrganization/:id', loginRequired, ManagerController.Del
 
 router.put('/Admin/:idOrganization/:id', loginRequired, ManagerController.Update);
 
-router.post('/Admin/Login', ManagerController.Login);
+router.post('/Admin', ManagerController.Login);
 
 router.post('/Admin/Logout/:token', loginRequired, ManagerController.Logout);
 

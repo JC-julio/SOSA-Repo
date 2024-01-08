@@ -27,7 +27,12 @@ export default class Student{
     }
 
     static async GetByClassName(className, idOrganization){
-        const Class = await studentsModel.find({ $and: [ { className:className }, { organizationId:idOrganization }] });
+        const Class = await studentsModel.find({
+            $and: [
+              { className: {$eq: className} },
+              { organizationId: idOrganization }
+            ]
+          });
         if(!Class)
             throw new Error('Estudante não encontrado!')
         return Class.map((Data) => ({
@@ -37,7 +42,7 @@ export default class Student{
             organizationId: Data.organizationId,
             id: Data.id,
         }))
-        }
+    }
 
     static async Delete(studentId){
         await studentsModel.findByIdAndDelete(studentId);

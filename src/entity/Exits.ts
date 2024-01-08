@@ -16,12 +16,31 @@ export default class Exits {
       observes: this.observes,
       dateExit: this.dateExit,
       confirmExit: this.confirmExit,
+    }, {new:true});
+  }
+  
+  static async GetOne(ExitID) {
+    const exit = await ExitsModel.findById(ExitID);
+    if (!exit)
+      throw new error("Registro não encontrado")
+    return new Exits({
+      idStudent: exit.idStudent,
+      idWorker: exit.idWorker,
+      organizationId: exit.organizationId,
+      time: exit.time,
+      observes: exit.observes,
+      dateExit: exit.dateExit,
+      confirmExit: exit.confirmExit,
+      id: exit.id,
     });
   }
 
-  static async GetExits(DateInit: Date, DateEnd: Date) {
+  static async GetExits(DateInit: Date, DateEnd: Date, idOrganization: String) {
     const saidas = await ExitsModel.find({
-      dateExit: { $gte: DateInit, $lte: DateEnd },
+      $and: [
+      {dateExit: { $gte: DateInit, $lte: DateEnd } },
+      {organizationId: { $eq: idOrganization } },
+    ]
     });
     // Mapeia cada item e ordena dentro da função map
     const formattedExits = saidas.map((Data) => ({
@@ -37,24 +56,9 @@ export default class Exits {
     return formattedExits;
   }
   
-  static async GetOne(ExitID) {
-    const exit = await ExitsModel.findById(ExitID);
-    if (!exit)
-      throw new error("Usuario não encontrado")
-    return new Exits({
-      idStudent: exit.idStudent,
-      idWorker: exit.idWorker,
-      organizationId: exit.organizationId,
-      time: exit.time,
-      observes: exit.observes,
-      dateExit: exit.dateExit,
-      confirmExit: exit.confirmExit,
-      id: exit.id,
-    });
-  }
 
-  static async GetAll(){
-    const exits = await ExitsModel.find();
+  static async GetAll(idOrganization){
+    const exits = await ExitsModel.find({organizationId: idOrganization});
     return exits.map((Data) => ({
       idStudent: Data.idStudent,
       idWorker: Data.idStudent,
@@ -68,8 +72,9 @@ export default class Exits {
        //manager.ts :)  
   }
 
-  static async DeleteAll(){
-    await ExitsModel.deleteMany();
+  static async DeleteAll(idOrganization){
+    const ExitsByOrgazanizationId = ExitsModel.find({organizationId: idOrganization})
+    await ExitsByOrgazanizationId.deleteMany();
   }
 
   async Update() {

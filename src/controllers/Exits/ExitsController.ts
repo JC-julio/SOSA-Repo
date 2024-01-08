@@ -14,8 +14,8 @@ export default class ExitsController {
                 dateExit: dateExit,
                 confirmExit: confirmExit,
         });
-            const exitID = (await Exit.Post())._id;
-            res.status(201).json({Id: exitID});
+            const exit = (await Exit.Post());
+            res.status(201).send(exit)
             } catch(error) {
                 console.error(error);
                 res.send(500).json({msg: error.message})    
@@ -30,8 +30,18 @@ export default class ExitsController {
                 res.status(401).json({msg: 'rota inacessivel'})
             res.status(226).send(returnExit);
         } catch(error) {
-            console.error(error);
-            res.send(500).json({msg: error.message});
+            let errorNumber: number;
+            switch( error.msg ){
+                case 'Registro não encontrado': {
+                    errorNumber = 404
+                    break
+                }
+                default: {
+                    errorNumber = 500
+                    break
+                }
+            }
+            res.status(errorNumber).json({msg: error.message})
         }
     }
     
@@ -39,12 +49,10 @@ export default class ExitsController {
         try{
             const dateInit = new Date(req.params.dateInit);
             const dateEnd = new Date(req.params.dateEnd);
-            const returnExits = await StudentClass.GetExits(dateInit, dateEnd);
-            const filterExitByOrganizationId = returnExits.filter(exits => 
-            req.params.idOrganization.includes(exits.organizationId));
-            if (filterExitByOrganizationId.length == 0)
+            const returnExits = await StudentClass.GetExits(dateInit, dateEnd, req.params.idOrganization);
+            if (returnExits.length == 0)
                 res.status(404).json({msg: 'nenhuma saida encontrada!'})
-            filterExitByOrganizationId.map((Data) => ({
+            returnExits.map((Data) => ({
                 idStudent: Data.idStudent,
                 idWorker: Data.idWorker,
                 organizationId: Data.organizationId,
@@ -54,7 +62,7 @@ export default class ExitsController {
                 confirmExit: Data.confirmExit,
                 id: Data.id,
             }))
-              res.status(226).send(filterExitByOrganizationId);
+              res.status(226).send(returnExits);
         } catch(error) {
             console.error(error);
             res.status(500).json({msg: error.message})
@@ -63,12 +71,10 @@ export default class ExitsController {
 
     static async GetAll(req: Express.Request, res: Express.Response) {
         try {
-            const returnExits = await StudentClass.GetAll();
-            const filterExitByOrganizationId = returnExits.filter(exits =>
-            req.params.idOrganization.includes(exits.organizationId));
-            if(filterExitByOrganizationId.length == 0)
+            const returnExits = await StudentClass.GetAll(req.params.idOrganization);
+            if(returnExits.length == 0)
                 res.status(404).json({msg: 'nenhuma saida encontrada'})
-            filterExitByOrganizationId.map((Data) => ({
+            returnExits.map((Data) => ({
                 idStudent: Data.idStudent,
                 idWorker: Data.idWorker,
                 organizationId: Data.organizationId,
@@ -78,7 +84,7 @@ export default class ExitsController {
                 confirmExit: Data.confirmExit,
                 id: Data.id,
               }))
-              res.status(226).send(filterExitByOrganizationId);
+              res.status(226).send(returnExits);
         } catch(error) {
             console.error(error);
             res.status(500).json({msg: error.message})
@@ -87,7 +93,7 @@ export default class ExitsController {
 
     static async DeleteAll(req: Express.Request, res: Express.Response) {
         try {
-            await StudentClass.DeleteAll();
+            await StudentClass.DeleteAll(req.params.idOrganization);
             res.status(200).end();
         } catch(error){
             console.error(error);
@@ -107,8 +113,18 @@ export default class ExitsController {
         await exit.Update(); 
         res.status(200).end()
         } catch(error) {
-            console.error(error)
-            res.status(500).json({msg: error.message})
+            let errorNumber: number;
+            switch( error.msg ){
+                case 'Registro não encontrado': {
+                    errorNumber = 404
+                    break
+                }
+                default: {
+                    errorNumber = 500
+                    break
+                }
+            }
+            res.status(errorNumber).json({msg: error.message})
         }
     }
 }

@@ -14,7 +14,7 @@ test('deve testar a classe exits', async () => {
     const input = {
       name: 'Julião',
       className: '2022 A TI',
-      type: 'Não autorizado',
+      type: true,
       organizationId: idOrganization,
     }
     const student = new Student(input);
@@ -34,11 +34,11 @@ test('Deve testar o post e o GetOne da classe Students', async () => {
     const input = {
         name: 'Julião',
         className: '2022 A TI',
-        type: 'Não autorizado',
+        type: true,
         organizationId: idOrganization,
 };
     const ForStudent = new Student(input);
-    const StudentID = (await ForStudent.Post())._id;
+    const StudentID = (await ForStudent.Post());
     const GetStudent = await Student.GetOne(StudentID);
     expect(GetStudent.name).toBe(input.name);
     expect(GetStudent.className).toBe(input.className);
@@ -57,25 +57,25 @@ test('Deve testar a função que pega todas as turmas que tiverem o mesmo nome d
     const input = {
         name: 'Julio César Aguiar',
         className: '2022 B TI',
-        type: 'Não autorizado',
+        type: true,
         organizationId: idOrganization,
     };
 
     const input1 = {
         name: 'Thiciane Frata Borges',
         className: '2022 B TI',
-        type: 'Autorizado',
+        type:true,
         organizationId: idOrganization,
     };
-    const studentinput = new Student(input);
-    const studentResult = (await studentinput.Post()).className;
-    const studentinput1 = new Student(input1);
-    await studentinput1.Post();
-    const Students = await Student.GetByClassName(studentResult);
+    const studentInput = new Student(input);
+    const studentResult = (await studentInput.Post());
+    const studentInput1 = new Student(input1);
+    await studentInput1.Post();
+    const Students = await Student.GetByClassName(studentInput.className, idOrganization);
     console.log(Students)
     const ReturnStudents = Students.find((Element) => Element.className == input.className);
-    expect(ReturnStudents.name).toBe(input.name);
+    expect(ReturnStudents!.name).toBe(input.name);
     const ReturnStudents1 = Students.find((Element) => Element.className == input1.className);
-    expect(ReturnStudents1.className).toBe(input1.className);
+    expect(ReturnStudents1!.className).toBe(input1.className);
     await mongoose.connection.close();
 }, 15000)

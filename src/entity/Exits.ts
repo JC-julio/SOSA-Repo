@@ -39,7 +39,7 @@ export default class Exits {
     const saidas = await ExitsModel.find({
       $and: [
       {dateExit: { $gte: DateInit, $lte: DateEnd } },
-      {organizationId: { $eq: idOrganization } },
+      {organizationId: idOrganization},
     ]
     });
     // Mapeia cada item e ordena dentro da função map

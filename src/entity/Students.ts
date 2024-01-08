@@ -10,7 +10,7 @@ export default class Student{
             className: this.className,
             type: this.type,
             organizationId: this.organizationId,
-        })
+        }, {new:true})
     }
 
     static async GetOne(studentId) {
@@ -26,8 +26,10 @@ export default class Student{
         })
     }
 
-    static async GetByClassName(className){
-        const Class = await studentsModel.find({className: className});
+    static async GetByClassName(className, idOrganization){
+        const Class = await studentsModel.find({ $and: [ { className:className }, { organizationId:idOrganization }] });
+        if(!Class)
+            throw new Error('Estudante não encontrado!')
         return Class.map((Data) => ({
             name: Data.name,
             type: Data.type,
@@ -55,10 +57,10 @@ export default class Student{
         return this.props.className;
     }
 
-    public get type(): String {
+    public get type(): boolean {
         return this.props.type;
     }
-
+    
     public get id(): string {
         return this.props.id;
     }
@@ -75,7 +77,7 @@ export default class Student{
         this.props.className = className;
     }
 
-    public set type(type: string){
+    public set type(type: boolean){
         this.props.type = type;
     }
 }
@@ -83,7 +85,7 @@ export default class Student{
 export type StudentDto = {
     name: string,
     className: string,
-    type: string,
+    type: boolean,
     organizationId: string,
     id?: string,
 }

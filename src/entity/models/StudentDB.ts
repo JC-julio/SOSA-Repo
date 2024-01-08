@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const StudentSchema = new mongoose.Schema({
     name: String,
     className: String,
-    type: String,
+    type: Boolean,
     organizationId: String,
 })
 

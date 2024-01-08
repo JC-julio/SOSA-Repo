@@ -7,8 +7,8 @@ export default class StudentController {
             const {name, className, type} = req.body;
             const { idOrganization } = req.params;
             const student = new Student({name: name, className: className, type: type, organizationId:idOrganization})
-            const studentID = (await student.Post())._id;
-            res.status(201).json({Id: studentID});
+            const newStudent = (await student.Post())
+            res.status(201).send(newStudent)
         } catch(error){
             console.error(error);
             res.status(500).json({msg: error.message});
@@ -23,19 +23,25 @@ export default class StudentController {
             res.status(401).json({msg: 'rota inacessivel'})
           res.status(200).send(returnStudent);
         } catch(error){
-          console.error(error);
-          res.status(500).json({msg: error.message});
-        }
+          let errorNumber: number;
+          switch( error.msg ){
+              case 'Estudante não encontrado!': {
+                  errorNumber = 404
+                  break
+              }
+              default: {
+                  errorNumber = 500
+                  break
+              }
+          }
+          res.status(errorNumber).json({msg: error.message})
+      }
       }
 
     static async GetByClassName(req:Express.Request, res:Express.Response) {
         try{
             const ClassName = req.params.ClassName;
-            const returnsClass = await Student.GetByClassName(ClassName);
-            const FilterClassByOrganizationId = returnsClass.filter(turm => 
-            req.params.idOrganization.includes(turm.organizationId));
-            if(FilterClassByOrganizationId.length == 0)
-              res.status(404).json({msg: 'nenhum estudante encontrado'})
+            const returnsClass = await Student.GetByClassName(ClassName, req.params.idOrganization);
             returnsClass.map((Data) => ({
                 name: Data.name,
                 type: Data.type,
@@ -45,9 +51,19 @@ export default class StudentController {
             }))
             res.status(226).send(returnsClass);
         } catch(error){
-            console.error(error)
-            res.status(500).json({msg: error.message})
-        }
+          let errorNumber: number;
+          switch( error.msg ){
+              case 'Estudante não encontrado!': {
+                  errorNumber = 404
+                  break
+              }
+              default: {
+                  errorNumber = 500
+                  break
+              }
+          }
+          res.status(errorNumber).json({msg: error.message})
+      }
     }
 
     static async Delete(req:Express.Request, res:Express.Response) {
@@ -58,27 +74,47 @@ export default class StudentController {
               res.status(401).json({msg: 'rota inacessivel'})
             await Student.Delete(StudentID);
             res.status(200).end()
-        } catch(error) {
-            console.error(error);
-            res.status(500).json({msg: error.message});
-        }
+        } catch(error){
+          let errorNumber: number;
+          switch( error.msg ){
+              case 'Estudante não encontrado!': {
+                  errorNumber = 404
+                  break
+              }
+              default: {
+                  errorNumber = 500
+                  break
+              }
+          }
+          res.status(errorNumber).json({msg: error.message})
+      }
     }
     
     static async Update(req:Express.Request, res:Express.Response) {
-            try {
-            const student = await Student.GetOne(req.params.id);
-            if(student.organizationId != req.params.idOrganization)
-              res.status(401).json({msg: 'rota inacessivel'})
-            if (student.type == 'Autorizado'){ 
-              student.type = 'Não autorizado';
-            } else { 
-              student.type = 'Autorizado';
-            }  
-              await student.Update();
-              res.status(200).end();
-            } catch (error) {
-              console.error(error);
-              res.status(500).json({ error: error.message });
-            }
+      try {
+        const student = await Student.GetOne(req.params.id);
+        if(student.organizationId != req.params.idOrganization)
+          res.status(401).json({msg: 'rota inacessivel'})
+        if (student.type == false){ 
+          student.type = true;
+        } else { 
+          student.type = false;
+        }  
+         await student.Update();
+        res.status(200).end();
+      } catch (error){
+        let errorNumber: number;
+        switch( error.msg ){
+          case 'Estudante não encontrado!': {
+          errorNumber = 404
+        break
+        }
+          default: {
+          errorNumber = 500
+        break
     }
+  }
+  res.status(errorNumber).json({msg: error.message})
+    }
+  }
 }

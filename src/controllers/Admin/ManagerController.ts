@@ -9,8 +9,8 @@ export default class ManagerController {
       const { name, password, type, } = req.body;
       const { idOrganization } = req.params
       const manager = new Manager({ name: name, password: password, type: type, organizationId:idOrganization });
-      const managerId = (await manager.Post())._id;
-      res.status(200).json({Id: managerId});
+      const newManager = (await manager.Post());
+      res.status(200).send(newManager)
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: error.message });
@@ -24,24 +24,32 @@ export default class ManagerController {
       if (returnManager.organizationId != req.params.organizationId)
        return res.status(401).json({msg: 'rota inacessivel'})
       res.status(226).send(returnManager);
-    } catch(error){
-      console.error(error);
-      res.status(500).json({msg: error.message});
-    }
+    } catch(error) {
+      let errorNumber: number;
+      switch( error.msg ){
+          case 'Administrador não encontrado': {
+              errorNumber = 404
+              break
+          }
+          default: {
+              errorNumber = 500
+              break
+          }
+      }
+      res.status(errorNumber).json({msg: error.message})
+  }
   }
 
   static async GetAll(req: Express.Request, res: Express.Response) {
     try {
-      const managers = await Manager.GetAll();
-      const ManagerByOrganzationId = managers.filter(Admin =>
-      req.params.idOrganization.includes(Admin.organizationId));
-      ManagerByOrganzationId.map((ManagersDto) => ({
-      name: ManagersDto.name,
-      type: ManagersDto.type,
-      organizationId: ManagersDto.organizationId,
-      id: ManagersDto.id,
+      const managers = await Manager.GetAll(req.params.idOrganization);
+      managers.map((ManagersDto) => ({
+        name: ManagersDto.name,
+        type: ManagersDto.type,
+        organizationId: ManagersDto.organizationId,
+        id: ManagersDto.id,
      }));
-      res.status(226).send(ManagerByOrganzationId);
+      res.status(226).send(managers);
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: error.message });
@@ -56,10 +64,20 @@ export default class ManagerController {
         res.status(401).json({msg: 'rota inacessivel'})
       await Manager.Delete(managerId);
       res.status(200).end();
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: error.message });
-    }
+    } catch (error){
+      let errorNumber: number;
+      switch( error.msg ){
+          case 'Administrador não encontrado': {
+              errorNumber = 404
+              break
+          }
+          default: {
+              errorNumber = 500
+              break
+          }
+      }
+      res.status(errorNumber).json({msg: error.message})
+  }
   }
 
   static async Update(req: Express.Request, res: Express.Response) {
@@ -74,9 +92,19 @@ export default class ManagerController {
       await GetOneManager.Update();
       res.status(200).end();
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: error.message });
-    }
+      let errorNumber: number;
+      switch( error.msg ){
+          case 'Administrador não encontrado': {
+              errorNumber = 404
+              break
+          }
+          default: {
+              errorNumber = 500
+              break
+          }
+      }
+      res.status(errorNumber).json({msg: error.message})
+  }
   }
 
   static async Login(req: Express.Request, res: Express.Response) {
@@ -85,9 +113,27 @@ export default class ManagerController {
       const token = await Manager.Login(user, password);
       res.status(200).json({Token: token})
     } catch(error) {
-      console.error(error);
-      res.status(500).json({msg: error.message})
-    }
+      let errorNumber: number;
+      switch( error.msg ){
+          case 'Nome de usuário não informado': {
+              errorNumber = 400
+              break
+          }
+          case 'Senha não informada': {
+            errorNumber = 400
+            break
+          }
+          case 'Nome de usuário não informado ou inválido!': {
+            errorNumber = 401
+            break
+          }
+          default: {
+            errorNumber = 500
+            break
+          }
+      }
+      res.status(errorNumber).json({msg: error.message})
+  }
   }
 
   static async Logout(req: Express.Request, res: Express.Response) {
@@ -96,8 +142,18 @@ export default class ManagerController {
       await Manager.logout(Token);
       res.status(200).end();
     } catch(error) {
-      console.error(error);
-      res.status(500).json({msg: error.message});
-    }
+      let errorNumber: number;
+      switch( error.msg ){
+          case 'Token inválido': {
+              errorNumber = 401
+              break
+          }
+          default: {
+              errorNumber = 500
+              break
+          }
+      }
+      res.status(errorNumber).json({msg: error.message})
+  }
   }
 }

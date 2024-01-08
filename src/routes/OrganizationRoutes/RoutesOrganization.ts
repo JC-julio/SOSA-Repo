@@ -1,5 +1,5 @@
 import express from 'express';
-import OrganizationController from '../../controllers/OrganizationManagement/OrganizationController';
+import OrganizationController from '../../controllers/Organization/OrganizationController';
 import { loginRequired } from '../../middlewares/middlewareDeLogin';
 //all right
 

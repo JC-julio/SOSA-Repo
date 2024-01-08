@@ -11,7 +11,7 @@ export default class Manager {
   TokenDB = TokenModel;
   
   constructor(private props: ManagerDto) {}
-
+  
   async Post() {
     const password = await bcrypt.hash(this.props.password, 6);
     return this.model.create({
@@ -19,14 +19,43 @@ export default class Manager {
       type: this.type,
       password: password,
       organizationId: this.organizationId,
-    });
+    }, {new:true});
   }
   
-  static async Login(user: string, password: string) {
+  static async GetOne(managerId) {
+    const manager = await ManagerModel.findById(managerId);
+    if (!manager)
+    throw new Error('Administrador não encontrado')
+  return new Manager({
+    name: manager.name,
+    type: manager.type,
+    organizationId: manager.organizationId,
+    id: manager.id,
+  });
+}
+
+static async GetAll(idOrganization) {
+  const managers = await ManagerModel.find({organizationId: idOrganization});
+  return managers.map(
+    (Data) => new Manager({ name: Data.name, type: Data.type, id: Data.id, organizationId: Data.organizationId }),
+  ); //transformar em nova lista
+}
+
+static async Delete(managerId) {
+  await ManagerModel.findByIdAndDelete(managerId);
+}
+
+async Update() {
+  await ManagerModel.findByIdAndUpdate(this.id, {
+    type: this.type,
+  });
+}
+
+static async Login(user: string, password: string) {
     if(!user)
-      throw new Error('Nome de usuário não informado ou inválido!')
+      throw new Error('Nome de usuário não informado')
     if(!password)
-      throw new Error('Senha não informado ou não encontrada!')
+      throw new Error('Senha não informada')
     const manager = await ManagerModel.find({name: user})
     if(!manager)
       throw new Error('Nome de usuário não informado ou inválido!')
@@ -55,33 +84,6 @@ export default class Manager {
     }
   }
   
-  static async GetOne(managerId) {
-    const manager = await ManagerModel.findById(managerId);
-    if (!manager)
-    return new Manager({
-      name: manager.name,
-      type: manager.type,
-      organizationId: manager.organizationId,
-      id: manager.id,
-    });
-  }
-
-  static async GetAll() {
-    const managers = await ManagerModel.find();
-    return managers.map(
-      (Data) => new Manager({ name: Data.name, type: Data.type, id: Data.id, organizationId: Data.organizationId }),
-    ); //transformar em nova lista
-  }
-
-  static async Delete(managerId) {
-    await ManagerModel.findByIdAndDelete(managerId);
-  }
-
-  async Update() {
-    await ManagerModel.findByIdAndUpdate(this.id, {
-      type: this.type,
-    });
-  }
 
   public get name(): string {
     return this.props.name;

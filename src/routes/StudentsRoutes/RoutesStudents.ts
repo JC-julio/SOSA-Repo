@@ -1,6 +1,6 @@
 import express from 'express';
 import StudentsController from '../../controllers/Students/StudentsController';
-import { loginRequired } from 'src/middlewares/middlewareDeLogin';
+import { loginRequired } from '../../middlewares/middlewareDeLogin';
 //all right
 const router = express.Router();
 

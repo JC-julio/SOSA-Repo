@@ -32,23 +32,30 @@ export default class OrganizationManagement{
                 return res.status(403).json({msg: 'rota inacessivel'});
             res.status(226).send(organization);
         } catch(error) {
-            console.error(error)
-            res.status(500).json({msg: error.message})
+            let errorNumber: number;
+            switch( error.msg ){
+                case 'Organização não encontrada!': {
+                    errorNumber = 404
+                    break
+                }
+                default: {
+                    errorNumber = 500
+                    break
+                }
+            }
+            res.status(errorNumber).json({msg: error.message})
         }
     }
     static async GetAll(req: Express.Request, res: Express.Response) {
         try{
-            const organizations = await Organization.GetAll();
-                const FilterOrganizations = organizations.filter(organizacao =>
-                req.params.idOrganization.includes(organizacao.id)
-                );
-                if (FilterOrganizations.length == 0)
-                    res.status(404).json({msg: 'nenhuma organização encontrada'})
-            FilterOrganizations.map((Data) => ({
+            const organizations = await Organization.GetAll(req.params.idOrganization);
+            if (organizations.length == 0)
+                res.status(404).json({msg: 'nenhuma organização encontrada'})
+            organizations.map((Data) => ({
                 name: Data.name,
                 id: Data.id,
             }))    
-            res.status(226).send(FilterOrganizations);
+            res.status(226).send(organizations);
         } catch(error) {
             console.error(error);
             res.status(500).json({msg: error.message});
@@ -62,9 +69,19 @@ export default class OrganizationManagement{
                 return res.status(403).json({msg: 'rota inacessivel'});
             await Organization.Delete(personId);
             res.status(200).end()
-        } catch(error) {
-            console.error(error);
-            res.status(500).json({msg: error.message});
+        } catch(error){
+            let errorNumber: number;
+            switch( error.msg ){
+                case 'Organização não encontrada!': {
+                    errorNumber = 404
+                    break
+                }
+                default: {
+                    errorNumber = 500
+                    break
+                }
+            }
+            res.status(errorNumber).json({msg: error.message})
         }
     }
 }

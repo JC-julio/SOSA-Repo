@@ -55,7 +55,7 @@ export default class Exits {
     })).sort((a, b) => a.dateExit.getTime() - b.dateExit.getTime());
     return formattedExits;
   }
-  
+
 
   static async GetAll(idOrganization){
     const exits = await ExitsModel.find({organizationId: idOrganization});

@@ -5,190 +5,174 @@ axios.defaults.validateStatus = function () {
     return true;
   };
 
-  async function Login() {
-    const input = {
+  async function login(organizationId?) {
+    const randomUser = Math.random().toString(36).slice(-10);
+    const randomUser1 = Math.random().toString(36).slice(-10);
+    const dataPostOrganization = {
       organization: {
           name: 'CAED Cacoal'
       },
       manager: {
-          name: 'input do login',
+          name: randomUser,
           password: '12345678',
           type: 'Servidor da CAED',
       }
   }
-  const inputLogin = {
-    user : input.manager.name,
-    password: input.manager.password
-  }
-  const organizationPost = await axios.post('http://localhost:3000/Organization',
-  input);
-  const newLogin = await axios.post('http://localhost:3000/Organization/' + organizationPost.data.organizationId + '/Login',
-  inputLogin
-  )
-  const returnLogin = {
-    organizationId: organizationPost.data.organizationId,
-    managerId: organizationPost.data.managerId,
-    token: newLogin.data.Token,
-  };
-  return returnLogin;
+    const inputLogin = {
+      user : dataPostOrganization.manager.name,
+      password: dataPostOrganization.manager.password
+    }
+    const inputPostManager = {
+      name: randomUser1,
+      password: dataPostOrganization.manager.password,
+      type: dataPostOrganization.manager.type
+    }
+    const organizationPost = await axios.post('http://localhost:3000/Organization',
+    dataPostOrganization);
+    // console.log(organizationPost.data)
+    const AxiosOutput = await axios.post(
+      'http://localhost:3000/Admin',
+      inputLogin
+    );
+    const managerPost = await axios.post(
+      'http://localhost:3000/Admin/' + organizationId, inputPostManager,
+      {
+        headers: {authorization: AxiosOutput.data.Token}
+      },
+    )
+    const ObjectLogin = {
+      organizationId : organizationPost.data.organizationId,
+      manager: organizationPost.data.manager,
+      managerId: organizationPost.data.managerId,
+      token : AxiosOutput.data.Token
+    }
+    return ObjectLogin
   }
 
-test("Deve testar o post da classe de estudantes da API", async() => {
-  const loginData = await Login()
-  const token = loginData.token
-  console.log(loginData)
-  console.log(token)
+test("Deve testar o post e o GetOne da classe de estudantes da API", async() => {
+  const newLogin = await login()
+  const organizationId = newLogin.organizationId
   const postParam = {
       name: 'Julio César Aguiar',
-      classStudent: '2022 A TI',
-      type: 'Autorizado'
+      className: '2022 A TI',
+      type: false
   }
-  const AxiosPost = await axios.post('http://localhost:3000/Organization/' + loginData.organizationId + '/Student',
+  const AxiosPost = await axios.post('http://localhost:3000/Student/' + organizationId ,
   postParam,
   {
-    headers: {authorization: loginData.token}
+    headers: {authorization: newLogin.token}
   },
-  );    
+  );
+  console.log(AxiosPost.data.studentId)    
   const AxiosGetOne = await axios.get(
-      'http://localhost:3000/Organization/'+ loginData.organizationId + '/Student/' + AxiosPost.data.Id,
+      'http://localhost:3000/Student/'+ organizationId + '/' + AxiosPost.data.studentId,
       {
-        headers: {authorization: token}
+        headers: {authorization: newLogin.token}
       },
     );
   console.log(AxiosGetOne.data)
   expect(AxiosGetOne.data.props.name).toBe(postParam.name);
-  expect(AxiosGetOne.data.props.classStudent).toBe(postParam.classStudent);
+  expect(AxiosGetOne.data.props.className).toBe(postParam.className);
   expect(AxiosGetOne.data.props.type).toBe(postParam.type);
 }, 15000);
 
-// test("Deve testar o GetbyClassName da classe de estudantes da API", async() => {
-//     const input = {
-//         name: 'input do post',
-//         password: '12345678',
-//         type: 'Servidor da CAED',
-//       };
-//       const AxioPost = await axios.post(
-//         'https://sosa-repo.vercel.app/AdminManagement',
-//         input
-//       );
-    
-//       const login = {
-//         user: input.name,
-//         password: input.password,
-//       }
-    
-//       const AxiosLogin = await axios.post(
-//         'https://sosa-repo.vercel.app/Login',
-//          login,
-//       )
-//       const token = AxiosLogin.data.Token;
-//       //login^
+test("Deve testar o GetbyClassName da classe de estudantes da API", async() => {
+  const newLogin = await login()
+  const organizationId = newLogin.organizationId
 
-//       const PostParam = {
-//         name: 'Thicianae Frata Borges',
-//         classStudent: '2022 B TI',
-//         type: 'Autorizado'
-//         }
-//         const AxiosPost = await axios.post('https://sosa-repo.vercel.app/Student', PostParam);    
-//         //post para testar o GetOne^
+      const PostParam = {
+        name: 'Thicianae Frata Borges',
+        className: '2022 B TI',
+        type: false,
+        }
+        const AxiosPost = await axios.post('http://localhost:3000/Student/'+ organizationId, PostParam,
+        {
+          headers: {authorization: newLogin.token}
+        },
+        );
+        const postParamTwo = {
+          name: 'Júlio César Aguiar',
+          className: '2022 B TI',
+          type: true
+        }   
+        const axiosPostTwo = await axios.post('http://localhost:3000/Student/' + organizationId, postParamTwo,
+        {
+          headers: {authorization: newLogin.token}
+        },
+        )
+        const studentsGetByClassName = await axios.get('http://localhost:3000/StudentGet/' + organizationId + '/' + PostParam.className,
+        {
+            headers: {authorization: newLogin.token}
+          },
+        )
+        console.log(studentsGetByClassName.data)
+        expect(studentsGetByClassName).toBeDefined();
+}, 15000);
 
-//         const ReturnStudents = await axios.get('https://sosa-repo.vercel.app/Student/Class/' + PostParam.classStudent,
-//         {
-//             headers: {authorization: token}
-//           },
-//         )
-//         expect(ReturnStudents).toBeDefined();
-// }, 15000);
+test("Deve testar o método Delete da classe de estudantes da API", async() => {
+  const newLogin = await login()
+  const organizationId = newLogin.organizationId
+  const PostParam = {
+    name: 'Thicianae Frata Borges',
+    classStudent: '2022 B TI',
+    type: 'Autorizado'
+    }
+    const postParamTwo = {
+      name: 'Júlio César Aguiar',
+      className: '2022 B TI',
+      type: true
+    }   
+    const axiosPostTwo = await axios.post('http://localhost:3000/Student/' + organizationId, postParamTwo,
+    {
+      headers: {authorization: newLogin.token}
+    }
+    )
 
-// test("Deve testar o método Delete da classe de estudantes da API", async() => {
-//     const input = {
-//         name: 'input do post',
-//         password: '12345678',
-//         type: 'Servidor da CAED',
-//       };
-//       const AxioPost = await axios.post(
-//         'https://sosa-repo.vercel.app/AdminManagement',
-//         input
-//       );
-    
-//       const login = {
-//         user: input.name,
-//         password: input.password,
-//       }
-    
-//       const AxiosLogin = await axios.post(
-//         'https://sosa-repo.vercel.app/Login',
-//          login,
-//       )
-//       const token = AxiosLogin.data.Token;
-//       //login^
-//       const PostParam = {
-//         name: 'Thicianae Frata Borges',
-//         classStudent: '2022 B TI',
-//         type: 'Autorizado'
-//         }
-//         const AxiosPost = await axios.post('https://sosa-repo.vercel.app/Student', PostParam);    
-//         //post para testar o GetOne^
+    const DeleteStudent = await axios.delete('http://localhost:3000/Student/'+ organizationId + '/' + axiosPostTwo.data.studentId,
+    {
+        headers: {authorization: newLogin.token}
+      },
+    );
+    //Delete
+    const AxiosGetOne = await axios.get(
+        'http://localhost:3000/Student/'+ organizationId + '/' + axiosPostTwo.data.studentId,
+        {
+          headers: {authorization: newLogin.token}
+        },
+    );
+    expect(AxiosGetOne.data.msg).toBe("Estudante não encontrado!");
+}, 15000)
 
-//         const DeleteStudent = await axios.delete('https://sosa-repo.vercel.app/Student/' + AxiosPost.data.Id,
-//         {
-//             headers: {authorization: token}
-//           },
-//         );
-//         //Delete
-//         const AxiosGetOne = await axios.get(
-//             'https://sosa-repo.vercel.app/Student/'+ AxiosPost.data.Id,
-//             {
-//               headers: {authorization: token}
-//             },
-//         );
-//         expect(AxiosGetOne.data.msg).toBe("Estudante não encontrado!");
-// }, 15000)
+test("Deve testar o Update da classe de estudantes da API", async() => {
+  const newLogin = await login()
+  const managerId = newLogin.managerId
+  const organizationId = newLogin.organizationId
+  const PostParam = {
+    name: 'Thicianae Frata Borges',
+    className: '2022 B TI',
+    type: false,
+  }
+    const AxiosPost = await axios.post('http://localhost:3000/Student/' + organizationId, PostParam,
+    {
+      headers: {authorization: newLogin.token}
+    },
+    );    
+    //post para testar o Update
 
-// test("Deve testar o Update da classe de estudantes da API", async() => {
-//     const input = {
-//         name: 'input do post',
-//         password: '12345678',
-//         type: 'Servidor da CAED',
-//       };
-//       const AxioPost = await axios.post(
-//         'https://sosa-repo.vercel.app/AdminManagement',
-//         input
-//       );
-    
-//       const login = {
-//         user: input.name,
-//         password: input.password,
-//       }
-    
-//       const AxiosLogin = await axios.post(
-//         'https://sosa-repo.vercel.app/Login',
-//          login,
-//       )
-//       const token = AxiosLogin.data.Token;
-//       //login^
-//       const PostParam = {
-//         name: 'Thicianae Frata Borges',
-//         classStudent: '2022 B TI',
-//         type: 'Autorizado',
-//         }
-//         const AxiosPost = await axios.post('https://sosa-repo.vercel.app/Student', PostParam);    
-//         //post para testar o Update
-
-//         const AxiosPut = await axios.put('https://sosa-repo.vercel.app/Student/' + AxiosPost.data.Id,
-//         {},
-//         {
-//             headers: {authorization: token}
-//           },
-//         );
-//         //Update^
-//         const AxiosGetOne = await axios.get(
-//             'https://sosa-repo.vercel.app/Student/'+ AxiosPost.data.Id,
-//             {
-//               headers: {authorization: token}
-//             },
-//         );
-//         //GetOne para testar o Update
-//         console.log(AxiosGetOne.data.props.type)
-//         expect(AxiosGetOne.data.props.type).toBe('Não autorizado');
-// }, 15000);
+    const AxiosPut = await axios.put('http://localhost:3000/Student/' + organizationId + '/' + AxiosPost.data.studentId,
+    {},
+    {
+        headers: {authorization: newLogin.token}
+      },
+    );
+    //Update^
+    const AxiosGetOne = await axios.get(
+      'http://localhost:3000/Student/'+ organizationId + '/' + AxiosPost.data.studentId,
+      {
+        headers: {authorization: newLogin.token}
+      },
+  );
+    //GetOne para testar o Update
+    // console.log(AxiosGetOne.data.props.type)
+    expect(AxiosGetOne.data.props.type).toBe(true);
+}, 15000);

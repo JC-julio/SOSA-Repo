@@ -7,41 +7,54 @@ const delay = (delayInms) => {
 axios.defaults.validateStatus = function () {
 return true;
 };
-async function login() {
-    const input = {
+async function login(organizationId?) {
+    const randomUser = Math.random().toString(36).slice(-10);
+    const randomUser1 = Math.random().toString(36).slice(-10);
+    const dataPostOrganization = {
       organization: {
           name: 'CAED Cacoal'
       },
       manager: {
-          name: 'input do login',
+          name: randomUser,
           password: '12345678',
           type: 'Servidor da CAED',
       }
   }
-  const inputLogin = {
-    user : input.manager.name,
-    password: input.manager.password
-  }
-  console.log(inputLogin)
-  const organizationPost = await axios.post('http://localhost:3000/Organization',
-  input);
-  console.log(organizationPost.data)
-  await delay(1000)
-  const newLogin = await axios.post('http://localhost:3000/Admin/Login',
-  inputLogin
-  );
-  console.log(newLogin.data.msg)
-//   const returnLogin = {
-//     organizationId: organizationPost.data.organizationId,
-//     managerId: organizationPost.data.manager,
-//     token: newLogin.data.Token,
-//   };
-//   console.log(returnLogin)
-//   return returnLogin;
+    const inputLogin = {
+      user : dataPostOrganization.manager.name,
+      password: dataPostOrganization.manager.password
+    }
+    const inputPostManager = {
+      name: randomUser1,
+      password: dataPostOrganization.manager.password,
+      type: dataPostOrganization.manager.type
+    }
+    const organizationPost = await axios.post('http://localhost:3000/Organization',
+    dataPostOrganization);
+    // console.log(organizationPost.data)
+    const AxiosOutput = await axios.post(
+      'http://localhost:3000/Admin',
+      inputLogin
+    );
+    const managerPost = await axios.post(
+      'http://localhost:3000/Admin/' + organizationId, inputPostManager,
+      {
+        headers: {authorization: AxiosOutput.data.Token}
+      },
+    )
+    const ObjectLogin = {
+      organizationId : organizationPost.data.organizationId,
+      manager: organizationPost.data.manager,
+      managerId: organizationPost.data.managerId,
+      token : AxiosOutput.data.Token
+    }
+    return ObjectLogin
   }
 
 test.only('Deve testar o post da classe de saídas da API', async () => {
     const newLogin = await login()
+    const managerId = newLogin.managerId
+    const organizationId = newLogin.organizationId
     console.log(newLogin)
     const inputStudent = {
         name: 'Julio César Aguiar',
@@ -49,7 +62,7 @@ test.only('Deve testar o post da classe de saídas da API', async () => {
         type: 'Autorizado'
     }
     const PostStudent = await axios.post(
-    'https://sosa-repo.vercel.app/Student',
+    'http://localhost:3000/Exits/' + organizationId + '/' + managerId,
     inputStudent);
     //post do estudante    
 

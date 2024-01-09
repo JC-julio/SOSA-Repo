@@ -8,7 +8,8 @@ export default class StudentController {
             const { idOrganization } = req.params;
             const student = new Student({name: name, className: className, type: type, organizationId:idOrganization})
             const newStudent = (await student.Post())
-            res.status(201).send(newStudent)
+            const studentId = newStudent.id;
+            res.status(201).json({newStudent, studentId})
         } catch(error){
             console.error(error);
             res.status(500).json({msg: error.message});
@@ -40,8 +41,9 @@ export default class StudentController {
 
     static async GetByClassName(req:Express.Request, res:Express.Response) {
         try{
-            const ClassName = req.params.ClassName;
-            const returnsClass = await Student.GetByClassName(ClassName, req.params.idOrganization);
+            const returnsClass = await Student.GetByClassName(
+              req.params.className,
+              req.params.idOrganization);
             returnsClass.map((Data) => ({
                 name: Data.name,
                 type: Data.type,

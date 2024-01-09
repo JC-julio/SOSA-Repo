@@ -16,7 +16,7 @@ export default class Exits {
       observes: this.observes,
       dateExit: this.dateExit,
       confirmExit: this.confirmExit,
-    }, {new:true});
+    });
   }
   
   static async GetOne(ExitID) {

@@ -15,7 +15,8 @@ export default class ExitsController {
                 confirmExit: confirmExit,
         });
             const exit = (await Exit.Post());
-            res.status(201).send(exit)
+            const exitId = exit.id
+            res.status(201).json({exit, exitId})
             } catch(error) {
                 console.error(error);
                 res.send(500).json({msg: error.message})    

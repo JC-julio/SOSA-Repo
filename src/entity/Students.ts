@@ -10,7 +10,7 @@ export default class Student{
             className: this.className,
             type: this.type,
             organizationId: this.organizationId,
-        }, {new:true})
+        })
     }
 
     static async GetOne(studentId) {
@@ -29,10 +29,10 @@ export default class Student{
     static async GetByClassName(className, idOrganization){
         const Class = await studentsModel.find({
             $and: [
-              { className: {$eq: className} },
+              { className: className },
               { organizationId: idOrganization }
             ]
-          });
+        });
         if(!Class)
             throw new Error('Estudante não encontrado!')
         return Class.map((Data) => ({

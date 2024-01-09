@@ -19,9 +19,6 @@ export default class OrganizationManagement{
             })
             const manager = (await NewManager.Post())
             const managerId = manager.id
-            console.log(manager)
-            console.log(organizationId)
-            console.log(NewManager)
             res.status(201).json({organizationId, manager, managerId});
         } catch(error) {
             let errorNumber: number;

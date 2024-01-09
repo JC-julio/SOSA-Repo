@@ -125,22 +125,21 @@ test("Deve testar o GetExits da classe de saídas da API", async() => {
     const newStudent = await postStudent()
     const studentId = newStudent.id
       
-    // const input = {
-    //     idStudent: studentId,
-    //     idWorker: managerId,
-    //     time: 15,
-    //     observes: 'Isso aqui está nos testes de API',
-    //     dateExit: new Date('04-02-2001'),
-    //     confirmExit: false,
-    // };
-    // const AxiosPost = await axios.post(
-    //     'http://localhost:3000/ExitPost/' + organizationId + '/' + input.idStudent + '/' + input.idWorker,
-    //     input,
-    //     {
-    //         headers: {authorization: newLogin.token}
-    //     },
-    // );
-    //VER COM O GUILHERME ACIMAAAAAAA ^^^^^^^^^^^^^
+    const input = {
+        idStudent: studentId,
+        idWorker: managerId,
+        time: 15,
+        observes: 'Isso aqui está nos testes de API',
+        dateExit: new Date('04-02-2001'),
+        confirmExit: false,
+    };
+    const AxiosPost = await axios.post(
+        'http://localhost:3000/ExitPost/' + organizationId + '/' + input.idStudent + '/' + input.idWorker,
+        input,
+        {
+            headers: {authorization: newLogin.token}
+        },
+    );
     const input1 = {
         idStudent: studentId,
         idWorker: managerId,
@@ -172,7 +171,7 @@ test("Deve testar o GetExits da classe de saídas da API", async() => {
         },
     );
 //posts^
-    const GetExits = await axios.get('http://localhost:3000/Exits/' + organizationId + '/' + input1.dateExit + '/' + input2.dateExit,
+    const GetExits = await axios.get('http://localhost:3000/Exits/' + organizationId + '/' + input.dateExit + '/' + input2.dateExit,
     {
         headers: { authorization: newLogin.token },
     }
@@ -253,7 +252,7 @@ test("Deve testar o DeleteAll da classe de saídas da API", async() => {
     expect(DeleteAll.status).toBe(200)
 }, 15000)
 
-test.only("Deve testar o Update da classe de saídas da API", async() => {
+test("Deve testar o Update da classe de saídas da API", async() => {
     const newLogin = await login()
     const managerId = newLogin.managerId
     const organizationId = newLogin.organizationId

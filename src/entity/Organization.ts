@@ -20,8 +20,8 @@ export default class Organization {
         })
     }
     
-    static async GetAll(idOrganization) {
-        const organizations = await OrganizationModel.find({id:idOrganization});
+    static async GetAll() {
+        const organizations = await OrganizationModel.find();
         return organizations.map((Data) => new Organization({
             name: Data.name,
             id: Data.id,

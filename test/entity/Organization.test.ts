@@ -35,7 +35,7 @@ test("Deve testar o GetAll da classe Organization", async() => {
     }
     const person1 = new Organization(input1);
     const organizationId = (await person1.Post()).id
-    const GetAll = await Organization.GetAll(organizationId);
+    const GetAll = await Organization.GetAll();
     const returnPerson = await GetAll.find((Element) => Element.name == input.name);
     expect(returnPerson?.name).toBe(input.name);
     const returnPerson1 = await GetAll.find((Element) => Element.name == input1.name);

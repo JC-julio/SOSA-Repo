@@ -7,13 +7,14 @@ config();
 
 test('Que ele possa gerenciar os dados da classe de teste de adminitradores da classe Manager.ts', async () => {
   await mongoose.connect(process.env.connectionString as string);
+  const randomUser = Math.random().toString(36).slice(-30);
   const inputOrganization = {
     name: 'CAED ji-paraná'
   }
   const organization = new Organization(inputOrganization);
   const idOrganization = (await organization.Post()).id;
   const input = {
-    name: 'Bruna',
+    name: randomUser,
     password: '12345678',
     type: 'Servidor da CAED',
     organizationId: idOrganization,
@@ -27,13 +28,14 @@ test('Que ele possa gerenciar os dados da classe de teste de adminitradores da c
 
 test('Deve testar o post e o GetOne da classe Manager.ts', async () => {
   await mongoose.connect(process.env.connectionString as string);
+  const randomUser = Math.random().toString(36).slice(-30);
   const inputOrganization = {
     name: 'CAED ji-paraná'
   }
   const organization = new Organization(inputOrganization);
   const idOrganization = (await organization.Post()).id;
   const input = {
-    name: 'Julio',
+    name: randomUser,
     password: '12345678',
     type: 'Guarda',
     organizationId: idOrganization,  
@@ -49,6 +51,8 @@ test('Deve testar o post e o GetOne da classe Manager.ts', async () => {
 
 test('Deve testar o GetAll da entidade manager', async () => {
   await mongoose.connect(process.env.connectionString as string);
+  const randomUser = Math.random().toString(36).slice(-30);
+  const randomUser1 = Math.random().toString(36).slice(-30);
 
   const initialOrganizationInput = {
     name: 'CAED ji-paraná',
@@ -57,7 +61,7 @@ test('Deve testar o GetAll da entidade manager', async () => {
   const createdOrganizationId = (await createdOrganization.Post()).id;
 
   const initialManagerInput = {
-    name: 'Julio',
+    name: randomUser,
     password: '12345678',
     type: 'Guarda',
     organizationId: createdOrganizationId,
@@ -66,7 +70,7 @@ test('Deve testar o GetAll da entidade manager', async () => {
   await createdManager.Post()
 
   const secondManagerInput = {
-    name: 'Guilherme',
+    name: randomUser1,
     password: '12345678',
     type: 'Guarda',
     organizationId: createdOrganizationId,
@@ -75,7 +79,7 @@ test('Deve testar o GetAll da entidade manager', async () => {
   await secondManager.Post()
 
   const retrievedManagers = await Manager.GetAll(createdOrganizationId);
-  console.log(retrievedManagers)
+  // console.log(retrievedManagers)
   const retrievedManagerByName = retrievedManagers.find(
     (manager) => manager.name == initialManagerInput.name
   );
@@ -91,6 +95,8 @@ test('Deve testar o GetAll da entidade manager', async () => {
 
 
 test('Deve testar o Login e o Logout da classe Manager.ts', async () => {
+  const randomUser = Math.random().toString(36).slice(-10);
+  console.log(randomUser)
   await mongoose.connect(process.env.connectionString as string);
   const inputOrganization = {
     name: 'CAED ji-paraná'
@@ -98,7 +104,7 @@ test('Deve testar o Login e o Logout da classe Manager.ts', async () => {
   const organization = new Organization(inputOrganization);
   const idOrganization = (await organization.Post()).id;
   const input = {
-    name: 'Julio',
+    name: randomUser,
     password: '12345678',
     type: 'Guarda',
     organizationId: idOrganization,  
@@ -106,8 +112,6 @@ test('Deve testar o Login e o Logout da classe Manager.ts', async () => {
     const manager = new Manager(input)
     await manager.Post()
   
-  const NewLogin = new Manager(input);
-  NewLogin.Post();
   const token = await Manager.Login(input.name, input.password);
     expect(token).toBeTruthy(); // Verifica se o token existe
   const bannedToken = await Manager.logout(token);
@@ -115,5 +119,4 @@ test('Deve testar o Login e o Logout da classe Manager.ts', async () => {
   const foundToken = await TokenModel.findOne({ bannedToken: token });
   //  console.log(foundToken!.bannedToken)
     expect(foundToken!.bannedToken).toBe(token); // Verifica se o token invalidado foi adicionado à lista de bloqueio
-  await mongoose.connection.close();
 }, 15000);

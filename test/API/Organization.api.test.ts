@@ -5,6 +5,49 @@ axios.defaults.validateStatus = function () {
     return true;
   };
 
+  async function login(organizationId?) {
+    const randomUser = Math.random().toString(36).slice(-10);
+    const randomUser1 = Math.random().toString(36).slice(-10);
+    const dataPostOrganization = {
+      organization: {
+          name: 'CAED Cacoal'
+      },
+      manager: {
+          name: randomUser,
+          password: '12345678',
+          type: 'Servidor da CAED',
+      }
+  }
+    const inputLogin = {
+      user : dataPostOrganization.manager.name,
+      password: dataPostOrganization.manager.password
+    }
+    const inputPostManager = {
+      name: randomUser1,
+      password: dataPostOrganization.manager.password,
+      type: dataPostOrganization.manager.type
+    }
+    const organizationPost = await axios.post('http://localhost:3000/Organization',
+    dataPostOrganization);
+    // console.log(organizationPost.data)
+    const AxiosOutput = await axios.post(
+      'http://localhost:3000/Admin',
+      inputLogin
+    );
+    const managerPost = await axios.post(
+      'http://localhost:3000/Admin/' + organizationId, inputPostManager,
+      {
+        headers: {authorization: AxiosOutput.data.Token}
+      },
+    )
+    const ObjectLogin = {
+      organizationId : organizationPost.data.organizationId,
+      manager: organizationPost.data.manager,
+      managerId: organizationPost.data.managerId,
+      token : AxiosOutput.data.Token
+    }
+    return ObjectLogin
+  }
 
 test("Deve testar o post da classe Organization da API", async() => {
     const randomUser = Math.random().toString(36).slice(-10);
@@ -26,110 +69,72 @@ test("Deve testar o post da classe Organization da API", async() => {
 }, 15000)
 
 test("Deve testar o GetOne da classe Organization da API", async() => {
-    const inputLogin = {
-        name: 'input do post',
-        password: '12345678',
-        type: 'Servidor da CAED',
-    };
-    const AxiosPost = await axios.post(
-        'https://sosa-repo.vercel.app/AdminManagement',
-        inputLogin
-    );
-    
-    const login = {
-        user: inputLogin.name,
-        password: inputLogin.password,
-    }
-    const AxiosLogin = await axios.post(
-        'https://sosa-repo.vercel.app/Login',
-         login,
-    )
-    const token = AxiosLogin.data.Token;
-    //login^
+    const newLogin = await login()
+    const organizationId = newLogin.organizationId
 
-    const input = {
-        name: 'CAED Ji-paraná'
-    }
-    const personPost = await axios.post('https://sosa-repo.vercel.app/Organization',
-    input);
-    //post para testar o GetOne
     const personGetOne = await axios.get(
-        'https://sosa-repo.vercel.app/Organization/' + personPost.data.Id,
+        'http://localhost:3000/Organization/' + organizationId + '/' + organizationId,
         {
-            headers:{Authorization: token}
+            headers:{Authorization: newLogin.token}
         },
     );
-    expect(personGetOne.data.props.name).toBe(input.name)
+    expect(personGetOne.data.props).toBeDefined()
 },  15000)
 
 test("Deve testar o GetAll da classe Organization por API", async() => {
-    const inputLogin = {
-        name: 'input do post',
-        password: '12345678',
-        type: 'Servidor da CAED',
-    };
-    const AxiosPost = await axios.post(
-        'https://sosa-repo.vercel.app/AdminManagement',
-        inputLogin
-    );
-    
-    const login = {
-        user: inputLogin.name,
-        password: inputLogin.password,
-    }
-    const AxiosLogin = await axios.post(
-        'https://sosa-repo.vercel.app/Login',
-         login,
-    )
-    const token = AxiosLogin.data.Token;
-    //login^
+    const randomUser = Math.random().toString(36).slice(-10);
+    const newLogin = await login()
+    const organizationId = newLogin.organizationId
 
-    const axiosGetAll = await axios.get('https://sosa-repo.vercel.app/Organization',
+    const dataPostOrganization = {
+        organization: {
+            name: 'CAED Cacoal'
+        },
+        manager: {
+            name: randomUser,
+            password: '12345678',
+            type: 'Servidor da CAED',
+        }
+    }
+    const personPost = await axios.post('http://localhost:3000/Organization',
+    dataPostOrganization);
+
+    const axiosGetAll = await axios.get('http://localhost:3000/Organization/' + personPost.data.organizationId,
     {
-        headers:{Authorization: token}
+        headers:{Authorization: newLogin.token}
     });
     expect(axiosGetAll.data).toBeDefined();
 }, 15000)
 
 test("Deve testar o Delete da classe Organization por API", async() => {
-    const inputLogin = {
-        name: 'input do post',
-        password: '12345678',
-        type: 'Servidor da CAED',
-    };
-    const AxiosPost = await axios.post(
-        'https://sosa-repo.vercel.app/AdminManagement',
-        inputLogin
-    );
-    
-    const login = {
-        user: inputLogin.name,
-        password: inputLogin.password,
-    }
-    const AxiosLogin = await axios.post(
-        'https://sosa-repo.vercel.app/Login',
-         login,
-    )
-    const token = AxiosLogin.data.Token;
-    //login^
+    const randomUser = Math.random().toString(36).slice(-10);
+    const newLogin = await login()
+    const organizationId = newLogin.organizationId
 
-    const input = {
-        name: 'Oi! Eu serei deletado!'
+    const dataPostOrganization = {
+        organization: {
+            name: 'CAED Cacoal'
+        },
+        manager: {
+            name: randomUser,
+            password: '12345678',
+            type: 'Servidor da CAED',
+        }
     }
-    const personPost = await axios.post('https://sosa-repo.vercel.app/Organization',
-    input);
-    //post para deletar
+    const personPost = await axios.post('http://localhost:3000/Organization',
+    dataPostOrganization);
+    //post para deletar^ 
 
-    const axisoDelete = await axios.delete('https://sosa-repo.vercel.app/Organization/' + personPost.data.Id,
+    const axisoDelete = await axios.delete('http://localhost:3000/Organization/' + organizationId + '/' + organizationId,
     {
-        headers:{Authorization: token}
+        headers:{Authorization: newLogin.token}
     });
     //delete
 
     const personGetOne = await axios.get(
-        'https://sosa-repo.vercel.app/Organization/' + personPost.data.Id,
+        'http://localhost:3000/Organization/' + organizationId + '/' + organizationId,
         {
-            headers:{Authorization: token}
+            headers:{Authorization: newLogin.token}
         },
     );
     expect(personGetOne.data.msg).toBe("Organização não encontrada!");

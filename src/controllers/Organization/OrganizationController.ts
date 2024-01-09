@@ -59,7 +59,7 @@ export default class OrganizationManagement{
     }
     static async GetAll(req: Express.Request, res: Express.Response) {
         try{
-            const organizations = await Organization.GetAll(req.params.idOrganization);
+            const organizations = await Organization.GetAll();
             if (organizations.length == 0)
                 return res.status(404).json({msg: 'nenhuma organização encontrada'})
             organizations.map((Data) => ({

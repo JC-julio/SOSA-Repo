@@ -7,18 +7,20 @@ axios.defaults.validateStatus = function () {
 
 
 test("Deve testar o post da classe Organization da API", async() => {
-    const input = {
+    const randomUser = Math.random().toString(36).slice(-10);
+    const dataPostOrganization = {
         organization: {
             name: 'CAED Cacoal'
         },
         manager: {
-            name: 'input do post',
+            name: randomUser,
             password: '12345678',
             type: 'Servidor da CAED',
         }
     }
     const personPost = await axios.post('http://localhost:3000/Organization',
-    input);
+    dataPostOrganization);
+    console.log(personPost.data)
     expect(personPost.data.organizationId).toBeDefined()
     expect(personPost.data.managerId).toBeDefined()
 }, 15000)

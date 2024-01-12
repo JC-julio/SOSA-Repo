@@ -3,19 +3,18 @@ import StudentClass from '../../entity/Exits';
 export default class ExitsController {
     static async Post(req: Express.Request, res: Express.Response) {
         try{
-            const {time, observes, dateExit, confirmExit} = req.body;
+            const {time, observes, dateExit} = req.body;
             const {idStudent, idWorker, idOrganization} = req.params;
             const Exit = new StudentClass({
                 idStudent: idStudent,
                 idWorker: idWorker,
                 organizationId: idOrganization,
-                time: time,
                 observes: observes,
                 dateExit: dateExit,
-                confirmExit: confirmExit,
         });
             const exit = (await Exit.Post());
             const exitId = exit.id
+            ExitsController.checkStatusExit(exitId, idOrganization)
             res.status(201).json({exit, exitId})
             } catch(error) {
                 console.error(error);
@@ -107,10 +106,7 @@ export default class ExitsController {
         const exit = await StudentClass.GetOne(req.params.id);
         if (exit.organizationId != req.params.idOrganization)
             return res.status(403).json({msg: 'rota inacessivel'})
-        if(exit.confirmExit == false)
-            exit.confirmExit = true;
-        else
-            exit.confirmExit = false;
+        exit.confirmExit = 'Saida concluida'
         await exit.Update(); 
         res.status(200).end()
         } catch(error) {
@@ -127,5 +123,15 @@ export default class ExitsController {
             }
             res.status(errorNumber).json({msg: error.message})
         }
+    }
+    static async checkStatusExit(exitId, idOrganization) {
+        const waitTimeForVerification = 1800000
+        setTimeout(async () => {
+            const isExpiredOutput = await StudentClass.GetOne(exitId)
+            if (isExpiredOutput.organizationId != idOrganization)
+          if (isExpiredOutput.confirmExit == 'Saída em progresso')
+            isExpiredOutput.confirmExit = 'Saída expirada'
+          await isExpiredOutput.Update();
+        }, waitTimeForVerification);
     }
 }

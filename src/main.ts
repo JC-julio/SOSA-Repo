@@ -10,7 +10,12 @@ import { config } from 'dotenv';
 config();
 mongoose.connect(process.env.connectionString);
 const app = express();
-app.use(cors())
+const corsOptions = {
+    "origin": "*",
+    "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+    "preflightContinue": false,
+  }
+app.use(cors(corsOptions))
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(ManagerRoutes);

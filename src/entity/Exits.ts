@@ -1,4 +1,3 @@
-import { model } from 'mongoose';
 import { ExitsModel } from './models/ExitsDB';
 import { error } from 'console';
 export default class Exits {
@@ -12,13 +11,13 @@ export default class Exits {
       idStudent: this.idStudent,
       idWorker: this.idWorker,
       organizationId: this.organizationId,
-      time: this.time,
+      time: 30,
       observes: this.observes,
       dateExit: this.dateExit,
-      confirmExit: this.confirmExit,
+      confirmExit: 'Saída em progresso',
     });
   }
-  
+
   static async GetOne(ExitID) {
     const exit = await ExitsModel.findById(ExitID);
     if (!exit)
@@ -108,7 +107,7 @@ export default class Exits {
     return this.props.id;
   }
 
-  public get confirmExit(): boolean {
+  public get confirmExit(): string {
     return this.props.confirmExit;
   }
 
@@ -136,7 +135,7 @@ export default class Exits {
     this.props.dateExit = DateExit;
   }
 
-  public set confirmExit(confirmExit: boolean) {
+  public set confirmExit(confirmExit: string) {
     this.props.confirmExit = confirmExit;
   }
 }
@@ -144,9 +143,9 @@ export type ExitsDto = {
   idStudent: string;
   idWorker: string;
   organizationId: string;
-  time: number;
+  time?: number;
   observes: string;
   dateExit: Date;
-  confirmExit: boolean;
+  confirmExit?: string;
   id?: string,
 };

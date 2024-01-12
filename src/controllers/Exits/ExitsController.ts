@@ -125,13 +125,13 @@ export default class ExitsController {
         }
     }
     static async checkStatusExit(exitId, idOrganization) {
-        const waitTimeForVerification = 1800000
+        const waitTimeForVerification = 20
         setTimeout(async () => {
             const isExpiredOutput = await StudentClass.GetOne(exitId)
-            if (isExpiredOutput.organizationId != idOrganization)
-          if (isExpiredOutput.confirmExit == 'Saída em progresso')
-            isExpiredOutput.confirmExit = 'Saída expirada'
-          await isExpiredOutput.Update();
+            if (isExpiredOutput.organizationId == idOrganization)
+                if (isExpiredOutput.confirmExit == 'Saída em progresso')
+                isExpiredOutput.confirmExit = 'Saída expirada'
+                await isExpiredOutput.Update();
         }, waitTimeForVerification);
     }
 }

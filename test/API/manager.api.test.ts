@@ -157,3 +157,38 @@ const token = newLogin.token
   console.log(token);
   expect(returnToken).toBeDefined
 }, 30000);
+
+test('Deve testar a eficiência do login da API com um nome de usuário invalido', async() => {
+  const randomUser = Math.random().toString(36).slice(-10);
+  const inputLogin = {
+    user: randomUser,
+    password: '12345678',
+  }
+  const axiosLogin = await axios.post('http://localhost:3000/Admin', inputLogin)
+  console.log(axiosLogin.data.msg)
+  expect(axiosLogin.data.msg).toBe('Nome de usuário inválido!')
+}, 15000)
+
+test("Deve testar a eficiência da API com uma senha incorreta", async() => {
+  const randomPassword = Math.random().toString(36).slice(-10);
+  const newLogin = await login()
+  const inputPostManager = {
+    name: 'input do post',
+    type: 'Guarda',
+    password: '12345678',
+    organizationId: newLogin.organizationId,
+  }
+  const axiosPost = await axios.post('http://localhost:3000/Admin/' + newLogin.organizationId,
+  inputPostManager,
+  {
+    headers: {authorization: newLogin.token}
+  })
+  // console.log(axiosPost.data)
+  const inputLogin = {
+    user: 'input do post',
+    password: randomPassword,
+  }
+  const axiosLogin = await axios.post('http://localhost:3000/Admin', inputLogin)
+  // console.log(axiosLogin.data)
+  expect(axiosLogin.data.msg).toBe('Senha incorreta')
+}, 15000)

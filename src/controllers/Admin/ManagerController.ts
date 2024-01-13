@@ -137,6 +137,10 @@ export default class ManagerController {
             errorNumber = 401
             break
           }
+          case "Senha incorreta": {
+            errorNumber = 400
+            break
+          }
           default: {
             errorNumber = 500
             break

@@ -59,14 +59,14 @@ static async Login(user: string, password: string) {
     if(!password)
       throw new Error('Senha não informada')
     const manager = await ManagerModel.find({name: user})
-    if(!manager)
+    if(!manager || manager.length === 0)
       throw new Error('Nome de usuário inválido!')
-      const passwordIsValid = bcrypt.compare(password, manager[0]['password'])
-    if(passwordIsValid) {
-      const token = jwt.sign({managerEntity: manager['id'], organizationId: manager['organizationId']}, process.env.secretJWTkey, {expiresIn: '7d'});
-      return token;
+      const passwordIsValid = await bcrypt.compare(password, manager[0]['password'])
+    if(!passwordIsValid) {
+      throw new Error("Senha incorreta");
     } else {
-      throw new Error("Nome de usuário ou senha incorretos");
+      const token = jwt.sign({managerEntity: manager['id']}, process.env.secretJWTkey, {expiresIn: '7d'});
+      return token;
     }
   }
 

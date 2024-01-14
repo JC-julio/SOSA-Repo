@@ -113,10 +113,11 @@ test('Deve testar o Login e o Logout da classe Manager.ts', async () => {
     await manager.Post()
   
   const token = await Manager.Login(input.name, input.password);
+  const tokenForLogout = token.Token.toString()
     expect(token).toBeTruthy(); // Verifica se o token existe
-  const bannedToken = await Manager.logout(token);
+  const bannedToken = await Manager.logout(tokenForLogout);
     expect(bannedToken).toBeTruthy(); // Verifica se o token invalidado existe
-  const foundToken = await TokenModel.findOne({ bannedToken: token });
+  const foundToken = await TokenModel.findOne({ bannedToken: tokenForLogout});
   //  console.log(foundToken!.bannedToken)
-    expect(foundToken!.bannedToken).toBe(token); // Verifica se o token invalidado foi adicionado à lista de bloqueio
+    expect(foundToken!.bannedToken).toBe(tokenForLogout); // Verifica se o token invalidado foi adicionado à lista de bloqueio
 }, 15000);

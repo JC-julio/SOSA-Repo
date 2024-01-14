@@ -120,14 +120,14 @@ export default class ManagerController {
   static async Login(req: Express.Request, res: Express.Response) {
     try {
       const {user, password} = req.body;
-      const token = await Manager.Login(user, password);
-      res.status(200).json({Token: token})
+      const tokenAndManager = await Manager.Login(user, password);
+      res.status(200).json({tokenAndManager})
     } catch(error) {
       let errorNumber: number;
       switch( error.msg ){
           case 'Nome de usuário não informado': {
-              errorNumber = 400
-              break
+            errorNumber = 400
+            break
           }
           case 'Senha não informada': {
             errorNumber = 400

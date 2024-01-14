@@ -66,7 +66,11 @@ static async Login(user: string, password: string) {
       throw new Error("Senha incorreta");
     } else {
       const token = jwt.sign({managerEntity: manager['id']}, process.env.secretJWTkey, {expiresIn: '7d'});
-      return token;
+      const objectReturn = {
+        Token: token,
+        manager: manager,
+      }
+      return objectReturn;
     }
   }
 

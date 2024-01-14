@@ -46,7 +46,7 @@ async function login(organizationId?) {
       organizationId : organizationPost.data.organizationId,
       manager: organizationPost.data.manager,
       managerId: organizationPost.data.managerId,
-      token : AxiosOutput.data.Token
+      token : AxiosOutput.data.tokenAndManager.Token
     }
     return ObjectLogin
   }

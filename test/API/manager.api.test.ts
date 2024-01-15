@@ -169,7 +169,7 @@ test('Deve testar a eficiência do login da API com um nome de usuário invalido
   expect(axiosLogin.data.msg).toBe('Nome de usuário inválido!')
 }, 15000)
 
-test.only("Deve testar a eficiência da API com uma senha incorreta", async() => {
+test("Deve testar a eficiência da API com uma senha incorreta", async() => {
   const randomPassword = Math.random().toString(36).slice(-10);
   const newLogin = await login()
   const inputPostManager = {
@@ -191,4 +191,29 @@ test.only("Deve testar a eficiência da API com uma senha incorreta", async() =>
   const axiosLogin = await axios.post('http://localhost:3000/Admin', inputLogin)
   // console.log(axiosLogin.data)
   expect(axiosLogin.data.msg).toBe('Senha incorreta')
+}, 15000)
+
+test.only("Deve testar o login da API", async() => {
+  const randomUser = Math.random().toString(36).slice(-10);
+  const dataPostOrganization = {
+    organization: {
+        name: 'CAED Cacoal'
+    },
+    manager: {
+        name: randomUser,
+        password: '12345678',
+        type: 'Servidor da CAED',
+    }
+  }
+  const organizationPost = await axios.post('http://localhost:3000/Organization',
+  dataPostOrganization);
+  const inputLogin = {
+    user : dataPostOrganization.manager.name,
+    password: dataPostOrganization.manager.password
+  }
+  const AxiosOutput = await axios.post(
+    'http://localhost:3000/Admin',
+    inputLogin
+  );
+  console.log(AxiosOutput.data)
 }, 15000)

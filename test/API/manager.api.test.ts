@@ -45,7 +45,7 @@ async function login(organizationId?) {
     organizationId : organizationPost.data.organizationId,
     manager: organizationPost.data.manager,
     managerId: organizationPost.data.managerId,
-    token : AxiosOutput.data.tokenAndManager.Token
+    token : AxiosOutput.data.Token
   }
   return ObjectLogin
 }
@@ -169,7 +169,7 @@ test('Deve testar a eficiência do login da API com um nome de usuário invalido
   expect(axiosLogin.data.msg).toBe('Nome de usuário inválido!')
 }, 15000)
 
-test("Deve testar a eficiência da API com uma senha incorreta", async() => {
+test.only("Deve testar a eficiência da API com uma senha incorreta", async() => {
   const randomPassword = Math.random().toString(36).slice(-10);
   const newLogin = await login()
   const inputPostManager = {

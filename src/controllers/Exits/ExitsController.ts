@@ -31,7 +31,7 @@ export default class ExitsController {
             res.status(226).send(returnExit);
         } catch(error) {
             let errorNumber: number;
-            switch( error.msg ){
+            switch( error.message ){
                 case 'Registro não encontrado': {
                     errorNumber = 404
                     break
@@ -111,7 +111,7 @@ export default class ExitsController {
         res.status(200).end()
         } catch(error) {
             let errorNumber: number;
-            switch( error.msg ){
+            switch( error.message ){
                 case 'Registro não encontrado': {
                     errorNumber = 404
                     break

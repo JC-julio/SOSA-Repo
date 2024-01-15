@@ -22,7 +22,7 @@ export default class OrganizationManagement{
             res.status(201).json({organizationId, manager, managerId});
         } catch(error) {
             let errorNumber: number;
-            switch( error.msg ){
+            switch( error.message ){
                 case 'Um usuário com este nome já existe': {
                     errorNumber = 400
                     break
@@ -44,7 +44,7 @@ export default class OrganizationManagement{
             res.status(226).send(organization);
         } catch(error) {
             let errorNumber: number;
-            switch( error.msg ){
+            switch( error.message ){
                 case 'Organização não encontrada!': {
                     errorNumber = 404
                     break
@@ -82,7 +82,7 @@ export default class OrganizationManagement{
             res.status(200).end()
         } catch(error){
             let errorNumber: number;
-            switch( error.msg ){
+            switch( error.message ){
                 case 'Organização não encontrada!': {
                     errorNumber = 404
                     break

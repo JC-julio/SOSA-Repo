@@ -25,7 +25,7 @@ export default class StudentController {
           res.status(200).send(returnStudent);
         } catch(error){
           let errorNumber: number;
-          switch( error.msg ){
+          switch( error.message ){
               case 'Estudante não encontrado!': {
                   errorNumber = 404
                   break
@@ -54,7 +54,7 @@ export default class StudentController {
             res.status(226).send(returnsClass);
         } catch(error){
           let errorNumber: number;
-          switch( error.msg ){
+          switch( error.message ){
               case 'Estudante não encontrado!': {
                   errorNumber = 404
                   break
@@ -78,7 +78,7 @@ export default class StudentController {
             res.status(200).end()
         } catch(error){
           let errorNumber: number;
-          switch( error.msg ){
+          switch( error.message ){
               case 'Estudante não encontrado!': {
                   errorNumber = 404
                   break
@@ -106,7 +106,7 @@ export default class StudentController {
         res.status(200).end();
       } catch (error){
         let errorNumber: number;
-        switch( error.msg ){
+        switch( error.message ){
           case 'Estudante não encontrado!': {
           errorNumber = 404
         break

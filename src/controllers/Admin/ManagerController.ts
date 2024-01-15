@@ -13,7 +13,7 @@ export default class ManagerController {
       res.status(200).send(newManager)
     } catch (error) {
       let errorNumber: number;
-      switch( error.msg ){
+      switch( error.message ){
           case 'Um usuário com este nome já existe': {
               errorNumber = 400
               break
@@ -36,7 +36,7 @@ export default class ManagerController {
       res.status(226).send(returnManager);
     } catch(error) {
       let errorNumber: number;
-      switch( error.msg ){
+      switch( error.message ){
           case 'Administrador não encontrado': {
               errorNumber = 404
               break
@@ -76,7 +76,7 @@ export default class ManagerController {
       res.status(200).end();
     } catch (error){
       let errorNumber: number;
-      switch( error.msg ){
+      switch( error.message ){
           case 'Administrador não encontrado': {
               errorNumber = 404
               break
@@ -103,7 +103,7 @@ export default class ManagerController {
       res.status(200).end();
     } catch (error) {
       let errorNumber: number;
-      switch( error.msg ){
+      switch( error.message ){
           case 'Administrador não encontrado': {
               errorNumber = 404
               break
@@ -121,10 +121,10 @@ export default class ManagerController {
     try {
       const {user, password} = req.body;
       const tokenAndManager = await Manager.Login(user, password);
-      res.status(200).json({tokenAndManager})
+      res.status(200).json(tokenAndManager)
     } catch(error) {
       let errorNumber: number;
-      switch( error.msg ){
+      switch( error.message ){
           case 'Nome de usuário não informado': {
             errorNumber = 400
             break
@@ -157,7 +157,7 @@ export default class ManagerController {
       res.status(200).end();
     } catch(error) {
       let errorNumber: number;
-      switch( error.msg ){
+      switch( error.message ){
           case 'Token inválido': {
               errorNumber = 401
               break

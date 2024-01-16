@@ -67,13 +67,14 @@ static async Login(user: string, password: string) {
     } else {
       const token = jwt.sign({managerEntity: manager['id']}, process.env.secretJWTkey, {expiresIn: '7d'});
       const objectReturn = {
-        Token: token,
-        managerName: manager[0]['name'],
-        managerType: manager[0]['type'],
-        managerId: manager[0]['id'],
-        organizationId: manager[0]['organizationId'],
+        token: token,
+        manager: {
+          Name: manager[0]['name'],
+          Type: manager[0]['type'],
+          Id: manager[0]['id'],
+          organizationId: manager[0]['organizationId'],
+        }
       }
-      console.log(objectReturn)
       return objectReturn;
     }
   }

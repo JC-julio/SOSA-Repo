@@ -58,10 +58,10 @@ static async Login(user: string, password: string) {
       throw new Error('Nome de usuário não informado')
     if(!password)
       throw new Error('Senha não informada')
-    const manager = await ManagerModel.find({name: user})
-    if(!manager || manager.length === 0)
+    const [manager] = await ManagerModel.find({name: user})
+    if(!manager)
       throw new Error('Nome de usuário inválido!')
-      const passwordIsValid = await bcrypt.compare(password, manager[0]['password'])
+      const passwordIsValid = await bcrypt.compare(password, manager['password'])
     if(!passwordIsValid) {
       throw new Error("Senha incorreta");
     } else {
@@ -69,10 +69,10 @@ static async Login(user: string, password: string) {
       const objectReturn = {
         token: token,
         manager: {
-            name: [manager]['name'],
-            type: [manager]['type'],
-            _id: [manager]['id'],
-            organizationId: [manager]['organizationId'],
+            name: manager['name'],
+            type: manager['type'],
+            _id: manager['id'],
+            organizationId: manager['organizationId'],
         }
       }
       return objectReturn;

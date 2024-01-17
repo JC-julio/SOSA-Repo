@@ -69,10 +69,10 @@ static async Login(user: string, password: string) {
       const objectReturn = {
         token: token,
         manager: {
-          Name: manager[0]['name'],
-          Type: manager[0]['type'],
-          Id: manager[0]['id'],
-          organizationId: manager[0]['organizationId'],
+            name: [manager]['name'],
+            type: [manager]['type'],
+            _id: [manager]['id'],
+            organizationId: [manager]['organizationId'],
         }
       }
       return objectReturn;

@@ -113,7 +113,7 @@ test('Deve testar o Login e o Logout da classe Manager.ts', async () => {
     await manager.Post()
   
   const token = await Manager.Login(input.name, input.password);
-  const tokenForLogout = token.Token.toString()
+  const tokenForLogout = token.token.toString()
     expect(token).toBeTruthy(); // Verifica se o token existe
   const bannedToken = await Manager.logout(tokenForLogout);
     expect(bannedToken).toBeTruthy(); // Verifica se o token invalidado existe

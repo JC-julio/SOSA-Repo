@@ -29,7 +29,6 @@ axios.defaults.validateStatus = function () {
     }
     const organizationPost = await axios.post('http://localhost:3000/Organization',
     dataPostOrganization);
-    // console.log(organizationPost.data)
     const AxiosOutput = await axios.post(
       'http://localhost:3000/Admin',
       inputLogin
@@ -41,17 +40,20 @@ axios.defaults.validateStatus = function () {
       },
     )
     const ObjectLogin = {
-      organizationId : organizationPost.data.organizationId,
-      manager: organizationPost.data.manager,
-      managerId: organizationPost.data.managerId,
-      token : AxiosOutput.data.tokenAndManager.Token
+      manager: {
+        name: organizationPost.data.manager.name,
+        type: organizationPost.data.manager.type,
+        id: organizationPost.data.manager.id,
+        organizationId: organizationPost.data.manager.organizationId
+      },
+      token : AxiosOutput.data.token
     }
     return ObjectLogin
   }
 
 test("Deve testar o post e o GetOne da classe de estudantes da API", async() => {
   const newLogin = await login()
-  const organizationId = newLogin.organizationId
+  const organizationId = newLogin.manager.organizationId
   const postParam = {
       name: 'Julio César Aguiar',
       className: '2022 A TI',
@@ -78,7 +80,8 @@ test("Deve testar o post e o GetOne da classe de estudantes da API", async() => 
 
 test("Deve testar o GetbyClassName da classe de estudantes da API", async() => {
   const newLogin = await login()
-  const organizationId = newLogin.organizationId
+  const organizationId = newLogin.manager.organizationId
+
 
       const PostParam = {
         name: 'Thicianae Frata Borges',
@@ -111,7 +114,7 @@ test("Deve testar o GetbyClassName da classe de estudantes da API", async() => {
 
 test("Deve testar o método Delete da classe de estudantes da API", async() => {
   const newLogin = await login()
-  const organizationId = newLogin.organizationId
+  const organizationId = newLogin.manager.organizationId
   const PostParam = {
     name: 'Thicianae Frata Borges',
     classStudent: '2022 B TI',
@@ -145,8 +148,8 @@ test("Deve testar o método Delete da classe de estudantes da API", async() => {
 
 test("Deve testar o Update da classe de estudantes da API", async() => {
   const newLogin = await login()
-  const managerId = newLogin.managerId
-  const organizationId = newLogin.organizationId
+  const managerId = newLogin.manager.id
+  const organizationId = newLogin.manager.organizationId
   const PostParam = {
     name: 'Thicianae Frata Borges',
     className: '2022 B TI',

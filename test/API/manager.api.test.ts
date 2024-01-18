@@ -30,7 +30,6 @@ async function login(organizationId?) {
   }
   const organizationPost = await axios.post('http://localhost:3000/Organization',
   dataPostOrganization);
-  // console.log(organizationPost.data)
   const AxiosOutput = await axios.post(
     'http://localhost:3000/Admin',
     inputLogin
@@ -42,34 +41,36 @@ async function login(organizationId?) {
     },
   )
   const ObjectLogin = {
-    organizationId : organizationPost.data.organizationId,
-    manager: organizationPost.data.manager,
-    managerId: organizationPost.data.managerId,
-    token : AxiosOutput.data.Token
+    manager: {
+      name: organizationPost.data.manager.name,
+      type: organizationPost.data.manager.type,
+      id: organizationPost.data.manager.id,
+      organizationId: organizationPost.data.manager.organizationId
+    },
+    token : AxiosOutput.data.token
   }
   return ObjectLogin
 }
 
 test('Deve testar o post dos admins da API', async () => {
   const newLoginFirst = await login();
-  // console.log(newLoginFirst)
   expect(newLoginFirst.manager).toBeDefined()
 }, 30000);
 
 test('Deve testar o GetAll dos admins da API', async () => {
   const newLoginFirst = await login();
-  const newLoginTwo = await login(newLoginFirst.organizationId);
+  const newLoginTwo = await login(newLoginFirst.manager.organizationId);
   // console.log(newLoginTwo)
 
   const AxiosOutput = await axios.get(
-    'http://localhost:3000/Admin/' + newLoginFirst.organizationId,
+    'http://localhost:3000/Admin/' + newLoginFirst.manager.organizationId,
     {
       headers: {authorization: newLoginFirst.token}
     },
   );
   // console.log(AxiosOutput.data)
   const AxiosOutputTwo = await axios.get(
-    'http://localhost:3000/Admin/' + newLoginTwo.organizationId,
+    'http://localhost:3000/Admin/' + newLoginFirst.manager.organizationId,
     {
       headers: {authorization: newLoginTwo.token}
     },
@@ -78,12 +79,10 @@ test('Deve testar o GetAll dos admins da API', async () => {
   expect(AxiosOutputTwo.data).toBeDefined()
 }, 15000);
 
-
 test('Deve testar o GetOne da classe de admin da API', async() => {
 const newLogin = await login()
-console.log(newLogin)
-const managerId = newLogin.managerId
-const organizationId = newLogin.organizationId
+const managerId = newLogin.manager.id
+const organizationId = newLogin.manager.organizationId
 
   const AxiosGetOne = await axios.get(
     'http://localhost:3000/Admin/'+ organizationId + '/' + managerId,
@@ -91,13 +90,14 @@ const organizationId = newLogin.organizationId
       headers: {authorization: newLogin.token}
     },
   );
+  console.log(AxiosGetOne.data)
   expect(AxiosGetOne.data.props.id).toBe(managerId)
 }, 15000);
 
 test('Deve testar o Delete da classe de admin da API', async() => {
 const newLogin = await login()
-const managerId = newLogin.managerId
-const organizationId = newLogin.organizationId
+const managerId = newLogin.manager.id
+const organizationId = newLogin.manager.organizationId
 
   const AxiosDelete = await axios.delete(
     'http://localhost:3000/Admin/' + organizationId + '/' + managerId,
@@ -120,8 +120,8 @@ const organizationId = newLogin.organizationId
 
 test('Deve testar o Update da classe de admin da API', async() => {
 const newLogin = await login()
-const organizationId = newLogin.organizationId
-const managerId = newLogin.managerId
+const organizationId = newLogin.manager.organizationId
+const managerId = newLogin.manager.id
 
   const AxiosPut = await axios.put(
     'http://localhost:3000/Admin/' + organizationId + '/' + managerId,
@@ -139,7 +139,7 @@ const managerId = newLogin.managerId
   );
   //GetOne para verificar se a mudança realmente ocorreu
   expect(AxiosGetOne.data.props.type).toBe('Guarda')
-}, 15000)
+}, 15000);
 
 test("Deve testar o logout da classe de admin da API", async() => {
 const newLogin = await login()
@@ -154,7 +154,6 @@ const token = newLogin.token
   );
   
   const returnToken = TokenModel.findOne({bannedToken: token}) 
-  console.log(token);
   expect(returnToken).toBeDefined
 }, 30000);
 
@@ -165,9 +164,8 @@ test('Deve testar a eficiência do login da API com um nome de usuário invalido
     password: '12345678',
   }
   const axiosLogin = await axios.post('http://localhost:3000/Admin', inputLogin)
-  console.log(axiosLogin.data.msg)
   expect(axiosLogin.data.msg).toBe('Nome de usuário inválido!')
-}, 15000)
+}, 15000);
 
 test("Deve testar a eficiência da API com uma senha incorreta", async() => {
   const randomPassword = Math.random().toString(36).slice(-10);
@@ -176,9 +174,9 @@ test("Deve testar a eficiência da API com uma senha incorreta", async() => {
     name: 'input do post',
     type: 'Guarda',
     password: '12345678',
-    organizationId: newLogin.organizationId,
+    organizationId: newLogin.manager.organizationId,
   }
-  const axiosPost = await axios.post('http://localhost:3000/Admin/' + newLogin.organizationId,
+  const axiosPost = await axios.post('http://localhost:3000/Admin/' + newLogin.manager.organizationId,
   inputPostManager,
   {
     headers: {authorization: newLogin.token}
@@ -191,9 +189,9 @@ test("Deve testar a eficiência da API com uma senha incorreta", async() => {
   const axiosLogin = await axios.post('http://localhost:3000/Admin', inputLogin)
   // console.log(axiosLogin.data)
   expect(axiosLogin.data.msg).toBe('Senha incorreta')
-}, 15000)
+}, 15000);
 
-test.only("Deve testar o login da API", async() => {
+test("Deve testar o login da API", async() => {
   const randomUser = Math.random().toString(36).slice(-10);
   const dataPostOrganization = {
     organization: {
@@ -216,4 +214,4 @@ test.only("Deve testar o login da API", async() => {
     inputLogin
   );
   console.log(AxiosOutput.data)
-}, 15000)
+}, 15000);

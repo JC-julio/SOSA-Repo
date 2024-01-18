@@ -39,7 +39,11 @@ export default class Manager {
 static async GetAll(idOrganization) {
   const managers = await ManagerModel.find({organizationId: idOrganization});
   return managers.map(
-    (Data) => new Manager({ name: Data.name, type: Data.type, id: Data.id, organizationId: Data.organizationId }),
+    (Data) => new Manager({ 
+      name: Data.name,
+      type: Data.type,
+      id: Data.id,
+      organizationId: Data.organizationId }),
   ); //transformar em nova lista
 }
 
@@ -71,7 +75,7 @@ static async Login(user: string, password: string) {
         manager: {
             name: manager['name'],
             type: manager['type'],
-            _id: manager['id'],
+            id: manager['id'],
             organizationId: manager['organizationId'],
         }
       }

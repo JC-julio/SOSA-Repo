@@ -31,7 +31,6 @@ async function login(organizationId?) {
     }
     const organizationPost = await axios.post('http://localhost:3000/Organization',
     dataPostOrganization);
-    // console.log(organizationPost.data)
     const AxiosOutput = await axios.post(
       'http://localhost:3000/Admin',
       inputLogin
@@ -43,17 +42,20 @@ async function login(organizationId?) {
       },
     )
     const ObjectLogin = {
-      organizationId : organizationPost.data.organizationId,
-      manager: organizationPost.data.manager,
-      managerId: organizationPost.data.managerId,
-      token : AxiosOutput.data.tokenAndManager.Token
+      manager: {
+        name: organizationPost.data.manager.name,
+        type: organizationPost.data.manager.type,
+        id: organizationPost.data.manager.id,
+        organizationId: organizationPost.data.manager.organizationId
+      },
+      token : AxiosOutput.data.token
     }
     return ObjectLogin
   }
 
 async function postStudent() {
 const newLogin = await login()
-  const organizationId = newLogin.organizationId
+  const organizationId = newLogin.manager.organizationId
   const postParam = {
       name: 'Julio César Aguiar',
       className: '2022 A TI',
@@ -82,8 +84,8 @@ const newLogin = await login()
 
 test('Deve testar o post e o GetOne da classe de saídas da API', async () => {
     const newLogin = await login()
-    const managerId = newLogin.managerId
-    const organizationId = newLogin.organizationId
+    const managerId = newLogin.manager.id
+    const organizationId = newLogin.manager.organizationId
     const newStudent = await postStudent()
     const studentId = newStudent.id
       
@@ -101,7 +103,6 @@ test('Deve testar o post e o GetOne da classe de saídas da API', async () => {
             headers: {authorization: newLogin.token}
         },
     );
-    console.log(AxiosPost.data.exitId)
     const AxiosGetOne = await axios.get(
         'http://localhost:3000/Exits/' + organizationId + '/' + AxiosPost.data.exitId,
         {
@@ -116,8 +117,8 @@ test('Deve testar o post e o GetOne da classe de saídas da API', async () => {
 
 test("Deve testar o GetExits da classe de saídas da API", async() => {
     const newLogin = await login()
-    const managerId = newLogin.managerId
-    const organizationId = newLogin.organizationId
+    const managerId = newLogin.manager.id
+    const organizationId = newLogin.manager.organizationId
     const newStudent = await postStudent()
     const studentId = newStudent.id
       
@@ -166,14 +167,13 @@ test("Deve testar o GetExits da classe de saídas da API", async() => {
         headers: { authorization: newLogin.token },
     }
     );
-    console.log(GetExits.data)
     expect(GetExits.data).toBeDefined();
 }, 15000)
 
 test("Deve testar o GetAll da classe de saídas da API", async() => {
     const newLogin = await login()
-    const managerId = newLogin.managerId
-    const organizationId = newLogin.organizationId
+    const managerId = newLogin.manager.id
+    const organizationId = newLogin.manager.organizationId
     const newStudent = await postStudent()
     const studentId = newStudent.id
 
@@ -229,21 +229,19 @@ test("Deve testar o GetAll da classe de saídas da API", async() => {
 
 test("Deve testar o DeleteAll da classe de saídas da API", async() => {
     const newLogin = await login()
-    const managerId = newLogin.managerId
-    const organizationId = newLogin.organizationId
-
+    const managerId = newLogin.manager.id
+    const organizationId = newLogin.manager.organizationId
     const DeleteAll = await axios.delete('http://localhost:3000/Exits/' + organizationId,
     {
         headers: { authorization: newLogin.token },
     });
-    // console.log(DeleteAll.status)
     expect(DeleteAll.status).toBe(200)
 }, 15000)
 
 test("Deve testar o Update da classe de saídas da API", async() => {
     const newLogin = await login()
-    const managerId = newLogin.managerId
-    const organizationId = newLogin.organizationId
+    const managerId = newLogin.manager.id
+    const organizationId = newLogin.manager.organizationId
     const newStudent = await postStudent()
     const studentId = newStudent.id
 
@@ -261,7 +259,6 @@ test("Deve testar o Update da classe de saídas da API", async() => {
           },
     )
     //post para teste^
-    console.log(AxiosPost.data)
     const update = await axios.put('http://localhost:3000/Exits/'+ organizationId + '/' + AxiosPost.data.exitId,
     {},
     {
@@ -275,14 +272,13 @@ test("Deve testar o Update da classe de saídas da API", async() => {
             headers: {authorization: newLogin.token}
         }, 
     )
-      console.log(AxiosGetOne.data)
       //GetOne para verificar se a mudança realmente ocorreu
       expect(AxiosGetOne.data.props.confirmExit).toBe('Saida concluida')
     }, 15000)
 test('Deve testar o Update após meia o tempo determinado pela setTimeout de cancelamento de saida', async() => {
     const newLogin = await login()
-    const managerId = newLogin.managerId
-    const organizationId = newLogin.organizationId
+    const managerId = newLogin.manager.id
+    const organizationId = newLogin.manager.organizationId
     const newStudent = await postStudent()
     const studentId = newStudent.id
 
@@ -307,6 +303,5 @@ test('Deve testar o Update após meia o tempo determinado pela setTimeout de can
             headers: {authorization: newLogin.token}
         }, 
     )
-    console.log(AxiosGetOne.data)
     expect(AxiosGetOne.data.props.confirmExit).toBe('Saída expirada')
 }, 20000)

@@ -10,7 +10,13 @@ export default class ManagerController {
       const { idOrganization } = req.params
       const manager = new Manager({ name: name, password: password, type: type, organizationId:idOrganization });
       const newManager = (await manager.Post());
-      res.status(200).send(newManager)
+      const objectReturn = {
+        name: newManager.name,
+        type: newManager.type,
+        id: newManager.id,
+      }
+      console.log(objectReturn)
+      res.status(200).send(objectReturn)
     } catch (error) {
       let errorNumber: number;
       switch( error.message ){

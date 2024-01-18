@@ -17,9 +17,14 @@ export default class OrganizationManagement{
                 password: managerDto.password,
                 organizationId: organizationId
             })
-            const manager = (await NewManager.Post())
-            const managerId = manager.id
-            res.status(201).json({organizationId, manager, managerId});
+            const returnManager = (await NewManager.Post())
+            const manager = {
+                name: returnManager.name,
+                type: returnManager.type,
+                id: returnManager.id,
+                organizationId: organizationId,
+              }
+            res.status(201).json({manager});
         } catch(error) {
             let errorNumber: number;
             switch( error.message ){

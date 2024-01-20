@@ -227,6 +227,23 @@ test("Deve testar o GetAll da classe de saídas da API", async() => {
     expect(GetAll.data).toBeDefined();
 }, 15000)
 
+test("Deve testar se o retorno do erro 404 é acionado caso não exista nenhuma saída no BD", async() => {
+    const newLogin = await login()
+    const managerId = newLogin.manager.id
+    const organizationId = newLogin.manager.organizationId
+    const DeleteAll = await axios.delete('http://localhost:3000/Exits/' + organizationId,
+    {
+        headers: { authorization: newLogin.token },
+    });
+    expect(DeleteAll.status).toBe(200)
+    const GetAll = await axios.get('http://localhost:3000/Exits/' + organizationId,
+    {
+        headers: { authorization: newLogin.token },
+    });
+    console.log(GetAll.data)
+  expect(GetAll.data.msg).toBe("Nenhuma saída encontrada");
+}, 15000)
+
 test("Deve testar o DeleteAll da classe de saídas da API", async() => {
     const newLogin = await login()
     const managerId = newLogin.manager.id
@@ -275,7 +292,8 @@ test("Deve testar o Update da classe de saídas da API", async() => {
       //GetOne para verificar se a mudança realmente ocorreu
       expect(AxiosGetOne.data.props.confirmExit).toBe('Saida concluida')
     }, 15000)
-test('Deve testar o Update após meia o tempo determinado pela setTimeout de cancelamento de saida', async() => {
+    
+test('Deve testar o Update após o tempo determinado pela setTimeout de cancelamento de saida', async() => {
     const newLogin = await login()
     const managerId = newLogin.manager.id
     const organizationId = newLogin.manager.organizationId

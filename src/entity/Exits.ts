@@ -1,5 +1,4 @@
 import { ExitsModel } from './models/ExitsDB';
-import { error } from 'console';
 export default class Exits {
   model = ExitsModel;
   constructor(private props: ExitsDto) {}
@@ -21,7 +20,7 @@ export default class Exits {
   static async GetOne(ExitID) {
     const exit = await ExitsModel.findById(ExitID);
     if (!exit)
-      throw new error("Registro não encontrado")
+      throw new Error("Registro não encontrado")
     return new Exits({
       idStudent: exit.idStudent,
       idWorker: exit.idWorker,
@@ -58,6 +57,8 @@ export default class Exits {
 
   static async GetAll(idOrganization){
     const exits = await ExitsModel.find({organizationId: idOrganization});
+    if(!exits || exits.length === 0)
+      throw new Error("Nenhuma saída encontrada")
     return exits.map((Data) => ({
       idStudent: Data.idStudent,
       idWorker: Data.idStudent,

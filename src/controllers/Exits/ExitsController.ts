@@ -72,8 +72,6 @@ export default class ExitsController {
     static async GetAll(req: Express.Request, res: Express.Response) {
         try {
             const returnExits = await StudentClass.GetAll(req.params.idOrganization);
-            if(returnExits.length == 0)
-                return res.status(404).json({msg: 'nenhuma saida encontrada'})
             returnExits.map((Data) => ({
                 idStudent: Data.idStudent,
                 idWorker: Data.idWorker,
@@ -86,8 +84,18 @@ export default class ExitsController {
               }))
               res.status(226).send(returnExits);
         } catch(error) {
-            console.error(error);
-            res.status(500).json({msg: error.message})
+            let errorNumber: number;
+            switch( error.message ){
+                case 'Nenhuma saída encontrada': {
+                    errorNumber = 404
+                    break
+                }
+                default: {
+                    errorNumber = 500
+                    break
+                }
+            }
+            res.status(errorNumber).json({msg: error.message})
         }
     }
 

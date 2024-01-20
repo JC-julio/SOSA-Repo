@@ -240,7 +240,6 @@ test("Deve testar se o retorno do erro 404 é acionado caso não exista nenhuma 
     {
         headers: { authorization: newLogin.token },
     });
-    console.log(GetAll.data)
   expect(GetAll.data.msg).toBe("Nenhuma saída encontrada");
 }, 15000)
 

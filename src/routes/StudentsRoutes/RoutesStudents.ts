@@ -8,6 +8,8 @@ router.post('/Student/:idOrganization', loginRequired, StudentsController.Post);
 
 router.get('/Student/:idOrganization/:id', loginRequired, StudentsController.GetOne);
 
+router.get("/Student/:idOrganization", loginRequired, StudentsController.GetAll);
+
 router.get('/StudentGet/:idOrganization/:className', loginRequired, StudentsController.GetByClassName);
 
 router.delete('/Student/:idOrganization/:id', loginRequired, StudentsController.Delete);

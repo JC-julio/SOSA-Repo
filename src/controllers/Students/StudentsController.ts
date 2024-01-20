@@ -39,6 +39,33 @@ export default class StudentController {
       }
       }
 
+    static async GetAll(req:Express.Request, res:Express.Response) {
+      try {
+        const getAllStudents = await Student.GetAll(req.params.idOrganization);
+        getAllStudents.map((Data) => ({
+          name: Data.name,
+          type: Data.type,
+          organizationId: Data.organizationId,
+          className: Data.className,
+          id: Data.id,
+        }));
+        res.status(226).send(getAllStudents);
+      } catch(error){
+        let errorNumber: number;
+        switch( error.message ){
+            case 'Nenhum aluno encontrado': {
+                errorNumber = 404
+                break
+            }
+            default: {
+                errorNumber = 500
+                break
+            }
+        }
+        res.status(errorNumber).json({msg: error.message})
+    }
+    }
+
     static async GetByClassName(req:Express.Request, res:Express.Response) {
         try{
             const returnsClass = await Student.GetByClassName(

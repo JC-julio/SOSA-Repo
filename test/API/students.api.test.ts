@@ -65,7 +65,6 @@ test("Deve testar o post e o GetOne da classe de estudantes da API", async() => 
     headers: {authorization: newLogin.token}
   },
   );
-  console.log(AxiosPost.data.studentId)    
   const AxiosGetOne = await axios.get(
       'http://localhost:3000/Student/'+ organizationId + '/' + AxiosPost.data.studentId,
       {
@@ -179,3 +178,51 @@ test("Deve testar o Update da classe de estudantes da API", async() => {
     // console.log(AxiosGetOne.data.props.type)
     expect(AxiosGetOne.data.props.type).toBe(true);
 }, 15000);
+
+test("Deve testar o GetAll da entidade Students da API", async() => {
+  const newLogin = await login()
+  const postParam = {
+    name: 'Julio César Aguiar',
+    className: '2022 A TI',
+    type: false
+  }
+  const AxiosPost = await axios.post('http://localhost:3000/Student/' + newLogin.manager.organizationId ,
+  postParam,
+  {
+    headers: {authorization: newLogin.token}
+  },
+  );
+
+  const postParam2 = {
+    name: 'Thiciane Frata Borges',
+    className: '2022 B TI',
+    type: true
+  }
+  const axiosPost2 = await axios.post('http://localhost:3000/Student/' + newLogin.manager.organizationId ,
+  postParam2,
+  {
+    headers: {authorization: newLogin.token}
+  },
+  );
+
+  const getAllStudents = await axios.get(
+    'http://localhost:3000/Student/' + newLogin.manager.organizationId,
+    {
+      headers: {authorization: newLogin.token}
+    },
+    )
+    expect(getAllStudents.data).not.toBe("Nenhum aluno encontrado");
+  }, 15000)
+
+test.only("Deve testar o caso de não haver nenhum aluno no BD, a partir da pesquisa pelo GetAll", async() => {
+  const newLogin = await login();
+  const getAllStudents = await axios.get(
+    'http://localhost:3000/Student/' + newLogin.manager.organizationId,
+    {
+      headers: {authorization: newLogin.token}
+    },
+    )
+    expect(getAllStudents.data.msg).toBe("Nenhum aluno encontrado");
+}, 15000)
+
+  

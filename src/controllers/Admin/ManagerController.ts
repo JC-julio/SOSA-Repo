@@ -15,7 +15,6 @@ export default class ManagerController {
         type: newManager.type,
         id: newManager.id,
       }
-      console.log(objectReturn)
       res.status(200).send(objectReturn)
     } catch (error) {
       let errorNumber: number;

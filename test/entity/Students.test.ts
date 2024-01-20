@@ -16,6 +16,7 @@ test('deve testar a classe exits', async () => {
       className: '2022 A TI',
       type: true,
       organizationId: idOrganization,
+      registration: '2022108060016'
     }
     const student = new Student(input);
     expect(input.name).toBe(student.name);
@@ -36,6 +37,7 @@ test('Deve testar o post e o GetOne da classe Students', async () => {
         className: '2022 A TI',
         type: true,
         organizationId: idOrganization,
+        registration: '2022108060016'
 };
     const ForStudent = new Student(input);
     const StudentID = (await ForStudent.Post());
@@ -51,21 +53,22 @@ test('Deve testar a função que pega todas as turmas que tiverem o mesmo nome d
     await mongoose.connect(process.env.connectionString as string);
     const inputOrganization = {
         name: 'CAED ji-paraná'
-      }
-      const organization = new Organization(inputOrganization);
-      const idOrganization = (await organization.Post()).id;
+    }
+    const organization = new Organization(inputOrganization);
+    const idOrganization = (await organization.Post()).id;
     const input = {
-        name: 'Julio César Aguiar',
-        className: '2022 B TI',
-        type: true,
-        organizationId: idOrganization,
+      name: 'Julio César Aguiar',
+      className: '2022 B TI',
+      type: true,
+      organizationId: idOrganization,
+      registration: '2022108060016',
     };
-
     const input1 = {
-        name: 'Thiciane Frata Borges',
-        className: '2022 B TI',
-        type:true,
-        organizationId: idOrganization,
+      name: 'Thiciane Frata Borges',
+      className: '2022 B TI',
+      type:true,
+      organizationId: idOrganization,
+      registration: '2022108060016',
     };
     const studentInput = new Student(input);
     const studentResult = (await studentInput.Post());
@@ -78,4 +81,29 @@ test('Deve testar a função que pega todas as turmas que tiverem o mesmo nome d
     const ReturnStudents1 = Students.find((Element) => Element.className == input1.className);
     expect(ReturnStudents1!.className).toBe(input1.className);
     await mongoose.connection.close();
+}, 15000)
+
+test.only('Deve testar a função que seleciona um aluno pela matricula do mesmo', async() => {
+  await mongoose.connect(process.env.connectionString as string);
+  const randomRegister = Math.random().toString(36).slice(-15);
+  const inputOrganization = {
+      name: 'CAED ji-paraná'
+    }
+  const organization = new Organization(inputOrganization);
+  const idOrganization = (await organization.Post()).id;
+  const input = {
+      name: 'Julião',
+      className: '2022 A TI',
+      type: true,
+      organizationId: idOrganization,
+      registration: randomRegister
+};
+  const ForStudent = new Student(input);
+  const studentRegister = ((await ForStudent.Post()).registration);
+  const getStudentByRegister = await Student.GetByRegistration(studentRegister, input.organizationId)
+  expect(getStudentByRegister.name).toBe(input.name);
+  expect(getStudentByRegister.className).toBe(input.className);
+  expect(getStudentByRegister.type).toBe(input.type);
+  expect(getStudentByRegister.organizationId).toBe(input.organizationId);
+  expect(getStudentByRegister.registration).toBe(input.registration);
 }, 15000)

@@ -4,16 +4,26 @@ import Student from '../../entity/Students';
 export default class StudentController {
     static async Post(req:Express.Request, res:Express.Response) {
         try{
-            const {name, className, type} = req.body;
+            const {name, className, type, registration} = req.body;
             const { idOrganization } = req.params;
-            const student = new Student({name: name, className: className, type: type, organizationId:idOrganization})
+            const student = new Student({name: name, className: className, type: type, organizationId:idOrganization, registration: registration})
             const newStudent = (await student.Post())
             const studentId = newStudent.id;
             res.status(201).json({newStudent, studentId})
-        } catch(error){
-            console.error(error);
-            res.status(500).json({msg: error.message});
-        }
+        } catch(error) {
+          let errorNumber: number;
+          switch( error.message ){
+              case 'Um estudante com a mesma matricula já existe!': {
+                  errorNumber = 400
+                  break
+              }
+              default: {
+                  errorNumber = 500
+                  break
+              }
+          }
+          res.status(errorNumber).json({msg: error.message})
+      }
     }
 
     static async GetOne(req:Express.Request, res:Express.Response) {
@@ -47,6 +57,7 @@ export default class StudentController {
           type: Data.type,
           organizationId: Data.organizationId,
           className: Data.className,
+          registration: Data.registration,
           id: Data.id,
         }));
         res.status(226).send(getAllStudents);
@@ -54,6 +65,28 @@ export default class StudentController {
         let errorNumber: number;
         switch( error.message ){
             case 'Nenhum aluno encontrado': {
+                errorNumber = 404
+                break
+            }
+            default: {
+                errorNumber = 500
+                break
+            }
+        }
+        res.status(errorNumber).json({msg: error.message})
+    }
+    }
+
+    static async GetByRegistration(req:Express.Request, res:Express.Response) {
+      try {
+        console.log(req.params.registration)
+        console.log(req.params.idOrganization)
+        const student = await Student.GetByRegistration(req.params.registration, req.params.idOrganization)
+        res.status(226).send(student)
+      } catch (error) {
+        let errorNumber: number;
+        switch( error.message ){
+            case 'Aluno não encontrado!': {
                 errorNumber = 404
                 break
             }
@@ -76,6 +109,7 @@ export default class StudentController {
                 type: Data.type,
                 organizationId: Data.organizationId,
                 className: Data.className,
+                registration: Data.registration,
                 id: Data.id,
             }))
             res.status(226).send(returnsClass);

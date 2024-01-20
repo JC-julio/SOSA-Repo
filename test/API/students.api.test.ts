@@ -57,7 +57,8 @@ test("Deve testar o post e o GetOne da classe de estudantes da API", async() => 
   const postParam = {
       name: 'Julio César Aguiar',
       className: '2022 A TI',
-      type: false
+      type: false,
+      registration: '2022108060016',
   }
   const AxiosPost = await axios.post('http://localhost:3000/Student/' + organizationId ,
   postParam,
@@ -71,7 +72,6 @@ test("Deve testar o post e o GetOne da classe de estudantes da API", async() => 
         headers: {authorization: newLogin.token}
       },
     );
-  console.log(AxiosGetOne.data)
   expect(AxiosGetOne.data.props.name).toBe(postParam.name);
   expect(AxiosGetOne.data.props.className).toBe(postParam.className);
   expect(AxiosGetOne.data.props.type).toBe(postParam.type);
@@ -80,49 +80,50 @@ test("Deve testar o post e o GetOne da classe de estudantes da API", async() => 
 test("Deve testar o GetbyClassName da classe de estudantes da API", async() => {
   const newLogin = await login()
   const organizationId = newLogin.manager.organizationId
-
-
-      const PostParam = {
-        name: 'Thicianae Frata Borges',
-        className: '2022 B TI',
-        type: false,
-        }
-        const AxiosPost = await axios.post('http://localhost:3000/Student/'+ organizationId, PostParam,
-        {
-          headers: {authorization: newLogin.token}
-        },
-        );
-        const postParamTwo = {
-          name: 'Júlio César Aguiar',
-          className: '2022 B TI',
-          type: true
-        }   
-        const axiosPostTwo = await axios.post('http://localhost:3000/Student/' + organizationId, postParamTwo,
-        {
-          headers: {authorization: newLogin.token}
-        },
-        )
-        const studentsGetByClassName = await axios.get('http://localhost:3000/StudentGet/' + organizationId + '/' + PostParam.className,
-        {
-            headers: {authorization: newLogin.token}
-          },
-        )
-        console.log(studentsGetByClassName.data)
-        expect(studentsGetByClassName).toBeDefined();
+  const PostParam = {
+    name: 'Thicianae Frata Borges',
+    className: '2022 B TI',
+    type: false,
+    registration: '2022102020002'
+    }
+  const AxiosPost = await axios.post('http://localhost:3000/Student/'+ organizationId, PostParam,
+    {
+      headers: {authorization: newLogin.token}
+    },
+    );
+  const postParamTwo = {
+    name: 'Júlio César Aguiar',
+    className: '2022 B TI',
+    type: true,
+    registration: "2022108060016"
+  }   
+  const axiosPostTwo = await axios.post('http://localhost:3000/Student/' + organizationId, postParamTwo,
+  {
+    headers: {authorization: newLogin.token}
+  },
+  )
+  const studentsGetByClassName = await axios.get('http://localhost:3000/StudentGet/' + organizationId + '/' + PostParam.className,
+  {
+      headers: {authorization: newLogin.token}
+    },
+  )
+    expect(studentsGetByClassName).toBeDefined();
 }, 15000);
 
 test("Deve testar o método Delete da classe de estudantes da API", async() => {
   const newLogin = await login()
   const organizationId = newLogin.manager.organizationId
   const PostParam = {
-    name: 'Thicianae Frata Borges',
+    name: 'Thiciane Frata Borges',
     classStudent: '2022 B TI',
-    type: 'Autorizado'
+    type: 'Autorizado',
+    registration: '2022102020002'
     }
     const postParamTwo = {
       name: 'Júlio César Aguiar',
       className: '2022 B TI',
-      type: true
+      type: true,
+      registration: '2022108060016',
     }   
     const axiosPostTwo = await axios.post('http://localhost:3000/Student/' + organizationId, postParamTwo,
     {
@@ -153,6 +154,7 @@ test("Deve testar o Update da classe de estudantes da API", async() => {
     name: 'Thicianae Frata Borges',
     className: '2022 B TI',
     type: false,
+    registration: '2022102020002'
   }
     const AxiosPost = await axios.post('http://localhost:3000/Student/' + organizationId, PostParam,
     {
@@ -184,7 +186,8 @@ test("Deve testar o GetAll da entidade Students da API", async() => {
   const postParam = {
     name: 'Julio César Aguiar',
     className: '2022 A TI',
-    type: false
+    type: false,
+    registration: '2022108060016'
   }
   const AxiosPost = await axios.post('http://localhost:3000/Student/' + newLogin.manager.organizationId ,
   postParam,
@@ -196,7 +199,8 @@ test("Deve testar o GetAll da entidade Students da API", async() => {
   const postParam2 = {
     name: 'Thiciane Frata Borges',
     className: '2022 B TI',
-    type: true
+    type: true,
+    registration: '2022102020002'
   }
   const axiosPost2 = await axios.post('http://localhost:3000/Student/' + newLogin.manager.organizationId ,
   postParam2,
@@ -214,7 +218,7 @@ test("Deve testar o GetAll da entidade Students da API", async() => {
     expect(getAllStudents.data).not.toBe("Nenhum aluno encontrado");
   }, 15000)
 
-test.only("Deve testar o caso de não haver nenhum aluno no BD, a partir da pesquisa pelo GetAll", async() => {
+test("Deve testar o caso de não haver nenhum aluno no BD, a partir da pesquisa pelo GetAll", async() => {
   const newLogin = await login();
   const getAllStudents = await axios.get(
     'http://localhost:3000/Student/' + newLogin.manager.organizationId,
@@ -223,6 +227,34 @@ test.only("Deve testar o caso de não haver nenhum aluno no BD, a partir da pesq
     },
     )
     expect(getAllStudents.data.msg).toBe("Nenhum aluno encontrado");
+}, 15000)
+
+test.only("Deve testar a função que seleciona o aluno com base em sua matricula", async() => {
+  const newLogin = await login();
+  const randomRegister = Math.random().toString(36).slice(-15);
+  const input = {
+    name: 'Julião',
+    className: '2022 A TI',
+    type: true,
+    organizationId: newLogin.manager.organizationId,
+    registration: randomRegister,
+  };
+  const postStudent = await axios.post('http://localhost:3000/Student/' + newLogin.manager.organizationId,
+  input,
+  {
+    headers: {authorization: newLogin.token}
+  },
+  )
+  const getStudent = await axios.get("http://localhost:3000/StudentGetByRegistration/" + input.registration + '/' + newLogin.manager.organizationId,
+  {
+    headers: {authorization: newLogin.token}
+  },
+  )
+  expect(getStudent.data.props.name).toBe(input.name);
+  expect(getStudent.data.props.className).toBe(input.className);
+  expect(getStudent.data.props.type).toBe(input.type);
+  expect(getStudent.data.props.organizationId).toBe(input.organizationId);
+  expect(getStudent.data.props.registration).toBe(input.registration)
 }, 15000)
 
   

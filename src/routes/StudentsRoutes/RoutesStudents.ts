@@ -10,6 +10,8 @@ router.get('/Student/:idOrganization/:id', loginRequired, StudentsController.Get
 
 router.get("/Student/:idOrganization", loginRequired, StudentsController.GetAll);
 
+router.get('/StudentGetByRegistration/:registration/:idOrganization', loginRequired, StudentsController.GetByRegistration)
+
 router.get('/StudentGet/:idOrganization/:className', loginRequired, StudentsController.GetByClassName);
 
 router.delete('/Student/:idOrganization/:id', loginRequired, StudentsController.Delete);

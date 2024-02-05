@@ -14,6 +14,8 @@ export default class Manager {
   async Post() {
     const password = await bcrypt.hash(this.props.password, 6);
     const isManager = await ManagerModel.find({name: this.props.name})
+    if(isManager.length != 0)
+      throw new Error("Um usuário com este nome já existe")
     return  await this.model.create({
       name: this.props.name,
       type: this.props.type,

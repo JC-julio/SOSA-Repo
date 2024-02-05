@@ -42,10 +42,10 @@ axios.defaults.validateStatus = function () {
     )
     const ObjectLogin = {
       manager: {
-        name: organizationPost.data.manager.name,
-        type: organizationPost.data.manager.type,
-        id: organizationPost.data.manager.id,
-        organizationId: organizationPost.data.manager.organizationId
+        name: organizationPost.data.name,
+        type: organizationPost.data.type,
+        id: organizationPost.data.id,
+        organizationId: organizationPost.data.organizationId
       },
       token : AxiosOutput.data.token
     }
@@ -66,8 +66,8 @@ test("Deve testar o post da classe Organization da API", async() => {
     }
     const personPost = await axios.post('http://localhost:3000/Organization',
     dataPostOrganization);
-    expect(personPost.data.manager.organizationId).toBeDefined()
-    expect(personPost.data.manager.id).toBeDefined()
+    expect(personPost.data.organizationId).toBeDefined()
+    expect(personPost.data.id).toBeDefined()
 }, 15000)
 
 test("Deve testar o GetOne da classe Organization da API", async() => {

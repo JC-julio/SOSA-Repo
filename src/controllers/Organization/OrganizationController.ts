@@ -10,21 +10,22 @@ export default class OrganizationManagement{
             const organization = new Organization({
                 name: organizationDto.name, 
             })
-            const organizationId = (await organization.Post()).id
+            const organizationPost = (await organization.Post())
             const NewManager = new Manager({
                 name: managerDto.name,
                 type: managerDto.type,
                 password: managerDto.password,
-                organizationId: organizationId
+                organizationId: organizationPost.id
             })
             const returnManager = (await NewManager.Post())
             const manager = {
                 name: returnManager.name,
                 type: returnManager.type,
                 id: returnManager.id,
-                organizationId: organizationId,
+                organizationId: organizationPost.id,
+                organizationName: organizationPost.name
               }
-            res.status(201).json({manager});
+            res.status(201).json(manager);
         } catch(error) {
             let errorNumber: number;
             switch( error.message ){

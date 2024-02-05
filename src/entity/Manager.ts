@@ -14,8 +14,6 @@ export default class Manager {
   async Post() {
     const password = await bcrypt.hash(this.props.password, 6);
     const isManager = await ManagerModel.find({name: this.props.name})
-    if(isManager.length != 0)
-      throw new Error("Um usuário com este nome já existe")
     return  await this.model.create({
       name: this.props.name,
       type: this.props.type,
@@ -86,7 +84,6 @@ static async Login(user: string, password: string) {
   static async logout(Token: String){
     const countToken = await TokenModel.find().countDocuments();
     if(countToken >= 30){
-      console.log(countToken)
       await TokenModel.deleteMany();
     }
     const tokenVerificado = jwt.verify(Token, process.env.secretJWTkey)

@@ -3,8 +3,8 @@ import StudentClass from '../../entity/Exits';
 export default class ExitsController {
     static async Post(req: Express.Request, res: Express.Response) {
         try{
-            const {time, observes, dateExit} = req.body;
-            const {idStudent, idWorker, idOrganization} = req.params;
+            const {observes, dateExit, idStudent, idWorker,} = req.body;
+            const {idOrganization} = req.params;
             const Exit = new StudentClass({
                 idStudent: idStudent,
                 idWorker: idWorker,
@@ -13,9 +13,16 @@ export default class ExitsController {
                 dateExit: dateExit,
         });
             const exit = (await Exit.Post());
-            const exitId = exit.id
-            ExitsController.checkStatusExit(exitId, idOrganization)
-            res.status(201).json({exit, exitId})
+            const objectExit = {
+                idStudent: exit.idStudent,
+                idWorker: exit.idWorker,
+                organizationId: exit.organizationId,
+                observes: exit.observes,
+                dateExit: exit.dateExit,
+                id: exit.id
+            }
+            ExitsController.checkStatusExit(objectExit.id, idOrganization)
+            res.status(201).json(objectExit)
             } catch(error) {
                 console.error(error);
                 res.send(500).json({msg: error.message})    
@@ -84,18 +91,7 @@ export default class ExitsController {
               }))
               res.status(226).send(returnExits);
         } catch(error) {
-            let errorNumber: number;
-            switch( error.message ){
-                case 'Nenhuma saída encontrada': {
-                    errorNumber = 404
-                    break
-                }
-                default: {
-                    errorNumber = 500
-                    break
-                }
-            }
-            res.status(errorNumber).json({msg: error.message})
+            res.status(500).json({msg: error.message})
         }
     }
 

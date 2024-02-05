@@ -8,8 +8,15 @@ export default class StudentController {
             const { idOrganization } = req.params;
             const student = new Student({name: name, className: className, type: type, organizationId:idOrganization, registration: registration})
             const newStudent = (await student.Post())
-            const studentId = newStudent.id;
-            res.status(201).json({newStudent, studentId})
+            const objectStudent = {
+              name: newStudent.name,
+              className: newStudent.className,
+              type: newStudent.type,
+              organizationId: newStudent.organizationId,
+              registration: newStudent.registration,
+              id: newStudent.id
+            }
+            res.status(201).json(objectStudent)
         } catch(error) {
           let errorNumber: number;
           switch( error.message ){
@@ -62,18 +69,7 @@ export default class StudentController {
         }));
         res.status(226).send(getAllStudents);
       } catch(error){
-        let errorNumber: number;
-        switch( error.message ){
-            case 'Nenhum aluno encontrado': {
-                errorNumber = 404
-                break
-            }
-            default: {
-                errorNumber = 500
-                break
-            }
-        }
-        res.status(errorNumber).json({msg: error.message})
+        res.status(500).json({msg: error.message})
     }
     }
 

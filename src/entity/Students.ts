@@ -33,8 +33,6 @@ export default class Student{
 
     static async GetAll(idOrganization) {
         const students = await studentsModel.find({organizationId: idOrganization});
-        if(!students || students.length === 0)
-            throw new Error("Nenhum aluno encontrado")
         return students.map(
           (Data) => new Student({
             name: Data.name,

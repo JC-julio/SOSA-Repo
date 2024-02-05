@@ -26,6 +26,7 @@ test('deve testar a classe exits', async () => {
 }, 15000);
 
 test('Deve testar o post e o GetOne da classe Students', async () => {
+    const randomRegister = Math.random().toString(36).slice(-15);
     await mongoose.connect(process.env.connectionString as string);
     const inputOrganization = {
         name: 'CAED ji-paraná'
@@ -37,7 +38,7 @@ test('Deve testar o post e o GetOne da classe Students', async () => {
         className: '2022 A TI',
         type: true,
         organizationId: idOrganization,
-        registration: '2022108060016'
+        registration: randomRegister
 };
     const ForStudent = new Student(input);
     const StudentID = (await ForStudent.Post());
@@ -50,6 +51,8 @@ test('Deve testar o post e o GetOne da classe Students', async () => {
 }, 15000)
 
 test('Deve testar a função que pega todas as turmas que tiverem o mesmo nome do parametro da função', async() => {
+  const randomRegister = Math.random().toString(36).slice(-15);
+  const randomRegister1 = Math.random().toString(36).slice(-15);
     await mongoose.connect(process.env.connectionString as string);
     const inputOrganization = {
         name: 'CAED ji-paraná'
@@ -61,14 +64,14 @@ test('Deve testar a função que pega todas as turmas que tiverem o mesmo nome d
       className: '2022 B TI',
       type: true,
       organizationId: idOrganization,
-      registration: '2022108060016',
+      registration: randomRegister,
     };
     const input1 = {
       name: 'Thiciane Frata Borges',
       className: '2022 B TI',
       type:true,
       organizationId: idOrganization,
-      registration: '2022108060016',
+      registration: randomRegister1,
     };
     const studentInput = new Student(input);
     const studentResult = (await studentInput.Post());
@@ -83,7 +86,7 @@ test('Deve testar a função que pega todas as turmas que tiverem o mesmo nome d
     await mongoose.connection.close();
 }, 15000)
 
-test.only('Deve testar a função que seleciona um aluno pela matricula do mesmo', async() => {
+test('Deve testar a função que seleciona um aluno pela matricula do mesmo', async() => {
   await mongoose.connect(process.env.connectionString as string);
   const randomRegister = Math.random().toString(36).slice(-15);
   const inputOrganization = {

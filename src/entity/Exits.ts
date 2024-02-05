@@ -57,8 +57,6 @@ export default class Exits {
 
   static async GetAll(idOrganization){
     const exits = await ExitsModel.find({organizationId: idOrganization});
-    if(!exits || exits.length === 0)
-      throw new Error("Nenhuma saída encontrada")
     return exits.map((Data) => ({
       idStudent: Data.idStudent,
       idWorker: Data.idStudent,

@@ -42,10 +42,10 @@ async function login(organizationId?) {
   )
   const ObjectLogin = {
     manager: {
-      name: organizationPost.data.manager.name,
-      type: organizationPost.data.manager.type,
-      id: organizationPost.data.manager.id,
-      organizationId: organizationPost.data.manager.organizationId
+      name: organizationPost.data.name,
+      type: organizationPost.data.type,
+      id: organizationPost.data.id,
+      organizationId: organizationPost.data.organizationId
     },
     token : AxiosOutput.data.token
   }
@@ -213,5 +213,4 @@ test("Deve testar o login da API", async() => {
     'http://localhost:3000/Admin',
     inputLogin
   );
-  console.log(AxiosOutput.data)
 }, 15000);

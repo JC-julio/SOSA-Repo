@@ -43,10 +43,10 @@ async function login(organizationId?) {
     )
     const ObjectLogin = {
       manager: {
-        name: organizationPost.data.manager.name,
-        type: organizationPost.data.manager.type,
-        id: organizationPost.data.manager.id,
-        organizationId: organizationPost.data.manager.organizationId
+        name: organizationPost.data.name,
+        type: organizationPost.data.type,
+        id: organizationPost.data.id,
+        organizationId: organizationPost.data.organizationId
       },
       token : AxiosOutput.data.token
     }
@@ -54,12 +54,14 @@ async function login(organizationId?) {
   }
 
 async function postStudent() {
-const newLogin = await login()
+  const randomUser1 = Math.random().toString(36).slice(-15);
+  const newLogin = await login()
   const organizationId = newLogin.manager.organizationId
   const postParam = {
       name: 'Julio César Aguiar',
       className: '2022 A TI',
-      type: false
+      type: false,
+      registration: randomUser1,
   }
   const AxiosPost = await axios.post('http://localhost:3000/Student/' + organizationId ,
   postParam,
@@ -68,16 +70,16 @@ const newLogin = await login()
   },
   );
   const AxiosGetOne = await axios.get(
-    'http://localhost:3000/Student/'+ organizationId + '/' + AxiosPost.data.studentId,
-    {
-      headers: {authorization: newLogin.token}
-    },
-  );
+      'http://localhost:3000/Student/'+ organizationId + '/' + AxiosPost.data.id,
+      {
+          headers: {authorization: newLogin.token}
+      },
+    );
   const studentObject = {
     name: AxiosGetOne.data.props.name,
     className: AxiosGetOne.data.props.className,
     type: AxiosGetOne.data.props.type,
-    id: AxiosPost.data.studentId,
+    id: AxiosPost.data.id,
   }
   return studentObject;
 }
@@ -97,14 +99,14 @@ test('Deve testar o post e o GetOne da classe de saídas da API', async () => {
     };
 
     const AxiosPost = await axios.post(
-        'http://localhost:3000/ExitPost/' + organizationId + '/' + input.idStudent + '/' + input.idWorker,
+        'http://localhost:3000/Exit/' + organizationId,
         input,
         {
             headers: {authorization: newLogin.token}
         },
     );
     const AxiosGetOne = await axios.get(
-        'http://localhost:3000/Exits/' + organizationId + '/' + AxiosPost.data.exitId,
+        'http://localhost:3000/Exits/' + organizationId + '/' + AxiosPost.data.id,
         {
             headers: {authorization: newLogin.token}
         }, 
@@ -129,7 +131,7 @@ test("Deve testar o GetExits da classe de saídas da API", async() => {
         dateExit: new Date('04-02-2001'),
     };
     const AxiosPost = await axios.post(
-        'http://localhost:3000/ExitPost/' + organizationId + '/' + input.idStudent + '/' + input.idWorker,
+        'http://localhost:3000/Exit/' + organizationId,
         input,
         {
             headers: {authorization: newLogin.token}
@@ -142,7 +144,7 @@ test("Deve testar o GetExits da classe de saídas da API", async() => {
         dateExit: new Date('04-02-2007'),
     };
     const AxiosPost1 = await axios.post(
-        'http://localhost:3000/ExitPost/' + organizationId + '/' + input1.idStudent + '/' + input1.idWorker,
+        'http://localhost:3000/Exit/' + organizationId,
         input1,
         {
             headers: {authorization: newLogin.token}
@@ -155,14 +157,14 @@ test("Deve testar o GetExits da classe de saídas da API", async() => {
         dateExit: new Date('12-12-2013'),
     };
     const AxiosPost2 = await axios.post(
-        'http://localhost:3000/ExitPost/' + organizationId + '/' + input2.idStudent + '/' + input2.idWorker,
+        'http://localhost:3000/Exit/' + organizationId,
         input2,
         {
             headers: {authorization: newLogin.token}
         },
     );
 //posts^
-    const GetExits = await axios.get('http://localhost:3000/Exits/' + organizationId + '/' + input.dateExit + '/' + input2.dateExit,
+    const GetExits = await axios.get('http://localhost:3000/Exits/' + organizationId,
     {
         headers: { authorization: newLogin.token },
     }
@@ -184,7 +186,7 @@ test("Deve testar o GetAll da classe de saídas da API", async() => {
         dateExit: new Date('04-02-2001'),
     };
     const AxiosPost = await axios.post(
-        'http://localhost:3000/ExitPost/' + organizationId + '/' + input.idStudent + '/' + input.idWorker,
+        'http://localhost:3000/Exit/' + organizationId,
         input,
         {
             headers: {authorization: newLogin.token}
@@ -199,7 +201,7 @@ test("Deve testar o GetAll da classe de saídas da API", async() => {
 
         };
         const AxiosPost1 = await axios.post(
-            'http://localhost:3000/ExitPost/' + organizationId + '/' + input1.idStudent + '/' + input1.idWorker,
+            'http://localhost:3000/Exit/' + organizationId,
             input1,
             {
                 headers: {authorization: newLogin.token}
@@ -214,7 +216,7 @@ test("Deve testar o GetAll da classe de saídas da API", async() => {
 
         };
         const AxiosPost2 = await axios.post(
-            'http://localhost:3000/ExitPost/' + organizationId + '/' + input2.idStudent + '/' + input2.idWorker,
+            'http://localhost:3000/Exit/' + organizationId,
             input2,
             {
                 headers: {authorization: newLogin.token}
@@ -225,22 +227,6 @@ test("Deve testar o GetAll da classe de saídas da API", async() => {
         headers: { authorization: newLogin.token },
     });
     expect(GetAll.data).toBeDefined();
-}, 15000)
-
-test("Deve testar se o retorno do erro 404 é acionado caso não exista nenhuma saída no BD", async() => {
-    const newLogin = await login()
-    const managerId = newLogin.manager.id
-    const organizationId = newLogin.manager.organizationId
-    const DeleteAll = await axios.delete('http://localhost:3000/Exits/' + organizationId,
-    {
-        headers: { authorization: newLogin.token },
-    });
-    expect(DeleteAll.status).toBe(200)
-    const GetAll = await axios.get('http://localhost:3000/Exits/' + organizationId,
-    {
-        headers: { authorization: newLogin.token },
-    });
-  expect(GetAll.data.msg).toBe("Nenhuma saída encontrada");
 }, 15000)
 
 test("Deve testar o DeleteAll da classe de saídas da API", async() => {
@@ -268,14 +254,15 @@ test("Deve testar o Update da classe de saídas da API", async() => {
         dateExit: new Date('12-12-2023'),
     };
     const AxiosPost = await axios.post(
-        'http://localhost:3000/ExitPost/' + organizationId + '/' + studentId + '/' + managerId,
+        'http://localhost:3000/Exit/' + organizationId,
          input,
          {
             headers: {authorization: newLogin.token}
           },
     )
+    console.log(AxiosPost.data)
     //post para teste^
-    const update = await axios.put('http://localhost:3000/Exits/'+ organizationId + '/' + AxiosPost.data.exitId,
+    const update = await axios.put('http://localhost:3000/Exits/'+ organizationId + '/' + AxiosPost.data.id,
     {},
     {
         headers: {authorization: newLogin.token}
@@ -283,7 +270,7 @@ test("Deve testar o Update da classe de saídas da API", async() => {
     )
     //update^
     const AxiosGetOne = await axios.get(
-        'http://localhost:3000/Exits/' + organizationId + '/' + AxiosPost.data.exitId,
+        'http://localhost:3000/Exits/' + organizationId + '/' + AxiosPost.data.id,
         {
             headers: {authorization: newLogin.token}
         }, 
@@ -306,7 +293,7 @@ test('Deve testar o Update após o tempo determinado pela setTimeout de cancelam
         dateExit: new Date('12-12-2023'),
     };
     const AxiosPost = await axios.post(
-        'http://localhost:3000/ExitPost/' + organizationId + '/' + studentId + '/' + managerId,
+        'http://localhost:3000/Exit/' + organizationId,
          input,
          {
             headers: {authorization: newLogin.token}

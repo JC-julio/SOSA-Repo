@@ -29,6 +29,7 @@ axios.defaults.validateStatus = function () {
     }
     const organizationPost = await axios.post('http://localhost:3000/Organization',
     dataPostOrganization);
+    console.log(organizationPost.data)
     const AxiosOutput = await axios.post(
       'http://localhost:3000/Admin',
       inputLogin
@@ -41,10 +42,10 @@ axios.defaults.validateStatus = function () {
     )
     const ObjectLogin = {
       manager: {
-        name: organizationPost.data.manager.name,
-        type: organizationPost.data.manager.type,
-        id: organizationPost.data.manager.id,
-        organizationId: organizationPost.data.manager.organizationId
+        name: organizationPost.data.name,
+        type: organizationPost.data.type,
+        id: organizationPost.data.id,
+        organizationId: organizationPost.data.organizationId
       },
       token : AxiosOutput.data.token
     }
@@ -54,11 +55,12 @@ axios.defaults.validateStatus = function () {
 test("Deve testar o post e o GetOne da classe de estudantes da API", async() => {
   const newLogin = await login()
   const organizationId = newLogin.manager.organizationId
+  const randomUser = Math.random().toString(36).slice(-15);
   const postParam = {
       name: 'Julio César Aguiar',
       className: '2022 A TI',
       type: false,
-      registration: '2022108060016',
+      registration: randomUser,
   }
   const AxiosPost = await axios.post('http://localhost:3000/Student/' + organizationId ,
   postParam,
@@ -67,7 +69,7 @@ test("Deve testar o post e o GetOne da classe de estudantes da API", async() => 
   },
   );
   const AxiosGetOne = await axios.get(
-      'http://localhost:3000/Student/'+ organizationId + '/' + AxiosPost.data.studentId,
+      'http://localhost:3000/Student/'+ organizationId + '/' + AxiosPost.data.id,
       {
         headers: {authorization: newLogin.token}
       },
@@ -80,11 +82,13 @@ test("Deve testar o post e o GetOne da classe de estudantes da API", async() => 
 test("Deve testar o GetbyClassName da classe de estudantes da API", async() => {
   const newLogin = await login()
   const organizationId = newLogin.manager.organizationId
+  const randomUser = Math.random().toString(36).slice(-15);
+  const randomUser1 = Math.random().toString(36).slice(-15);
   const PostParam = {
     name: 'Thicianae Frata Borges',
     className: '2022 B TI',
     type: false,
-    registration: '2022102020002'
+    registration: randomUser
     }
   const AxiosPost = await axios.post('http://localhost:3000/Student/'+ organizationId, PostParam,
     {
@@ -95,9 +99,10 @@ test("Deve testar o GetbyClassName da classe de estudantes da API", async() => {
     name: 'Júlio César Aguiar',
     className: '2022 B TI',
     type: true,
-    registration: "2022108060016"
+    registration: randomUser1,
   }   
-  const axiosPostTwo = await axios.post('http://localhost:3000/Student/' + organizationId, postParamTwo,
+  const axiosPostTwo = await axios.post('http://localhost:3000/Student/' + organizationId,
+   postParamTwo,
   {
     headers: {authorization: newLogin.token}
   },
@@ -113,17 +118,19 @@ test("Deve testar o GetbyClassName da classe de estudantes da API", async() => {
 test("Deve testar o método Delete da classe de estudantes da API", async() => {
   const newLogin = await login()
   const organizationId = newLogin.manager.organizationId
+  const randomUser = Math.random().toString(36).slice(-15);
+  const randomUser1 = Math.random().toString(36).slice(-15);
   const PostParam = {
     name: 'Thiciane Frata Borges',
     classStudent: '2022 B TI',
     type: 'Autorizado',
-    registration: '2022102020002'
+    registration: randomUser,
     }
     const postParamTwo = {
       name: 'Júlio César Aguiar',
       className: '2022 B TI',
       type: true,
-      registration: '2022108060016',
+      registration: randomUser1,
     }   
     const axiosPostTwo = await axios.post('http://localhost:3000/Student/' + organizationId, postParamTwo,
     {
@@ -131,14 +138,14 @@ test("Deve testar o método Delete da classe de estudantes da API", async() => {
     }
     )
 
-    const DeleteStudent = await axios.delete('http://localhost:3000/Student/'+ organizationId + '/' + axiosPostTwo.data.studentId,
+    const DeleteStudent = await axios.delete('http://localhost:3000/Student/'+ organizationId + '/' + axiosPostTwo.data.id,
     {
         headers: {authorization: newLogin.token}
       },
     );
     //Delete
     const AxiosGetOne = await axios.get(
-        'http://localhost:3000/Student/'+ organizationId + '/' + axiosPostTwo.data.studentId,
+        'http://localhost:3000/Student/'+ organizationId + '/' + axiosPostTwo.data.id,
         {
           headers: {authorization: newLogin.token}
         },
@@ -150,11 +157,12 @@ test("Deve testar o Update da classe de estudantes da API", async() => {
   const newLogin = await login()
   const managerId = newLogin.manager.id
   const organizationId = newLogin.manager.organizationId
+  const randomUser = Math.random().toString(36).slice(-15);
   const PostParam = {
     name: 'Thicianae Frata Borges',
     className: '2022 B TI',
     type: false,
-    registration: '2022102020002'
+    registration: randomUser
   }
     const AxiosPost = await axios.post('http://localhost:3000/Student/' + organizationId, PostParam,
     {
@@ -163,7 +171,7 @@ test("Deve testar o Update da classe de estudantes da API", async() => {
     );    
     //post para testar o Update
 
-    const AxiosPut = await axios.put('http://localhost:3000/Student/' + organizationId + '/' + AxiosPost.data.studentId,
+    const AxiosPut = await axios.put('http://localhost:3000/Student/' + organizationId + '/' + AxiosPost.data.id,
     {},
     {
         headers: {authorization: newLogin.token}
@@ -171,23 +179,23 @@ test("Deve testar o Update da classe de estudantes da API", async() => {
     );
     //Update^
     const AxiosGetOne = await axios.get(
-      'http://localhost:3000/Student/'+ organizationId + '/' + AxiosPost.data.studentId,
+      'http://localhost:3000/Student/'+ organizationId + '/' + AxiosPost.data.id,
       {
         headers: {authorization: newLogin.token}
       },
   );
     //GetOne para testar o Update
-    // console.log(AxiosGetOne.data.props.type)
     expect(AxiosGetOne.data.props.type).toBe(true);
 }, 15000);
 
 test("Deve testar o GetAll da entidade Students da API", async() => {
+  const randomUser = Math.random().toString(36).slice(-15);
   const newLogin = await login()
   const postParam = {
     name: 'Julio César Aguiar',
     className: '2022 A TI',
     type: false,
-    registration: '2022108060016'
+    registration: randomUser
   }
   const AxiosPost = await axios.post('http://localhost:3000/Student/' + newLogin.manager.organizationId ,
   postParam,
@@ -195,12 +203,12 @@ test("Deve testar o GetAll da entidade Students da API", async() => {
     headers: {authorization: newLogin.token}
   },
   );
-
+  const randomUser1 = Math.random().toString(36).slice(-15);
   const postParam2 = {
     name: 'Thiciane Frata Borges',
     className: '2022 B TI',
     type: true,
-    registration: '2022102020002'
+    registration: randomUser1
   }
   const axiosPost2 = await axios.post('http://localhost:3000/Student/' + newLogin.manager.organizationId ,
   postParam2,
@@ -218,18 +226,7 @@ test("Deve testar o GetAll da entidade Students da API", async() => {
     expect(getAllStudents.data).not.toBe("Nenhum aluno encontrado");
   }, 15000)
 
-test("Deve testar o caso de não haver nenhum aluno no BD, a partir da pesquisa pelo GetAll", async() => {
-  const newLogin = await login();
-  const getAllStudents = await axios.get(
-    'http://localhost:3000/Student/' + newLogin.manager.organizationId,
-    {
-      headers: {authorization: newLogin.token}
-    },
-    )
-    expect(getAllStudents.data.msg).toBe("Nenhum aluno encontrado");
-}, 15000)
-
-test.only("Deve testar a função que seleciona o aluno com base em sua matricula", async() => {
+test("Deve testar a função que seleciona o aluno com base em sua matricula", async() => {
   const newLogin = await login();
   const randomRegister = Math.random().toString(36).slice(-15);
   const input = {

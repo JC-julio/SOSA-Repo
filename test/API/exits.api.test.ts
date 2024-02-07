@@ -79,6 +79,7 @@ async function postStudent() {
     name: AxiosGetOne.data.props.name,
     className: AxiosGetOne.data.props.className,
     type: AxiosGetOne.data.props.type,
+    registration: AxiosGetOne.data.props.registration,
     id: AxiosPost.data.id,
   }
   return studentObject;
@@ -89,6 +90,7 @@ test('Deve testar o post e o GetOne da classe de saídas da API', async () => {
     const managerId = newLogin.manager.id
     const organizationId = newLogin.manager.organizationId
     const newStudent = await postStudent()
+    console.log(newStudent)
     const studentId = newStudent.id
       
     const input = {
@@ -99,7 +101,7 @@ test('Deve testar o post e o GetOne da classe de saídas da API', async () => {
     };
 
     const AxiosPost = await axios.post(
-        'http://localhost:3000/Exit/' + organizationId,
+        'http://localhost:3000/Exits/' + organizationId,
         input,
         {
             headers: {authorization: newLogin.token}

@@ -59,7 +59,7 @@ export default class Exits {
     const exits = await ExitsModel.find({organizationId: idOrganization});
     return exits.map((Data) => ({
       idStudent: Data.idStudent,
-      idWorker: Data.idStudent,
+      idWorker: Data.idWorker,
       organizationId: Data.organizationId,
       time: Data.time,
       observes: Data.observes,

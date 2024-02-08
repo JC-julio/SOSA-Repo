@@ -129,7 +129,7 @@ export default class ExitsController {
         }
     }
     static async checkStatusExit(exitId, idOrganization) {
-        const waitTimeForVerification = 180000
+        const waitTimeForVerification = 1800000
         setTimeout(async () => {
             const isExpiredOutput = await StudentClass.GetOne(exitId)
             if (isExpiredOutput.organizationId == idOrganization)

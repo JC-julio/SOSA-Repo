@@ -1,5 +1,7 @@
 import Express from 'express';
 import StudentClass from '../../entity/Exits';
+import schedule from 'node-schedule';
+
 export default class ExitsController {
     static async Post(req: Express.Request, res: Express.Response) {
         try{
@@ -21,7 +23,7 @@ export default class ExitsController {
                 dateExit: exit.dateExit,
                 id: exit.id
             }
-            ExitsController.checkStatusExit(objectExit.id, idOrganization)
+            await ExitsController.checkStatusExit(objectExit.id, idOrganization)
             res.status(201).json(objectExit)
             } catch(error) {
                 console.error(error);
@@ -129,13 +131,17 @@ export default class ExitsController {
         }
     }
     static async checkStatusExit(exitId, idOrganization) {
-        const waitTimeForVerification = 1800000
-        setTimeout(async () => {
-            const isExpiredOutput = await StudentClass.GetOne(exitId)
+        const waitTimeForVerification = 10; // 30 minutos
+    
+        let date = new Date();
+        date.setMinutes(date.getMinutes() + waitTimeForVerification);
+    
+        schedule.scheduleJob(date, async () => {
+            const isExpiredOutput = await StudentClass.GetOne(exitId);
             if (isExpiredOutput.organizationId == idOrganization)
                 if (isExpiredOutput.confirmExit == 'Saída em progresso')
-                isExpiredOutput.confirmExit = 'Saída expirada'
+                    isExpiredOutput.confirmExit = 'Saída expirada';
                 await isExpiredOutput.Update();
-        }, waitTimeForVerification);
+        });
     }
 }

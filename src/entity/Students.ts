@@ -86,6 +86,15 @@ export default class Student{
     static async Delete(studentId){
         await studentsModel.findByIdAndDelete(studentId);
     }
+
+    static async DeteleByClassName(className, organizationId) {
+         await studentsModel.find({
+            $and: [
+                {className: className},
+                {organizationId: organizationId}
+            ]
+         }).deleteMany();
+    }
     
     async Update() {
         await studentsModel.findByIdAndUpdate(this.id, {

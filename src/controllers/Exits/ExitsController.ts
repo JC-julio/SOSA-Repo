@@ -1,7 +1,19 @@
 import Express from 'express';
 import StudentClass from '../../entity/Exits';
-import schedule from 'node-schedule';
+import Queue from 'bull'
+import { config } from 'dotenv';
+config();
 
+const redisUrl = `redis://default:${process.env.passwordRedis}@${process.env.hostRedis}:17437`;
+const updateQueue = new Queue('updateQueue', redisUrl);
+updateQueue.process(async (job) => {
+    const { exitId, idOrganization } = job.data;
+    const isExpiredOutput = await StudentClass.GetOne(exitId);
+    if (isExpiredOutput.organizationId == idOrganization)
+        if (isExpiredOutput.confirmExit == 'Saída em progresso')
+            isExpiredOutput.confirmExit = 'Saída expirada';
+    await isExpiredOutput.Update();
+});
 export default class ExitsController {
     static async Post(req: Express.Request, res: Express.Response) {
         try{
@@ -130,16 +142,9 @@ export default class ExitsController {
             res.status(errorNumber).json({msg: error.message})
         }
     }
+
     static async checkStatusExit(exitId, idOrganization) {
-        const waitTimeForVerification = 10; // 30 minutos
-        let date = new Date();
-        date.setMinutes(date.getMinutes() + waitTimeForVerification);
-        schedule.scheduleJob(date, async () => {
-            const isExpiredOutput = await StudentClass.GetOne(exitId);
-            if (isExpiredOutput.organizationId == idOrganization)
-                if (isExpiredOutput.confirmExit == 'Saída em progresso')
-                    isExpiredOutput.confirmExit = 'Saída expirada';
-                await isExpiredOutput.Update();
-        });
+        const waitTimeForVerification = 30 * 60 * 1000; // 30 minutos em milissegundos :)
+        updateQueue.add({ exitId, idOrganization }, { delay: waitTimeForVerification });
     }
 }

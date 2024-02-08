@@ -149,6 +149,27 @@ export default class StudentController {
       }
     }
     
+    static async DeleteByClassName(req:Express.Request, res:Express.Response) {
+      try{
+        const {idOrganization, className} = req.params
+        await Student.DeteleByClassName(className, idOrganization)
+        res.status(200).end()
+      } catch(error) {
+      let errorNumber: number;
+        switch( error.message ){
+          case 'Nenhum aluno encontrado': {
+              errorNumber = 404
+              break
+          }
+          default: {
+              errorNumber = 500
+              break
+          }
+        }
+        res.status(errorNumber).json({msg: error.message})
+    }
+    }
+    
     static async Update(req:Express.Request, res:Express.Response) {
       try {
         const student = await Student.GetOne(req.params.id);

@@ -29,7 +29,6 @@ axios.defaults.validateStatus = function () {
     }
     const organizationPost = await axios.post('http://localhost:3000/Organization',
     dataPostOrganization);
-    console.log(organizationPost.data)
     const AxiosOutput = await axios.post(
       'http://localhost:3000/Admin',
       inputLogin
@@ -254,4 +253,53 @@ test("Deve testar a função que seleciona o aluno com base em sua matricula", a
   expect(getStudent.data.props.registration).toBe(input.registration)
 }, 15000)
 
-  
+test("deve testar a função que apaga todos os alunos com base no nome da turma", async() => {
+  const newLogin = await login()
+  const organizationId = newLogin.manager.organizationId
+  const randomUser = Math.random().toString(36).slice(-15);
+  const randomUser1 = Math.random().toString(36).slice(-15);
+  const PostParam = {
+    name: 'Thicianae Frata Borges',
+    className: '2022 B TI',
+    organizationId: organizationId,
+    type: false,
+    registration: randomUser
+    }
+  const AxiosPost = await axios.post('http://localhost:3000/Student/'+ organizationId, PostParam,
+    {
+      headers: {authorization: newLogin.token}
+    },
+    );
+  const postParamTwo = {
+    name: 'Júlio César Aguiar',
+    className: '2022 B TI',
+    organizationId: organizationId,
+    type: true,
+    registration: randomUser1,
+  }   
+  const axiosPostTwo = await axios.post('http://localhost:3000/Student/' + organizationId,
+   postParamTwo,
+  {
+    headers: {authorization: newLogin.token}
+  },
+  )
+  const studentsDeleteByClassName = await axios.delete('http://localhost:3000/StudentDel/' + organizationId + '/' + PostParam.className,
+  {
+      headers: {authorization: newLogin.token}
+    },
+  )
+  const AxiosGetOne = await axios.get(
+    'http://localhost:3000/Student/'+ newLogin.manager.organizationId + '/' + AxiosPost.data.id,
+    {
+      headers: {authorization: newLogin.token}
+    },
+  );
+    // console.log(AxiosGetOne.data)
+  const AxiosGetOne1 = await axios.get(
+    'http://localhost:3000/Student/'+ newLogin.manager.organizationId + '/' + axiosPostTwo.data.id,
+    {
+      headers: {authorization: newLogin.token}
+    })
+    expect(AxiosGetOne.data.msg).toBe("Estudante não encontrado!");
+    expect(AxiosGetOne1.data.msg).toBe("Estudante não encontrado!");
+}, 15000)

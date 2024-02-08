@@ -111,7 +111,7 @@ test('Deve testar a função que seleciona um aluno pela matricula do mesmo', as
   expect(getStudentByRegister.registration).toBe(input.registration);
 }, 15000)
 
-test.only("deve testar a função que apaga todos os alunos com base no nome da turma", async() => {
+test("deve testar a função que apaga todos os alunos com base no nome da turma", async() => {
   await mongoose.connect(process.env.connectionString as string);
     const randomRegister = Math.random().toString(36).slice(-15);
     const randomRegister1 = Math.random().toString(36).slice(-17);

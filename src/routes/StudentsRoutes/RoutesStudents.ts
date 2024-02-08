@@ -16,6 +16,8 @@ router.get('/StudentGet/:idOrganization/:className', loginRequired, StudentsCont
 
 router.delete('/Student/:idOrganization/:id', loginRequired, StudentsController.Delete);
 
+router.delete('/StudentDel/:idOrganization/:className', loginRequired, StudentsController.DeleteByClassName)
+
 router.put('/Student/:idOrganization/:id', loginRequired, StudentsController.Update);
 
 export default router;

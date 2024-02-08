@@ -52,6 +52,7 @@ export default class Student{
               { organizationId: idOrganization }
             ]
         });
+        console.log(Class)
         if(!Class)
             throw new Error('Estudante não encontrado!')
         return Class.map((Data) => ({
@@ -87,13 +88,18 @@ export default class Student{
         await studentsModel.findByIdAndDelete(studentId);
     }
 
-    static async DeteleByClassName(className, organizationId) {
-         await studentsModel.find({
+    static async DeteleByClassName(className, idOrganization) {
+        console.log(className)
+        console.log(idOrganization)
+        const Class = await studentsModel.find({
             $and: [
-                {className: className},
-                {organizationId: organizationId}
+              { className: className },
+              { organizationId: idOrganization }
             ]
-         }).deleteMany();
+        }).deleteMany();
+        console.log(Class)
+        if(!Class || Class.length === 0)
+        throw new Error("Nenhum aluno encontrado")
     }
     
     async Update() {

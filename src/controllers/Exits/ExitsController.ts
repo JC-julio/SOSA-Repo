@@ -132,10 +132,8 @@ export default class ExitsController {
     }
     static async checkStatusExit(exitId, idOrganization) {
         const waitTimeForVerification = 10; // 30 minutos
-    
         let date = new Date();
         date.setMinutes(date.getMinutes() + waitTimeForVerification);
-    
         schedule.scheduleJob(date, async () => {
             const isExpiredOutput = await StudentClass.GetOne(exitId);
             if (isExpiredOutput.organizationId == idOrganization)

@@ -7,7 +7,7 @@ export default class StudentController {
             const {name, className, type, registration} = req.body;
             const { idOrganization } = req.params;
             const student = new Student({name: name, className: className, type: type, organizationId:idOrganization, registration: registration})
-            const newStudent = (await student.Post())
+            const newStudent = (await student.Post(idOrganization))
             const objectStudent = {
               name: newStudent.name,
               className: newStudent.className,

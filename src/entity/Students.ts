@@ -4,16 +4,16 @@ export default class Student{
     model = studentsModel
     constructor(private props: StudentDto){}
 
-    async Post(){
+    async Post(idOrganization){
         const hasRegistration = await studentsModel.findOne({registration: this.registration})
-        if(hasRegistration)
+        if(hasRegistration && hasRegistration.organizationId == idOrganization)
             throw new Error('Um estudante com a mesma matricula já existe!')
         return this.model.create({
             name: this.name,
             className: this.className,
             type: this.type,
             organizationId: this.organizationId,
-            registration: this.registration
+            registration: this.registration,
         })
     }
 

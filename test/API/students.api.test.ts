@@ -5,51 +5,51 @@ axios.defaults.validateStatus = function () {
     return true;
   };
 
-  async function login(organizationId?) {
-    const randomUser = Math.random().toString(36).slice(-10);
-    const randomUser1 = Math.random().toString(36).slice(-10);
-    const dataPostOrganization = {
-      organization: {
-          name: 'CAED Cacoal'
-      },
-      manager: {
-          name: randomUser,
-          password: '12345678',
-          type: 'Servidor da CAED',
-      }
+async function login(organizationId?) {
+  const randomUser = Math.random().toString(36).slice(-10);
+  const randomUser1 = Math.random().toString(36).slice(-10);
+  const dataPostOrganization = {
+    organization: {
+        name: 'CAED Cacoal'
+    },
+    manager: {
+        name: randomUser,
+        password: '12345678',
+        type: 'Servidor da CAED',
+    }
+}
+  const inputLogin = {
+    user : dataPostOrganization.manager.name,
+    password: dataPostOrganization.manager.password
   }
-    const inputLogin = {
-      user : dataPostOrganization.manager.name,
-      password: dataPostOrganization.manager.password
-    }
-    const inputPostManager = {
-      name: randomUser1,
-      password: dataPostOrganization.manager.password,
-      type: dataPostOrganization.manager.type
-    }
-    const organizationPost = await axios.post('http://localhost:3000/Organization',
-    dataPostOrganization);
-    const AxiosOutput = await axios.post(
-      'http://localhost:3000/Admin',
-      inputLogin
-    );
-    const managerPost = await axios.post(
-      'http://localhost:3000/Admin/' + organizationId, inputPostManager,
-      {
-        headers: {authorization: AxiosOutput.data.Token}
-      },
-    )
-    const ObjectLogin = {
-      manager: {
-        name: organizationPost.data.name,
-        type: organizationPost.data.type,
-        id: organizationPost.data.id,
-        organizationId: organizationPost.data.organizationId
-      },
-      token : AxiosOutput.data.token
-    }
-    return ObjectLogin
+  const inputPostManager = {
+    name: randomUser1,
+    password: dataPostOrganization.manager.password,
+    type: dataPostOrganization.manager.type
   }
+  const organizationPost = await axios.post('http://localhost:3000/Organization',
+  dataPostOrganization);
+  const AxiosOutput = await axios.post(
+    'http://localhost:3000/Admin',
+    inputLogin
+  );
+  const managerPost = await axios.post(
+    'http://localhost:3000/Admin/' + organizationId, inputPostManager,
+    {
+      headers: {authorization: AxiosOutput.data.Token}
+    },
+  )
+  const ObjectLogin = {
+    manager: {
+      name: organizationPost.data.name,
+      type: organizationPost.data.type,
+      id: organizationPost.data.id,
+      organizationId: organizationPost.data.organizationId
+    },
+    token : AxiosOutput.data.token
+  }
+  return ObjectLogin
+}
 
 test("Deve testar o post e o GetOne da classe de estudantes da API", async() => {
   const newLogin = await login()
@@ -260,7 +260,7 @@ test("deve testar a função que apaga todos os alunos com base no nome da turma
   const randomUser1 = Math.random().toString(36).slice(-15);
   const PostParam = {
     name: 'Thicianae Frata Borges',
-    className: '2022 B TI',
+    className: '3°B TI',
     organizationId: organizationId,
     type: false,
     registration: randomUser
@@ -272,7 +272,7 @@ test("deve testar a função que apaga todos os alunos com base no nome da turma
     );
   const postParamTwo = {
     name: 'Júlio César Aguiar',
-    className: '2022 B TI',
+    className: '3°B TI',
     organizationId: organizationId,
     type: true,
     registration: randomUser1,
@@ -283,7 +283,7 @@ test("deve testar a função que apaga todos os alunos com base no nome da turma
     headers: {authorization: newLogin.token}
   },
   )
-  const studentsDeleteByClassName = await axios.delete('http://localhost:3000/StudentDel/' + organizationId + '/' + PostParam.className,
+  const deleteStudents = await axios.delete('http://localhost:3000/StudentDel/' + organizationId + '/' + PostParam.className,
   {
       headers: {authorization: newLogin.token}
     },
@@ -294,7 +294,6 @@ test("deve testar a função que apaga todos os alunos com base no nome da turma
       headers: {authorization: newLogin.token}
     },
   );
-    // console.log(AxiosGetOne.data)
   const AxiosGetOne1 = await axios.get(
     'http://localhost:3000/Student/'+ newLogin.manager.organizationId + '/' + axiosPostTwo.data.id,
     {

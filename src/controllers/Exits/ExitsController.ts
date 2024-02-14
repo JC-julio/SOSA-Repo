@@ -26,24 +26,29 @@ export default class ExitsController {
                 observes: observes,
                 dateExit: dateExit,
         });
-            const exit = (await Exit.Post());
-            const objectExit = {
-                idStudent: exit.idStudent,
-                idWorker: exit.idWorker,
-                organizationId: exit.organizationId,
-                observes: exit.observes,
-                dateExit: exit.dateExit,
-                id: exit.id
-            }
-            await ExitsController.checkStatusExit(objectExit.id, idOrganization)
-            res.status(201).json(objectExit)
-            } catch(error) {
-                console.error(error);
-                res.send(500).json({msg: error.message})    
-            }
+        const exit = (await Exit.Post());
+        const objectExit = {
+            idStudent: exit.idStudent,
+            idWorker: exit.idWorker,
+            organizationId: exit.organizationId,
+            observes: exit.observes,
+            dateExit: exit.dateExit,
+            id: exit.id
+        }
+        await ExitsController.checkStatusExit(objectExit.id, idOrganization)
+        res.status(201).json(objectExit)
+    } catch(error) {
+        console.error(error);
+        res.send(500).json({msg: error.message})    
     }
+}
 
-    static async GetOne(req: Express.Request, res: Express.Response) {
+static async checkStatusExit(exitId, idOrganization) {
+    const waitTimeForVerification = 30 * 60 * 1000; // 30 minutos em milissegundos :)
+    updateQueue.add({ exitId, idOrganization }, { delay: waitTimeForVerification });
+}
+    
+static async GetOne(req: Express.Request, res: Express.Response) {
         try{
             const ExitID = req.params.id;
             const returnExit = await StudentClass.GetOne(ExitID);
@@ -141,10 +146,5 @@ export default class ExitsController {
             }
             res.status(errorNumber).json({msg: error.message})
         }
-    }
-
-    static async checkStatusExit(exitId, idOrganization) {
-        const waitTimeForVerification = 30 * 60 * 1000; // 30 minutos em milissegundos :)
-        updateQueue.add({ exitId, idOrganization }, { delay: waitTimeForVerification });
     }
 }

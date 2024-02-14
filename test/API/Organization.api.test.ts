@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { config } from 'dotenv';
-import { only } from 'node:test';
 config();
 axios.defaults.validateStatus = function () {
     return true;

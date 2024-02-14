@@ -1,4 +1,4 @@
-import axios, { Axios } from 'axios';
+import axios from 'axios';
 import { config } from 'dotenv';
 config();
 const delay = (delayInms) => {

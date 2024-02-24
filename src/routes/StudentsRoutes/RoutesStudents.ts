@@ -20,4 +20,6 @@ router.delete('/StudentDel/:idOrganization/:className', loginRequired, StudentsC
 
 router.put('/Student/:idOrganization/:id', loginRequired, StudentsController.Update);
 
+router.put('/Student/:idOrganization', loginRequired, StudentsController.doUpdate)
+
 export default router;

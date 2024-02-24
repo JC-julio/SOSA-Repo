@@ -128,23 +128,23 @@ static async GetOne(req: Express.Request, res: Express.Response) {
         try{
         const exit = await StudentClass.GetOne(req.params.id);
         if (exit.organizationId != req.params.idOrganization)
-            return res.status(403).json({msg: 'rota inacessivel'})
+        return res.status(403).json({msg: 'rota inacessivel'})
         exit.confirmExit = 'Saida concluida'
         await exit.Update(); 
         res.status(200).end()
-        } catch(error) {
-            let errorNumber: number;
-            switch( error.message ){
-                case 'Registro não encontrado': {
-                    errorNumber = 404
-                    break
-                }
-                default: {
-                    errorNumber = 500
-                    break
-                }
+    } catch(error) {
+        let errorNumber: number;
+        switch( error.message ){
+            case 'Registro não encontrado': {
+                errorNumber = 404
+                break
             }
-            res.status(errorNumber).json({msg: error.message})
+            default: {
+                errorNumber = 500
+                break
+            }
         }
+        res.status(errorNumber).json({msg: error.message})
+    }
     }
 }

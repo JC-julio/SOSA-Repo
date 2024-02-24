@@ -1,8 +1,8 @@
 import { studentsModel } from "./models/StudentDB";
 
 export default class Student{
-    model = studentsModel
     constructor(private props: StudentDto){}
+    model = studentsModel
 
     async Post(idOrganization){
         const hasRegistration = await studentsModel.findOne({registration: this.registration})
@@ -97,6 +97,40 @@ export default class Student{
         if(!Class || Class.length === 0)
         throw new Error("Nenhum aluno encontrado")
     }
+    
+    static async updateClass(objectStudent) {
+        if(objectStudent.className[0] === '1') {
+        const newNameClass = objectStudent.className = '2' + objectStudent.className.slice(1);
+        await studentsModel.findByIdAndUpdate(objectStudent.id, {
+            className: newNameClass,
+        });
+        } else if(objectStudent.className[0] === '2') {
+            objectStudent.className = '3' + objectStudent.className.slice(1);
+        await studentsModel.findByIdAndUpdate(objectStudent.id, {
+            className: objectStudent.className,
+        });
+        } else if(objectStudent.className[0] === '3') {
+            throw new Error('Aluno do terceiro ano');
+        }
+    }
+    
+    static async doUpdate(idOrganization, listaAlunos) {
+        const allStudents = await this.GetAll(idOrganization);
+        for (let element of allStudents) {
+            if (listaAlunos.includes(element.id)) {
+                console.log(element.name)
+                continue;
+            }
+            else if (element.className[0] === "1" || element.className[0] === '2') {
+                await this.updateClass(element);
+            } else if(element.className[0] === '3') {
+                await element.model.findByIdAndDelete(element.id);
+            } else{
+                throw new Error("nenhuma condição atendida")
+            }
+        }
+    }
+    
     
     async Update() {
         await studentsModel.findByIdAndUpdate(this.id, {

@@ -3,7 +3,9 @@ import { config } from 'dotenv';
 import Student from '../../src/entity/Students';
 import Organization from '../../src/entity/Organization';
 config();
-
+const delay = (delayInms) => {
+  return new Promise(resolve => setTimeout(resolve, delayInms));
+};
 test('deve testar a classe exits', async () => {
     await mongoose.connect(process.env.connectionString as string);
     const inputOrganization = {
@@ -144,4 +146,113 @@ test("deve testar a função que apaga todos os alunos com base no nome da turma
   const returnStudent1 = getStudent.find((element) => element.className == input1.className)
   expect(returnStudent).toBeUndefined()
   expect(returnStudent1).toBeUndefined()
+}, 15000)
+
+test("deve testar a função updateClass da entidade de estudantes", async() => {
+  const randomRegister = Math.random().toString(36).slice(-15);
+  await mongoose.connect(process.env.connectionString as string);
+  const inputOrganization = {
+      name: 'CAED ji-paraná'
+    }
+  const organization = new Organization(inputOrganization);
+  const idOrganization = (await organization.Post()).id;
+  const input = {
+      name: 'Julião',
+      className: '2° A TI',
+      type: true,
+      organizationId: idOrganization,
+      registration: randomRegister
+};
+  const ForStudent = new Student(input);
+  const student = (await ForStudent.Post(idOrganization));
+  const inpuntForUpdate = {
+    name: 'Julião',
+    className: '2° A TI',
+    type: true,
+    organizationId: idOrganization,
+    registration: randomRegister,
+    id: student.id
+  }
+  await Student.updateClass(inpuntForUpdate)
+  delay(1000)
+  const getStudent = await Student.GetOne(student.id)
+  expect(getStudent.className).toBe('3° A TI')
+}, 15000)
+
+test("deve testar a função updateClass da entidade de estudantes quando o aluno é do 1° ano", async() => {
+  const randomRegister = Math.random().toString(36).slice(-15);
+  await mongoose.connect(process.env.connectionString as string);
+  const inputOrganization = {
+      name: 'CAED ji-paraná'
+    }
+  const organization = new Organization(inputOrganization);
+  const idOrganization = (await organization.Post()).id;
+  const input = {
+      name: 'Julião',
+      className: '1° A TI',
+      type: true,
+      organizationId: idOrganization,
+      registration: randomRegister
+};
+  const ForStudent = new Student(input);
+  const student = (await ForStudent.Post(idOrganization));
+  const inpuntForUpdate = {
+    name: 'Julião',
+    className: '1° A TI',
+    type: true,
+    organizationId: idOrganization,
+    registration: randomRegister,
+    id: student.id
+  }
+  await Student.updateClass(inpuntForUpdate)
+  delay(1000)
+  const getStudent = await Student.GetOne(student.id)
+  expect(getStudent.className).toEqual('2° A TI')
+}, 15000)
+
+test.only("Deve testar a função doUpdate entidade de estudantes", async() => {
+  const randomRegister = Math.random().toString(36).slice(-15);
+  const randomRegister2 = Math.random().toString(36).slice(-15);
+  const randomRegister3 = Math.random().toString(36).slice(-15);
+  await mongoose.connect(process.env.connectionString as string);
+  const inputOrganization = {
+      name: 'CAED ji-paraná'
+    }
+  const organization = new Organization(inputOrganization);
+  const idOrganization = (await organization.Post()).id;
+  const input = {
+      name: 'Julião',
+      className: '1°A TI',
+      type: true,
+      organizationId: idOrganization,
+      registration: randomRegister
+};
+  const ForStudent1 = new Student(input);
+  const studentId = (await ForStudent1.Post(idOrganization)).id;
+  const input2 = {
+      name: 'Julião',
+      className: '2°A TI',
+      type: true,
+      organizationId: idOrganization,
+      registration: randomRegister2
+};
+  const ForStudent2 = new Student(input2);
+  const studentId2 = (await ForStudent2.Post(idOrganization)).id;
+  const input3 = {
+      name: 'Eu não devo ser apagado',
+      className: '3°A TI',
+      type: true,
+      organizationId: idOrganization,
+      registration: randomRegister3
+};
+  const ForStudent3 = new Student(input3);
+  const studentId3 = (await ForStudent3.Post(idOrganization)).id;
+  const listIds = [studentId3]
+  await Student.doUpdate(idOrganization, listIds)
+  const getStudent1 = await Student.GetOne(studentId)
+  expect(getStudent1.className).toBe('2°A TI')
+  const getStudent2 = await Student.GetOne(studentId2)
+  expect(getStudent2.className).toBe('3°A TI')
+  const getOne3 = await Student.GetOne(studentId3)
+  await expect(getOne3).toBeDefined()
 }, 15000)

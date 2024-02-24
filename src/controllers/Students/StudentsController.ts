@@ -169,6 +169,30 @@ export default class StudentController {
         res.status(errorNumber).json({msg: error.message})
     }
     }
+
+    static async doUpdate(req: Express.Request, res: Express.Response) {
+      try{
+      const studen = await Student.GetOne(req.params.id);
+      if (studen.organizationId != req.params.idOrganization)
+          return res.status(403).json({msg: 'rota inacessivel'})
+      await Student.doUpdate(req.params.idOrganization, req.body.listStudents)
+        res.status(200).end()
+      } catch(error){
+        let errorNumber: number;
+        switch( error.message ){
+        case "nenhuma condição atendida": {
+        errorNumber = 400
+        break
+        }
+        case "Aluno do terceiro ano": {
+        errorNumber: 400
+        break
+        }
+        default: {
+        errorNumber = 500
+        break
+    }}}
+  }
     
     static async Update(req:Express.Request, res:Express.Response) {
       try {

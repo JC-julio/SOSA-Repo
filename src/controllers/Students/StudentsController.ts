@@ -172,8 +172,8 @@ export default class StudentController {
 
     static async doUpdate(req: Express.Request, res: Express.Response) {
       try{
-      const studen = await Student.GetOne(req.params.id);
-      if (studen.organizationId != req.params.idOrganization)
+      const student = await Student.GetOne(req.body.listStudents[0]);
+      if (student.organizationId != req.params.idOrganization)
           return res.status(403).json({msg: 'rota inacessivel'})
       await Student.doUpdate(req.params.idOrganization, req.body.listStudents)
         res.status(200).end()

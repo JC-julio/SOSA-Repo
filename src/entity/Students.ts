@@ -32,7 +32,7 @@ export default class Student{
     }
 
     static async GetAll(idOrganization) {
-        const students = await studentsModel.find({organizationId: idOrganization})[0];
+        const students = await studentsModel.find({organizationId: idOrganization});
         return students.map(
           (Data) => new Student({
             name: Data.name,
@@ -41,7 +41,7 @@ export default class Student{
             organizationId: Data.organizationId,
             registration: Data.registration,
             id: Data.id,
-          }),
+          })
         ); //transformar em nova lista
       }
 

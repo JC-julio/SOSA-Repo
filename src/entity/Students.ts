@@ -115,7 +115,7 @@ export default class Student{
     }
     
     static async doUpdate(idOrganization, listaAlunos) {
-        const allStudents = await this.GetAll(idOrganization);
+        const allStudents = await this.GetAll(idOrganization)[0];
         for (let element of allStudents) {
             if (listaAlunos.includes(element.id)) {
                 console.log(element.name)
@@ -125,12 +125,11 @@ export default class Student{
                 await this.updateClass(element);
             } else if(element.className[0] === '3') {
                 await element.model.findByIdAndDelete(element.id);
-            } else{
+            } else {
                 throw new Error("nenhuma condição atendida")
             }
         }
     }
-    
     
     async Update() {
         await studentsModel.findByIdAndUpdate(this.id, {

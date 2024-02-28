@@ -75,8 +75,6 @@ export default class StudentController {
 
     static async GetByRegistration(req:Express.Request, res:Express.Response) {
       try {
-        console.log(req.params.registration)
-        console.log(req.params.idOrganization)
         const student = await Student.GetByRegistration(req.params.registration, req.params.idOrganization)
         res.status(226).send(student)
       } catch (error) {
@@ -180,17 +178,17 @@ export default class StudentController {
       } catch(error){
         let errorNumber: number;
         switch( error.message ){
-        case "nenhuma condição atendida": {
-        errorNumber = 400
-        break
-        }
-        case "Aluno do terceiro ano": {
-        errorNumber: 400
-        break
-        }
-        default: {
-        errorNumber = 500
-        break
+          case "nenhuma condição atendida": {
+          errorNumber = 400
+          break
+          }
+          case "Aluno do terceiro ano": {
+          errorNumber: 400
+          break
+          }
+          default: {
+          errorNumber = 500
+          break
     }}}
   }
     

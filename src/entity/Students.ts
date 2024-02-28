@@ -32,7 +32,7 @@ export default class Student{
     }
 
     static async GetAll(idOrganization) {
-        const students = await studentsModel.find({organizationId: idOrganization});
+        const students = await studentsModel.find({organizationId: idOrganization})[0];
         return students.map(
           (Data) => new Student({
             name: Data.name,
@@ -115,7 +115,7 @@ export default class Student{
     }
     
     static async doUpdate(idOrganization, listaAlunos) {
-        const allStudents = await this.GetAll(idOrganization)[0];
+        const allStudents = await this.GetAll(idOrganization);
         for (let element of allStudents) {
             if (listaAlunos.includes(element.id)) {
                 console.log(element.name)

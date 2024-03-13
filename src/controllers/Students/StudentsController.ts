@@ -4,9 +4,9 @@ import Student from '../../entity/Students';
 export default class StudentController {
     static async Post(req:Express.Request, res:Express.Response) {
         try{
-            const {name, className, type, registration} = req.body;
+            const {name, className, type, registration, additionalInfo} = req.body;
             const { idOrganization } = req.params;
-            const student = new Student({name: name, className: className, type: type, organizationId:idOrganization, registration: registration})
+            const student = new Student({name: name, className: className, type: type, organizationId:idOrganization, registration: registration, additionalInfo: additionalInfo})
             const newStudent = (await student.Post(idOrganization))
             const objectStudent = {
               name: newStudent.name,
@@ -14,7 +14,8 @@ export default class StudentController {
               type: newStudent.type,
               organizationId: newStudent.organizationId,
               registration: newStudent.registration,
-              id: newStudent.id
+              additionalInfo: newStudent.additionalInfo,
+              id: newStudent.id,
             }
             res.status(201).json(objectStudent)
         } catch(error) {
@@ -65,6 +66,7 @@ export default class StudentController {
           organizationId: Data.organizationId,
           className: Data.className,
           registration: Data.registration,
+          additionalInfo: Data.additionalInfo,
           id: Data.id,
         }));
         res.status(226).send(getAllStudents);
@@ -104,6 +106,7 @@ export default class StudentController {
                 organizationId: Data.organizationId,
                 className: Data.className,
                 registration: Data.registration,
+                additionalInfo: Data.additionalInfo,
                 id: Data.id,
             }))
             res.status(226).send(returnsClass);
@@ -203,6 +206,7 @@ export default class StudentController {
           student.type = req.body.type
           student.registration = req.body.registration
           await student.updateAll()
+          res.status(200).end()
         } catch(error) {
   
         }

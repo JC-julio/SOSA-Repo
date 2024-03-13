@@ -18,6 +18,8 @@ router.delete('/Student/:idOrganization/:id', loginRequired, StudentsController.
 
 router.delete('/StudentDel/:idOrganization/:className', loginRequired, StudentsController.DeleteByClassName)
 
+router.put('/Student/updateAll/:idOrganization/:id', loginRequired, StudentsController.updateAll)
+
 router.put('/Student/:idOrganization/:id', loginRequired, StudentsController.Update);
 
 router.put('/Student/:idOrganization', loginRequired, StudentsController.doUpdate)

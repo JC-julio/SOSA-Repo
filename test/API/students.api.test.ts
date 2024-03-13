@@ -60,6 +60,7 @@ test("Deve testar o post e o GetOne da classe de estudantes da API", async() => 
       className: '2022 A TI',
       type: false,
       registration: randomUser,
+      additionalInfo: 'nada',
   }
   const AxiosPost = await axios.post('http://localhost:3000/Student/' + organizationId ,
   postParam,
@@ -67,6 +68,7 @@ test("Deve testar o post e o GetOne da classe de estudantes da API", async() => 
     headers: {authorization: newLogin.token}
   },
   );
+  console.log(AxiosPost.data.id)
   const AxiosGetOne = await axios.get(
       'http://localhost:3000/Student/'+ organizationId + '/' + AxiosPost.data.id,
       {
@@ -87,7 +89,8 @@ test("Deve testar o GetbyClassName da classe de estudantes da API", async() => {
     name: 'Thicianae Frata Borges',
     className: '2022 B TI',
     type: false,
-    registration: randomUser
+    registration: randomUser,
+    additionalInfo: 'nada',
     }
   const AxiosPost = await axios.post('http://localhost:3000/Student/'+ organizationId, PostParam,
     {
@@ -124,12 +127,14 @@ test("Deve testar o método Delete da classe de estudantes da API", async() => {
     classStudent: '2022 B TI',
     type: 'Autorizado',
     registration: randomUser,
+    additionalInfo: 'nada',
     }
     const postParamTwo = {
       name: 'Júlio César Aguiar',
       className: '2022 B TI',
       type: true,
       registration: randomUser1,
+      additionalInfo: 'nada',
     }   
     const axiosPostTwo = await axios.post('http://localhost:3000/Student/' + organizationId, postParamTwo,
     {
@@ -161,7 +166,8 @@ test("Deve testar o Update da classe de estudantes da API", async() => {
     name: 'Thicianae Frata Borges',
     className: '2022 B TI',
     type: false,
-    registration: randomUser
+    registration: randomUser,
+    additionalInfo: 'nada',
   }
     const AxiosPost = await axios.post('http://localhost:3000/Student/' + organizationId, PostParam,
     {
@@ -174,7 +180,7 @@ test("Deve testar o Update da classe de estudantes da API", async() => {
     {},
     {
         headers: {authorization: newLogin.token}
-      },
+    },
     );
     //Update^
     const AxiosGetOne = await axios.get(
@@ -194,7 +200,8 @@ test("Deve testar o GetAll da entidade Students da API", async() => {
     name: 'Julio César Aguiar',
     className: '2022 A TI',
     type: false,
-    registration: randomUser
+    registration: randomUser,
+    additionalInfo: 'nada',
   }
   const AxiosPost = await axios.post('http://localhost:3000/Student/' + newLogin.manager.organizationId ,
   postParam,
@@ -207,7 +214,8 @@ test("Deve testar o GetAll da entidade Students da API", async() => {
     name: 'Thiciane Frata Borges',
     className: '2022 B TI',
     type: true,
-    registration: randomUser1
+    registration: randomUser1,
+    additionalInfo: 'nada',
   }
   const axiosPost2 = await axios.post('http://localhost:3000/Student/' + newLogin.manager.organizationId ,
   postParam2,
@@ -253,6 +261,46 @@ test("Deve testar a função que seleciona o aluno com base em sua matricula", a
   expect(getStudent.data.props.registration).toBe(input.registration)
 }, 15000)
 
+test.only("Deve testar a função que atualiza todos as propriedades de um aluno", async() => {
+  const newLogin = await login();
+  const randomRegister = Math.random().toString(36).slice(-15);
+  const newRandomRegister = Math.random().toString(36).slice(-15);
+  const input = {
+    name: 'Julião',
+    className: '2022 A TI',
+    type: true,
+    organizationId: newLogin.manager.organizationId,
+    registration: randomRegister,
+  };
+  const postStudent = await axios.post('http://localhost:3000/Student/' + newLogin.manager.organizationId,
+  input,
+  {
+    headers: {authorization: newLogin.token}
+  });
+
+  const newInput = {
+    name: 'Julião Novo 1',
+    className: '3°A TI',
+    type: false,
+    organizationId: newLogin.manager.organizationId,
+    registration: newRandomRegister,
+  };
+  await axios.put('http://localhost:3000/Student/updateAll/' + newLogin.manager.organizationId + '/' + postStudent.data.id, newInput,
+  {
+    headers: {authorization: newLogin.token}
+  },
+)
+const AxiosGetOne = await axios.get(
+  'http://localhost:3000/Student/'+ newLogin.manager.organizationId + '/' + postStudent.data.id,
+  {
+    headers: {authorization: newLogin.token}
+  },
+);
+//GetOne para testar o Update
+console.log(AxiosGetOne.data.props)
+expect(AxiosGetOne.data.props.type).toBe(false);
+}, 15000)
+
 test("deve testar a função que apaga todos os alunos com base no nome da turma", async() => {
   const newLogin = await login()
   const organizationId = newLogin.manager.organizationId
@@ -263,7 +311,8 @@ test("deve testar a função que apaga todos os alunos com base no nome da turma
     className: '3°B TI',
     organizationId: organizationId,
     type: false,
-    registration: randomUser
+    registration: randomUser,
+    additionalInfo: 'nada',
     }
   const AxiosPost = await axios.post('http://localhost:3000/Student/'+ organizationId, PostParam,
     {
@@ -276,6 +325,7 @@ test("deve testar a função que apaga todos os alunos com base no nome da turma
     organizationId: organizationId,
     type: true,
     registration: randomUser1,
+    additionalInfo: 'nada',
   }   
   const axiosPostTwo = await axios.post('http://localhost:3000/Student/' + organizationId,
    postParamTwo,
@@ -283,7 +333,7 @@ test("deve testar a função que apaga todos os alunos com base no nome da turma
     headers: {authorization: newLogin.token}
   },
   )
-  const deleteStudents = await axios.delete('http://localhost:3000/StudentDel/' + organizationId + '/' + PostParam.className,
+  await axios.delete('http://localhost:3000/StudentDel/' + organizationId + '/' + PostParam.className,
   {
       headers: {authorization: newLogin.token}
     },

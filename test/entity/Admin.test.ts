@@ -2,8 +2,8 @@ import Manager from '../../src/entity/Manager';
 import Organization from '../../src/entity/Organization';
 import mongoose from 'mongoose';
 import { TokenModel } from '../../src/entity/models/BlackListDB';
-import { config } from 'dotenv';
-config();
+
+
 
 test('Que ele possa gerenciar os dados da classe de teste de adminitradores da classe Manager.ts', async () => {
   await mongoose.connect(process.env.connectionString as string);

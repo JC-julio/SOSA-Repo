@@ -14,6 +14,7 @@ export default class Student{
             type: this.type,
             organizationId: this.organizationId,
             registration: this.registration,
+            additionalInfo: this.additionalInfo,
         })
     }
 
@@ -28,6 +29,7 @@ export default class Student{
             organizationId: student.organizationId,
             registration: student.registration,
             id: student.id,
+            additionalInfo: student.additionalInfo,
         })
     }
 
@@ -41,6 +43,7 @@ export default class Student{
             organizationId: Data.organizationId,
             registration: Data.registration,
             id: Data.id,
+            additionalInfo: Data.additionalInfo,
           })
         ); //transformar em nova lista
       }
@@ -61,6 +64,7 @@ export default class Student{
             organizationId: Data.organizationId,
             registration: Data.registration,
             id: Data.id,
+            additionalInfo: Data.additionalInfo,
         }));
     }
 
@@ -77,9 +81,10 @@ export default class Student{
         name: registrationStudentsEqual.name,
         className: registrationStudentsEqual.className,
         type: registrationStudentsEqual.type,
-        organizationId: registrationStudentsEqual.organizationId,
         registration: registrationStudentsEqual.registration,
+        additionalInfo: registrationStudentsEqual.additionalInfo,
         id: registrationStudentsEqual.id,
+        organizationId: registrationStudentsEqual.organizationId,
     })
     }
 
@@ -97,18 +102,19 @@ export default class Student{
         if(!Class || Class.length === 0)
         throw new Error("Nenhum aluno encontrado")
     }
+
     
     static async updateClass(objectStudent) {
         if(objectStudent.className[0] === '1') {
-        const newNameClass = objectStudent.className = '2' + objectStudent.className.slice(1);
-        await studentsModel.findByIdAndUpdate(objectStudent.id, {
-            className: newNameClass,
-        });
+            const newNameClass = objectStudent.className = '2' + objectStudent.className.slice(1);
+            await studentsModel.findByIdAndUpdate(objectStudent.id, {
+                className: newNameClass,
+            });
         } else if(objectStudent.className[0] === '2') {
             objectStudent.className = '3' + objectStudent.className.slice(1);
-        await studentsModel.findByIdAndUpdate(objectStudent.id, {
-            className: objectStudent.className,
-        });
+            await studentsModel.findByIdAndUpdate(objectStudent.id, {
+                className: objectStudent.className,
+            });
         } else if(objectStudent.className[0] === '3') {
             throw new Error('Aluno do terceiro ano');
         }
@@ -133,14 +139,24 @@ export default class Student{
     
     async Update() {
         await studentsModel.findByIdAndUpdate(this.id, {
-          type: this.type,
+            type: this.type,
         });
-      }
+    }
+    
+    async updateAll() {
+        await studentsModel.findByIdAndUpdate(this.id, {
+            name: this.name,
+            className: this.className,
+            type: this.type,
+            registration: this.registration,
+            additionalInfo: this.additionalInfo,
+        })
+    }
 
     public get name(): String {
         return this.props.name;
     }
-
+    
     public get className(): String {
         return this.props.className;
     }
@@ -160,6 +176,10 @@ export default class Student{
     public get registration(): string {
         return this.props.registration;
     }
+    
+    public get additionalInfo(): string {
+        return this.props.additionalInfo
+    }
 
     public set name(name: string) {
         this.props.name = name;
@@ -172,13 +192,22 @@ export default class Student{
     public set type(type: boolean){
         this.props.type = type;
     }
+
+    public set registration(registration: string) {
+        this.props.registration = registration
+    }
+
+    public set additionalInfo(additionalInfo: string) {
+        this.props.additionalInfo = additionalInfo
+    }
 }
 
 export type StudentDto = {
     name: string,
     className: string,
     type: boolean,
-    organizationId: string,
     registration: string,
+    additionalInfo: string,
+    organizationId: string,
     id?: string,
 }

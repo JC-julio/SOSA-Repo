@@ -4,8 +4,9 @@ const StudentSchema = new mongoose.Schema({
     name: String,
     className: String,
     type: Boolean,
-    organizationId: String,
+    additionalInfo: String,
     registration: String,
+    organizationId: String,
 })
 
 export const studentsModel = mongoose.model('students', StudentSchema);

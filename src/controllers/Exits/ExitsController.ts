@@ -17,7 +17,7 @@ config();
 export default class ExitsController {
     static async Post(req: Express.Request, res: Express.Response) {
         try{
-            const {observes, dateExit, idStudent, idWorker,} = req.body;
+            const {observes, dateExit, idStudent, idWorker} = req.body;
             const {idOrganization} = req.params;
             const Exit = new StudentClass({
                 idStudent: idStudent,

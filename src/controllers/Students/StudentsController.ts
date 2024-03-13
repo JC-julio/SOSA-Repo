@@ -168,52 +168,68 @@ export default class StudentController {
     }
     }
 
+    
     static async doUpdate(req: Express.Request, res: Express.Response) {
       try{
-      const organization = await Student.GetAll(req.body.idOrganization);
-      if (!organization)
-          return res.status(403).json({msg: 'rota inacessivel'})
+        const organization = await Student.GetAll(req.body.idOrganization);
+        if (!organization)
+        return res.status(403).json({msg: 'rota inacessivel'})
       await Student.doUpdate(req.params.idOrganization, req.body.listStudents)
-        res.status(200).end()
-      } catch(error){
-        let errorNumber: number;
-        switch( error.message ){
-          case "nenhuma condição atendida": {
+      res.status(200).end()
+    } catch(error){
+      let errorNumber: number;
+      switch( error.message ){
+        case "nenhuma condição atendida": {
           errorNumber = 400
           break
-          }
-          case "Aluno do terceiro ano": {
+        }
+        case "Aluno do terceiro ano": {
           errorNumber: 400
           break
-          }
-          default: {
+        }
+        default: {
           errorNumber = 500
           break
-    }}}
-  }
-    
-    static async Update(req:Express.Request, res:Express.Response) {
-      try {
-        const student = await Student.GetOne(req.params.id);
-        if(student.organizationId != req.params.idOrganization)
+        }}}
+      }
+      
+      static async updateAll(req:Express.Request, res:Express.Response) {
+        try {
+          const student = await Student.GetOne(req.params.id);
+          if(student.organizationId != req.params.idOrganization)
+            return res.status(401).json({msg: 'rota inacessivel'})
+          student.name = req.body.name
+          student.className = req.body.className
+          student.type = req.body.type
+          student.registration = req.body.registration
+          await student.updateAll()
+        } catch(error) {
+  
+        }
+      }
+
+      static async Update(req:Express.Request, res:Express.Response) {
+        try {
+          const student = await Student.GetOne(req.params.id);
+          if(student.organizationId != req.params.idOrganization)
           return res.status(401).json({msg: 'rota inacessivel'})
         if (student.type == false){ 
           student.type = true;
         } else { 
           student.type = false;
         }  
-         await student.Update();
+        await student.Update();
         res.status(200).end();
       } catch (error){
         let errorNumber: number;
         switch( error.message ){
           case 'Estudante não encontrado!': {
-          errorNumber = 404
-        break
-        }
+            errorNumber = 404
+            break
+          }
           default: {
-          errorNumber = 500
-        break
+            errorNumber = 500
+            break
     }
   }
   res.status(errorNumber).json({msg: error.message})

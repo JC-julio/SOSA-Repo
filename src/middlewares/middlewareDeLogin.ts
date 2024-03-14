@@ -11,7 +11,7 @@ export function loginRequired(req:Request, res:Response, nextFunction: NextFunct
     if (!jwt.verify(token, process.env.secretJWTkey))
         return res.status(401).json({msg:'Token inválido'})
     const returnToken = TokenModel.find({bannedToken: token})
-    if (!returnToken){
+    if (returnToken){
         return res.status(401).json({msg:'Token expirado'})
     }
     nextFunction();

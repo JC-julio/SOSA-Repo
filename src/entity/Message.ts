@@ -13,7 +13,16 @@ export default class Message {
     }
 
     static async getOne(id: String) {
-        return await messageModel.findById(id)
+       const message = await messageModel.findById(id)
+       if(!message)
+        throw new Error("nenhuma mensagem encontrada")
+        return new Message({
+            value: message.value,
+            idManager: message.idManager,
+            exibDate: message.exibDate,
+            organizationId: message.organizationId,
+            id: message.id,
+        })
     }
 
     static async GetAll(idOrganization) {

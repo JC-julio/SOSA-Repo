@@ -12,7 +12,14 @@ export default class MessageController {
             }
             const message = new Message(objectMessage)
             const postMessage = await message.post()
-            res.status(200).send(postMessage)
+            const objectReturn = {
+                value: postMessage.value,
+                idManager: postMessage.idManager,
+                exibDate: postMessage.exibDate,
+                organizationId: postMessage.organizationId,
+                id: postMessage.id,
+            }
+            res.status(200).send(objectReturn)
         } catch(error) {
             res.status(500).send(error)
         }

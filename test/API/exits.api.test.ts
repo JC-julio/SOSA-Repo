@@ -1,6 +1,4 @@
 import axios from 'axios';
-import { config } from 'dotenv';
-config();
 const delay = (delayInms) => {
     return new Promise(resolve => setTimeout(resolve, delayInms));
 };
@@ -51,7 +49,7 @@ async function login(organizationId?) {
       token : AxiosOutput.data.token
     }
     return ObjectLogin
-  }
+}
 
 async function postStudent() {
   const randomUser1 = Math.random().toString(36).slice(-15);

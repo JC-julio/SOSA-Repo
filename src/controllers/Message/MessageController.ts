@@ -58,6 +58,7 @@ export default class MessageController {
         try{
             const {id} = req.params
             await Message.delete(id)
+            res.status(200).end()
         } catch(error) {
             res.status(500).send(error)
         }

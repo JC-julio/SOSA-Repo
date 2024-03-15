@@ -98,3 +98,22 @@ test("Deve testar o GetAll das mensagens", async() => {
     )
     expect(getMessages.data).toBeDefined()
 }, 15000)
+
+test.only("Deve testar o delete das mensagens", async() => {
+    const newLogin = await login()
+    const validInput = {
+        value: 'Oi! Eu serei apagado',
+        idManager: newLogin.manager.id,
+        exibDate: [new Date(), new Date()],
+    }
+    const postMessage = await axios.post("http://localhost:3000/Message/" + newLogin.manager.organizationId, validInput,
+    {
+        headers: {authorization: newLogin.token}
+    }
+    )
+    await axios.delete("http://localhost:3000/Message/" + postMessage.data.id,
+    {
+        headers: {authorization: newLogin.token}
+    }
+    )
+}, 15000)

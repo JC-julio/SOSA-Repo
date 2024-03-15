@@ -59,7 +59,6 @@ test("Deve testar o post das mensagens", async() => {
         idManager: newLogin.manager.id,
         exibDate: [new Date(), new Date()],
     }
-    console.log(newLogin.token)
     const postMessage = await axios.post("http://localhost:3000/Message/" + newLogin.manager.organizationId, validInput,
     {
         headers: {authorization: newLogin.token}
@@ -68,4 +67,34 @@ test("Deve testar o post das mensagens", async() => {
     expect(postMessage.data.id).toBeDefined()
 }, 15000)
 
-test("")
+test("Deve testar o GetAll das mensagens", async() => {
+    const newLogin = await login()
+    const validInput = {
+        value: 'Nada por enquanto',
+        idManager: newLogin.manager.id,
+        exibDate: [new Date(), new Date()],
+    }
+    await axios.post("http://localhost:3000/Message/" + newLogin.manager.organizationId, validInput,
+    {
+        headers: {authorization: newLogin.token}
+    }
+    )
+
+    const validInput1 = {
+        value: 'Alunos sem aula por hoje',
+        idManager: newLogin.manager.id,
+        exibDate: [new Date(), new Date()],
+    }
+    await axios.post("http://localhost:3000/Message/" + newLogin.manager.organizationId, validInput1,
+    {
+        headers: {authorization: newLogin.token}
+    }
+    )
+
+    const getMessages = await axios.get("http://localhost:3000/Message/" + newLogin.manager.organizationId,
+    {
+        headers: {authorization: newLogin.token}
+    }
+    )
+    expect(getMessages.data).toBeDefined()
+}, 15000)

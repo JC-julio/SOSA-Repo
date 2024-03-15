@@ -29,14 +29,15 @@ export default class MessageController {
         try{
         const messages = await Message.GetAll(req.params.idOrganization);
         if (messages.length == 0)
-            return res.status(404).json({msg: 'nenhuma organização encontrada'})
-        return messages.map((Data) => ({
+            res.status(404).json({msg: 'nenhuma organização encontrada'})
+        messages.map((Data) => ({
             value: Data.value,
             idManager: Data.idManager,
             exibDate: Data.exibDate,
             organizationId: Data.organizationId,
             id: Data.id,
         }))
+        res.status(226).send(messages)
         } catch(error) {
             let errorNumber: number;
             switch( error.message ){

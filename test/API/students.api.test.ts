@@ -261,7 +261,7 @@ test("Deve testar a função que seleciona o aluno com base em sua matricula", a
   expect(getStudent.data.props.registration).toBe(input.registration)
 }, 15000)
 
-test.only("Deve testar a função que atualiza todos as propriedades de um aluno", async() => {
+test("Deve testar a função que atualiza todas as propriedades de um aluno", async() => {
   const newLogin = await login();
   const randomRegister = Math.random().toString(36).slice(-15);
   const newRandomRegister = Math.random().toString(36).slice(-15);
@@ -297,8 +297,8 @@ const AxiosGetOne = await axios.get(
   },
 );
 //GetOne para testar o Update
-console.log(AxiosGetOne.data.props)
 expect(AxiosGetOne.data.props.type).toBe(false);
+expect(AxiosGetOne.data.props.organizationId).toBe(newInput.organizationId)
 }, 15000)
 
 test("deve testar a função que apaga todos os alunos com base no nome da turma", async() => {

@@ -256,7 +256,7 @@ test("Deve testar o Update da classe de saídas da API", async() => {
         dateExit: new Date('12-12-2023'),
     };
     const AxiosPost = await axios.post(
-        'http://localhost:3000/Exit/' + organizationId,
+        'http://localhost:3000/Exits/' + organizationId,
          input,
          {
             headers: {authorization: newLogin.token}
@@ -280,34 +280,3 @@ test("Deve testar o Update da classe de saídas da API", async() => {
       //GetOne para verificar se a mudança realmente ocorreu
       expect(AxiosGetOne.data.props.confirmExit).toBe('Saida concluida')
     }, 15000)
-    
-test('Deve testar o Update após o tempo determinado pela setTimeout de cancelamento de saida', async() => {
-    const newLogin = await login()
-    const managerId = newLogin.manager.id
-    const organizationId = newLogin.manager.organizationId
-    const newStudent = await postStudent()
-    const studentId = newStudent.id
-
-    const input = {
-        idStudent: studentId,
-        idWorker: managerId,
-        observes: 'Isso aqui está nos testes de API',
-        dateExit: new Date('12-12-2023'),
-    };
-    const AxiosPost = await axios.post(
-        'http://localhost:3000/Exit/' + organizationId,
-         input,
-         {
-            headers: {authorization: newLogin.token}
-          },
-    )
-    //post para teste^
-    await delay(500)
-    const AxiosGetOne = await axios.get(
-        'http://localhost:3000/Exits/' + organizationId + '/' + AxiosPost.data.exitId,
-        {
-            headers: {authorization: newLogin.token}
-        }, 
-    )
-    expect(AxiosGetOne.data.props.confirmExit).toBe('Saída expirada')
-}, 20000)

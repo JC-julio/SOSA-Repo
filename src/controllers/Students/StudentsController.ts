@@ -208,7 +208,7 @@ export default class StudentController {
           await student.updateAll()
           res.status(200).end()
         } catch(error) {
-  
+          res.status(500).send(error)
         }
       }
 

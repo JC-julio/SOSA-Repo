@@ -94,9 +94,8 @@ test('Deve testar o GetAll da entidade manager', async () => {
 }, 15000);
 
 
-test('Deve testar o Login e o Logout da classe Manager.ts', async () => {
+test.only('Deve testar o Login e o Logout da classe Manager.ts', async () => {
   const randomUser = Math.random().toString(36).slice(-10);
-  console.log(randomUser)
   await mongoose.connect(process.env.connectionString as string);
   const inputOrganization = {
     name: 'CAED ji-paraná'

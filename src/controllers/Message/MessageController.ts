@@ -1,0 +1,72 @@
+import  Express  from "express";
+import  Message from "../../entity/Message";
+
+export default class MessageController {
+    static async post(req: Express.Request, res: Express.Response) {
+        try{
+            const objectMessage = {
+                value: req.body.value,
+                idManager: req.body.idManager,
+                exibDate: req.body.exibDate,
+                organizationId: req.params.idOrganization
+            }
+            const message = new Message(objectMessage)
+            const postMessage = await message.post()
+            res.status(200).send(postMessage)
+        } catch(error) {
+            res.status(500).send(error)
+        }
+    }
+
+    static async GetAll(req: Express.Request, res: Express.Response) {
+        try{
+        const messages = await Message.GetAll(req.params.idOrganization);
+        if (messages.length == 0)
+            return res.status(404).json({msg: 'nenhuma organização encontrada'})
+        return messages.map((Data) => ({
+            value: Data.value,
+            idManager: Data.idManager,
+            exibDate: Data.exibDate,
+            organizationId: Data.organizationId,
+            id: Data.id,
+        }))
+        } catch(error) {
+            let errorNumber: number;
+            switch( error.message ){
+                case 'Nenhuma mensagem encontrada': {
+                    errorNumber = 404
+                    break
+                }
+                default: {
+                    errorNumber = 500
+                    break
+                }
+            }
+            res.status(errorNumber).json({msg: error.message})
+        }
+    }
+
+    static async delete(req: Express.Request, res: Express.Response) {
+        try{
+            const {id} = req.params
+            await Message.delete(id)
+        } catch(error) {
+            res.status(500).send(error)
+        }
+    }
+
+    static async updateAll(req:Express.Request, res:Express.Response) {
+        try {
+          const message = await Message.getOne(req.params.id);
+          if(message.organizationId != req.params.idOrganization)
+            return res.status(401).json({msg: 'rota inacessivel'})
+          message.value = req.body.value
+          message.idManager = req.body.idManager
+          message.exibDate = req.body.exibDate
+          await message.updateAll()
+          res.status(200).end()
+        } catch(error) {
+          res.status(500).send(error)
+        }
+    }
+}

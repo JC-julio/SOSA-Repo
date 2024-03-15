@@ -152,7 +152,6 @@ const token = newLogin.token
     headers: {authorization: token}
     },
   );
-  
   const returnToken = TokenModel.findOne({bannedToken: token}) 
   expect(returnToken).toBeDefined
 }, 30000);

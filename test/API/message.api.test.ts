@@ -28,14 +28,14 @@ async function login(organizationId?) {
       password: dataPostOrganization.manager.password,
       type: dataPostOrganization.manager.type
     }
-    const organizationPost = await axios.post('http://localhost:3000/Organization',
+    const organizationPost = await axios.post('https://sosa-repo-main.vercel.app/Organization',
     dataPostOrganization);
     const AxiosOutput = await axios.post(
-      'http://localhost:3000/Admin',
+      'https://sosa-repo-main.vercel.app/Admin',
       inputLogin
     );
     const managerPost = await axios.post(
-      'http://localhost:3000/Admin/' + organizationId, inputPostManager,
+      'https://sosa-repo-main.vercel.app/Admin/' + organizationId, inputPostManager,
       {
         headers: {authorization: AxiosOutput.data.Token}
       },
@@ -59,11 +59,10 @@ test("Deve testar o post das mensagens", async() => {
         idManager: newLogin.manager.id,
         exibDate: [new Date(), new Date()],
     }
-    const postMessage = await axios.post("http://localhost:3000/Message/" + newLogin.manager.organizationId, validInput,
+    const postMessage = await axios.post("https://sosa-repo-main.vercel.app/Message/" + newLogin.manager.organizationId, validInput,
     {
         headers: {authorization: newLogin.token}
-    }
-    )
+    })
     expect(postMessage.data.id).toBeDefined()
 }, 15000)
 
@@ -74,7 +73,7 @@ test("Deve testar o GetAll das mensagens", async() => {
         idManager: newLogin.manager.id,
         exibDate: [new Date(), new Date()],
     }
-    await axios.post("http://localhost:3000/Message/" + newLogin.manager.organizationId, validInput,
+    await axios.post("https://sosa-repo-main.vercel.app/Message/" + newLogin.manager.organizationId, validInput,
     {
         headers: {authorization: newLogin.token}
     }
@@ -85,13 +84,13 @@ test("Deve testar o GetAll das mensagens", async() => {
         idManager: newLogin.manager.id,
         exibDate: [new Date(), new Date()],
     }
-    await axios.post("http://localhost:3000/Message/" + newLogin.manager.organizationId, validInput1,
+    await axios.post("https://sosa-repo-main.vercel.app/Message/" + newLogin.manager.organizationId, validInput1,
     {
         headers: {authorization: newLogin.token}
     }
     )
 
-    const getMessages = await axios.get("http://localhost:3000/Message/" + newLogin.manager.organizationId,
+    const getMessages = await axios.get("https://sosa-repo-main.vercel.app/Message/" + newLogin.manager.organizationId,
     {
         headers: {authorization: newLogin.token}
     }
@@ -106,12 +105,12 @@ test("Deve testar o delete das mensagens", async() => {
         idManager: newLogin.manager.id,
         exibDate: [new Date(), new Date()],
     }
-    const postMessage = await axios.post("http://localhost:3000/Message/" + newLogin.manager.organizationId, validInput,
+    const postMessage = await axios.post("https://sosa-repo-main.vercel.app/Message/" + newLogin.manager.organizationId, validInput,
     {
         headers: {authorization: newLogin.token}
     }
     )
-    await axios.delete("http://localhost:3000/Message/" + postMessage.data.id,
+    await axios.delete("https://sosa-repo-main.vercel.app/Message/" + postMessage.data.id,
     {
         headers: {authorization: newLogin.token}
     }
@@ -126,7 +125,7 @@ test("Deve testar o updateAll da API", async() =>{
         idManager: newLogin.manager.id,
         exibDate: [new Date(), new Date()],
     }
-    const postMessage = await axios.post("http://localhost:3000/Message/" + newLogin.manager.organizationId, validInput,
+    const postMessage = await axios.post("https://sosa-repo-main.vercel.app/Message/" + newLogin.manager.organizationId, validInput,
     {
         headers: {authorization: newLogin.token}
     });
@@ -135,7 +134,7 @@ test("Deve testar o updateAll da API", async() =>{
         idManager: newLogin1.manager.id,
         exibDate: [new Date(), new Date()],
     }
-    await axios.put("http://localhost:3000/Message/" + newLogin.manager.organizationId + '/' + postMessage.data.id, newInput,
+    await axios.put("https://sosa-repo-main.vercel.app/Message/" + newLogin.manager.organizationId + '/' + postMessage.data.id, newInput,
     {
         headers: {authorization: newLogin.token}
     }

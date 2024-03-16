@@ -28,8 +28,6 @@ export default class MessageController {
     static async GetAll(req: Express.Request, res: Express.Response) {
         try{
         const messages = await Message.GetAll(req.params.idOrganization);
-        if (messages.length == 0)
-            res.status(404).json({msg: 'nenhuma organização encontrada'})
         messages.map((Data) => ({
             value: Data.value,
             idManager: Data.idManager,
@@ -41,7 +39,7 @@ export default class MessageController {
         } catch(error) {
             let errorNumber: number;
             switch( error.message ){
-                case 'Nenhuma mensagem encontrada': {
+                case 'nenhuma mensagem encontrada': {
                     errorNumber = 404
                     break
                 }

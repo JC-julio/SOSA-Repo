@@ -27,27 +27,17 @@ export default class MessageController {
 
     static async GetAll(req: Express.Request, res: Express.Response) {
         try{
-        const messages = await Message.GetAll(req.params.idOrganization);
-        messages.map((Data) => ({
-            value: Data.value,
-            idManager: Data.idManager,
-            exibDate: Data.exibDate,
-            organizationId: Data.organizationId,
-            id: Data.id,
-        }))
-        res.status(226).send(messages)
+            const messages = await Message.GetAll(req.params.idOrganization);
+            messages.map((Data) => ({
+                value: Data.value,
+                idManager: Data.idManager,
+                exibDate: Data.exibDate,
+                organizationId: Data.organizationId,
+                id: Data.id,
+            }))
+            res.status(226).send(messages)
         } catch(error) {
             let errorNumber: number;
-            switch( error.message ){
-                case 'nenhuma mensagem encontrada': {
-                    errorNumber = 404
-                    break
-                }
-                default: {
-                    errorNumber = 500
-                    break
-                }
-            }
             res.status(errorNumber).json({msg: error.message})
         }
     }

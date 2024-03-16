@@ -140,3 +140,14 @@ test("Deve testar o updateAll da API", async() =>{
     }
     )
 }, 15000)
+
+test("Deve receber um erro de GetAll quando ele a organização tiver mensagens vazias", async() => {
+    const newLogin = await login()
+    const getMessages = await axios.get("http://localhost:3000/Message/" + newLogin.manager.organizationId,
+    {
+        headers: {authorization: newLogin.token}
+    }
+    )
+    console.log(getMessages.data)
+    expect(getMessages.data).toEqual([]);
+}, 15000)

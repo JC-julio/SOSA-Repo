@@ -28,7 +28,7 @@ export default class Message {
     static async GetAll(idOrganization) {
         const messages = await messageModel.find({organizationId: idOrganization})
         if(!messages)
-            throw new Error("Nenhuma mensagem encontrada")
+            throw new Error("nenhuma mensagem encontrada")
         return messages.map(
           (Data) => new Message({ 
             value: Data.value,

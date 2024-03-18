@@ -282,6 +282,7 @@ test("Deve testar a função que atualiza todas as propriedades de um aluno", as
     name: 'Julião Novo 1',
     className: '3°A TI',
     type: false,
+    additionalInfo: 'NADA POR AQUI',
     organizationId: newLogin.manager.organizationId,
     registration: newRandomRegister,
   };

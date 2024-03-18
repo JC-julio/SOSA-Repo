@@ -204,6 +204,7 @@ export default class StudentController {
           student.name = req.body.name
           student.className = req.body.className
           student.type = req.body.type
+          student.additionalInfo = req.body.additionalInfo
           student.registration = req.body.registration
           await student.updateAll()
           res.status(200).end()

@@ -261,7 +261,7 @@ test("Deve testar a função que seleciona o aluno com base em sua matricula", a
   expect(getStudent.data.props.registration).toBe(input.registration)
 }, 15000)
 
-test("Deve testar a função que atualiza todas as propriedades de um aluno", async() => {
+test.only("Deve testar a função que atualiza todas as propriedades de um aluno", async() => {
   const newLogin = await login();
   const randomRegister = Math.random().toString(36).slice(-15);
   const newRandomRegister = Math.random().toString(36).slice(-15);
@@ -269,6 +269,7 @@ test("Deve testar a função que atualiza todas as propriedades de um aluno", as
     name: 'Julião',
     className: '2022 A TI',
     type: true,
+    additionalInfo: 'autorizado',
     organizationId: newLogin.manager.organizationId,
     registration: randomRegister,
   };
@@ -282,23 +283,24 @@ test("Deve testar a função que atualiza todas as propriedades de um aluno", as
     name: 'Julião Novo 1',
     className: '3°A TI',
     type: false,
-    additionalInfo: 'NADA POR AQUI',
+    additionalInfo: 'nothing',
     organizationId: newLogin.manager.organizationId,
     registration: newRandomRegister,
   };
-  await axios.put('http://localhost:3000/Student/updateAll/' + newLogin.manager.organizationId + '/' + postStudent.data.id, newInput,
+  await axios.put('http://localhost:3000/Student/' + newLogin.manager.organizationId + '/' + postStudent.data.id, newInput,
   {
     headers: {authorization: newLogin.token}
   },
 )
+
 const AxiosGetOne = await axios.get(
   'http://localhost:3000/Student/'+ newLogin.manager.organizationId + '/' + postStudent.data.id,
   {
     headers: {authorization: newLogin.token}
   },
 );
-//GetOne para testar o Update
 expect(AxiosGetOne.data.props.type).toBe(false);
+expect(AxiosGetOne.data.props.additionalInfo).toBe(newInput.additionalInfo)
 expect(AxiosGetOne.data.props.organizationId).toBe(newInput.organizationId)
 }, 15000)
 

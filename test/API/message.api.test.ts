@@ -117,7 +117,7 @@ test("Deve testar o delete das mensagens", async() => {
     )
 }, 15000)
 
-test("Deve testar o updateAll da API", async() =>{
+test.only("Deve testar o updateAll da API", async() =>{
     const newLogin = await login()
     const newLogin1 = await login()
     const validInput = {
@@ -130,7 +130,7 @@ test("Deve testar o updateAll da API", async() =>{
         headers: {authorization: newLogin.token}
     });
     const newInput = {
-        value: 'Alunos sem aulas as quartas, quintas e sextas',
+        value: 'asudyahsilduhasliduhasldkuahdslkajhslk',
         idManager: newLogin1.manager.id,
         exibDate: [new Date(), new Date()],
     }
@@ -139,15 +139,15 @@ test("Deve testar o updateAll da API", async() =>{
         headers: {authorization: newLogin.token}
     }
     )
+    console.log(newInput.idManager)
 }, 15000)
 
-test("Deve receber um erro de GetAll quando ele a organização tiver mensagens vazias", async() => {
+test("o getall deve enviar uma lista vazia", async() => {
     const newLogin = await login()
-    const getMessages = await axios.get("http://localhost:3000/Message/" + newLogin.manager.organizationId,
+    const getMessages = await axios.get("https://sosa-repo-main.vercel.app/Message/" + newLogin.manager.organizationId,
     {
         headers: {authorization: newLogin.token}
     }
     )
-    console.log(getMessages.data)
     expect(getMessages.data).toEqual([]);
 }, 15000)

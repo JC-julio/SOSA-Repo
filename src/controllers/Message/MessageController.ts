@@ -61,7 +61,7 @@ export default class MessageController {
           message.idManager = req.body.idManager
           message.exibDate = req.body.exibDate
           await message.updateAll()
-          res.status(200).end()
+          res.status(200).json({msg: 'oi'})
         } catch(error) {
           res.status(500).send(error)
         }

@@ -27,14 +27,14 @@ async function login(organizationId?) {
     password: dataPostOrganization.manager.password,
     type: dataPostOrganization.manager.type
   }
-  const organizationPost = await axios.post('http://localhost:3000/Organization',
+  const organizationPost = await axios.post('https://sosa-repo-main.vercel.app/Organization',
   dataPostOrganization);
   const AxiosOutput = await axios.post(
-    'http://localhost:3000/Admin',
+    'https://sosa-repo-main.vercel.app/Admin',
     inputLogin
   );
   const managerPost = await axios.post(
-    'http://localhost:3000/Admin/' + organizationId, inputPostManager,
+    'https://sosa-repo-main.vercel.app/Admin/' + organizationId, inputPostManager,
     {
       headers: {authorization: AxiosOutput.data.Token}
     },
@@ -273,7 +273,7 @@ test.only("Deve testar a função que atualiza todas as propriedades de um aluno
     organizationId: newLogin.manager.organizationId,
     registration: randomRegister,
   };
-  const postStudent = await axios.post('http://localhost:3000/Student/' + newLogin.manager.organizationId,
+  const postStudent = await axios.post('https://sosa-repo-main.vercel.app/Student/' + newLogin.manager.organizationId,
   input,
   {
     headers: {authorization: newLogin.token}
@@ -287,21 +287,23 @@ test.only("Deve testar a função que atualiza todas as propriedades de um aluno
     organizationId: newLogin.manager.organizationId,
     registration: newRandomRegister,
   };
-  await axios.put('http://localhost:3000/Student/' + newLogin.manager.organizationId + '/' + postStudent.data.id, newInput,
+  const put = await axios.put('https://sosa-repo-main.vercel.app/Student/' + newLogin.manager.organizationId + '/' + postStudent.data.id, newInput,
   {
     headers: {authorization: newLogin.token}
   },
-)
+  )
+  console.log(put.data)
 
-const AxiosGetOne = await axios.get(
-  'http://localhost:3000/Student/'+ newLogin.manager.organizationId + '/' + postStudent.data.id,
-  {
-    headers: {authorization: newLogin.token}
-  },
-);
-expect(AxiosGetOne.data.props.type).toBe(false);
-expect(AxiosGetOne.data.props.additionalInfo).toBe(newInput.additionalInfo)
-expect(AxiosGetOne.data.props.organizationId).toBe(newInput.organizationId)
+  const AxiosGetOne = await axios.get(
+    'https://sosa-repo-main.vercel.app/Student/'+ newLogin.manager.organizationId + '/' + postStudent.data.id,
+    {
+      headers: {authorization: newLogin.token}
+    },
+  );
+  console.log(AxiosGetOne.data.props)
+  expect(AxiosGetOne.data.props.type).toBe(false);
+  expect(AxiosGetOne.data.props.additionalInfo).toBe(newInput.additionalInfo)
+  expect(AxiosGetOne.data.props.organizationId).toBe(newInput.organizationId)
 }, 15000)
 
 test("deve testar a função que apaga todos os alunos com base no nome da turma", async() => {

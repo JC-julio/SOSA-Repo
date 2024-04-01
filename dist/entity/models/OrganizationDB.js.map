@@ -1,0 +1,1 @@
+{"version":3,"file":"OrganizationDB.js","sourceRoot":"","sources":["../../../src/entity/models/OrganizationDB.ts"],"names":[],"mappings":";;;;;;AAAA,wDAAgC;AAGhC,MAAM,kBAAkB,GAAG,IAAI,kBAAQ,CAAC,MAAM,CAAC;IAC3C,IAAI,EAAE,MAAM;CACf,CAAC,CAAA;AAEW,QAAA,iBAAiB,GAAG,kBAAQ,CAAC,KAAK,CAAC,cAAc,EAAE,kBAAkB,CAAC,CAAA"}

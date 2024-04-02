@@ -26,7 +26,7 @@ test('Que ele possa gerenciar os dados da classe de teste de adminitradores da c
   expect(manager.organizationId).toBe(input.organizationId)
 }, 15000);
 
-test('Deve testar o post e o GetOne da classe Manager.ts', async () => {
+test.only('Deve testar o post e o GetOne da classe Manager.ts', async () => {
   await mongoose.connect(process.env.connectionString as string);
   const randomUser = Math.random().toString(36).slice(-30);
   const inputOrganization = {
@@ -42,6 +42,7 @@ test('Deve testar o post e o GetOne da classe Manager.ts', async () => {
   }
   const manager = new Manager(input)
   const managerPost = (await manager.Post())
+  console.log(managerPost)
   const getUser = await Manager.GetOne(managerPost);
   expect(getUser.name).toBe(input.name);
   expect(getUser.password).not.toBe(input.password);

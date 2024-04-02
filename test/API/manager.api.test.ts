@@ -28,14 +28,15 @@ async function login(organizationId?) {
     password: dataPostOrganization.manager.password,
     type: dataPostOrganization.manager.type
   }
-  const organizationPost = await axios.post('http://localhost:3000/Organization',
+  const organizationPost = await axios.post('https://sosa-repo-dev-main.vercel.app/Organization',
   dataPostOrganization);
+  console.log(organizationPost.data)
   const AxiosOutput = await axios.post(
-    'http://localhost:3000/Admin',
+    'https://sosa-repo-dev-main.vercel.app/Admin',
     inputLogin
   );
   const managerPost = await axios.post(
-    'http://localhost:3000/Admin/' + organizationId, inputPostManager,
+    'https://sosa-repo-dev-main.vercel.app/Admin/' + organizationId, inputPostManager,
     {
       headers: {authorization: AxiosOutput.data.token}
     },
@@ -44,6 +45,7 @@ async function login(organizationId?) {
     manager: {
       name: organizationPost.data.name,
       type: organizationPost.data.type,
+      password: dataPostOrganization.manager.password,
       id: organizationPost.data.id,
       organizationId: organizationPost.data.organizationId
     },
@@ -52,8 +54,9 @@ async function login(organizationId?) {
   return ObjectLogin
 }
 
-test('Deve testar o post dos admins da API', async () => {
+test.only('Deve testar o post dos admins da API', async () => {
   const newLoginFirst = await login();
+  console.log(newLoginFirst)
   expect(newLoginFirst.manager).toBeDefined()
 }, 30000);
 

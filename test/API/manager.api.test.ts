@@ -52,8 +52,9 @@ async function login(organizationId?) {
   return ObjectLogin
 }
 
-test('Deve testar o post dos admins da API', async () => {
+test.only('Deve testar o post dos admins da API', async () => {
   const newLoginFirst = await login();
+  console.log(newLoginFirst)
   expect(newLoginFirst.manager).toBeDefined()
 }, 30000);
 

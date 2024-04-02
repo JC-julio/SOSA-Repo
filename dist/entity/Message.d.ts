@@ -28,25 +28,25 @@ export default class Message {
     constructor(props: messageDTO);
     model: import("mongoose").Model<{
         exibDate: any[];
+        organizationId?: string;
         value?: string;
         idManager?: string;
-        organizationId?: string;
     }, {}, {}, {}, import("mongoose").Schema<any, import("mongoose").Model<any, any, any, any, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, {
         exibDate: any[];
+        organizationId?: string;
         value?: string;
         idManager?: string;
-        organizationId?: string;
     }>>;
     post(): Promise<import("mongoose").Document<unknown, any, {
         exibDate: any[];
+        organizationId?: string;
         value?: string;
         idManager?: string;
-        organizationId?: string;
     }> & Omit<{
         exibDate: any[];
+        organizationId?: string;
         value?: string;
         idManager?: string;
-        organizationId?: string;
     } & {
         _id: import("mongoose").Types.ObjectId;
     }, never>>;
